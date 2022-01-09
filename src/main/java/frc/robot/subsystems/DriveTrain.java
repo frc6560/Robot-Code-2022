@@ -21,7 +21,7 @@ import com.kauailabs.navx.frc.AHRS.SerialDataType;
 
 
 import static frc.robot.Constants.*;
-import frc.utility.HeadingConversion;
+import frc.robot.utility.HeadingConversion;
 
 public class DriveTrain extends SubsystemBase {
   /** Creates a new DriveTrain. */
