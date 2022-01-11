@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Controller;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -37,6 +36,17 @@ public class ShooterVoltageTest extends SubsystemBase {
     rightShooterMotor.setInverted(false);
     leftShooterMotor.setInverted(true);
 
+    // TODO: Calculate optimal PID constants
+    // leftShooterMotor.config_kF(0, 0.047197957);
+    // leftShooterMotor.config_kP(0, 0.15);
+    // leftShooterMotor.config_kI(0, 0.0);
+    // leftShooterMotor.config_kD(0, 0.0);
+
+    // rightShooterMotor.config_kF(0, 0.047197957);
+    // rightShooterMotor.config_kP(0, 0.15);
+    // rightShooterMotor.config_kI(0, 0.0);
+    // rightShooterMotor.config_kD(0, 0.0);
+
 
     final NetworkTable ntTable = NetworkTableInstance.getDefault().getTable("Shooter");
     //leftMotorTableEntry = ntTable.getEntry("Left Motor % Output");
@@ -58,8 +68,9 @@ public class ShooterVoltageTest extends SubsystemBase {
     // This method will be called once per scheduler run
     //double leftOutput = leftMotorTableEntry.getDouble(0) / 100.0;
     //double rightOutput = rightMotorTableEntry.getDouble(0) / 100.0;
-    double output = motorTableEntry.getDouble(0.0) / 6200.0 * (1+ (motorTableEntry.getDouble(0.0) - leftMotorRPM.getDouble(0.0))/6200);
 
+    double output = motorTableEntry.getDouble(0.0) / 6200.0 * (1+ (motorTableEntry.getDouble(0.0) - leftMotorRPM.getDouble(0.0))/6200);
+    //double output = motorTableEntry.getDouble(0.0) / PhysicalConstants.RPM_PER_FALCON_UNIT;
 
     leftShooterMotor.set(ControlMode.PercentOutput, output);
     rightShooterMotor.set(ControlMode.PercentOutput, output);
