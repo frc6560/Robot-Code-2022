@@ -63,12 +63,21 @@ public final class Constants {
 
         public static final int DRIVETRAIN_L_FRONT_MOTOR = 11;
         public static final int DRIVETRAIN_L_BACK_MOTOR = 10;
+
+        public static final int SHOOTER_MOTOR_LEFT = -1;
+        public static final int SHOOTER_MOTOR_RIGHT = -1;
+
+        public static final int SHOOTER_HOOD_MOTOR = -1;
+        public static final int SHOOTER_HOOD_ENCODER_A = -1;
+        public static final int SHOOTER_HOOD_ENCODER_B = -1;
         
     }
 
     public static final class PhysicalConstants {
         // TODO: change this constants;
         public static final double DRIVETRAIN_ROTS_PER_FOOT = 6;
+        public static final double RPM_PER_FALCON_UNIT = 10.0 * 60.0 / 2048.0;
+        public static final double MAX_HOOD_ENCODER_DISTANCE = 3630;
     }
 
     public static final class ConversionConstants {
