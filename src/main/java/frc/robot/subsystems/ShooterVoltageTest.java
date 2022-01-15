@@ -19,10 +19,10 @@ import frc.robot.Constants.*;
 public class ShooterVoltageTest extends SubsystemBase {
   /** Creates a new ShooterVoltageTest. */
 
-  private final CANSparkMax topLeftShooterMotor = new CANSparkMax(RobotIds.SHOOTER_MOTOR_TOP, MotorType.kBrushless);
+  private final CANSparkMax topLeftShooterMotor = new CANSparkMax(5, MotorType.kBrushless);
   //private final CANSparkMax topRightShooterMotor = new CANSparkMax(RobotIds.SHOOTER_MOTOR_RIGHT, MotorType.kBrushless);
 
-  private final CANSparkMax bottomLeftShooterMotor = new CANSparkMax(RobotIds.SHOOTER_MOTOR_BOTTOM, MotorType.kBrushless);
+  private final CANSparkMax bottomLeftShooterMotor = new CANSparkMax(4, MotorType.kBrushless);
   //private final CANSparkMax bottomRightShooterMotor = new CANSparkMax(RobotIds.SHOOTER_MOTOR_RIGHT, MotorType.kBrushless);
 
 
