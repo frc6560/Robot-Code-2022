@@ -140,7 +140,6 @@ public class DriveTrain extends SubsystemBase {
     return this.rightEncoder.getPosition() / PhysicalConstants.DRIVETRAIN_ROTS_PER_FOOT;
   }
 
-
   public double getLRpm() {
     return leftEncoder.getVelocity();
   }
