@@ -67,7 +67,7 @@ public final class Constants {
     }
 
     public static final class PhysicalConstants {
-        // TODO: change this constants;
+        // TODO: change this constant;
         public static final double DRIVETRAIN_ROTS_PER_FOOT = 6;
     }
 

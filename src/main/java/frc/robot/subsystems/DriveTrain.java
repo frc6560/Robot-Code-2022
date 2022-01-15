@@ -21,13 +21,16 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
+import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 import com.revrobotics.SparkMaxPIDController;
-
+import com.revrobotics.CANSparkMax.ControlType;
 import com.kauailabs.navx.frc.AHRS;
 import com.kauailabs.navx.frc.AHRS.SerialDataType;
 
-
 import static frc.robot.Constants.*;
+import static frc.robot.Constants.PhysicalConstants.*;
+import static frc.robot.Constants.ConversionConstants.*;
+
 import frc.robot.utility.HeadingConversion;
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
@@ -133,11 +136,11 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public double getLPosition() {
-    return this.leftEncoder.getPosition() / PhysicalConstants.DRIVETRAIN_ROTS_PER_FOOT;
+    return this.leftEncoder.getPosition() / DRIVETRAIN_ROTS_PER_FOOT;
   }
 
   public double getRPosition() {
-    return this.rightEncoder.getPosition() / PhysicalConstants.DRIVETRAIN_ROTS_PER_FOOT;
+    return this.rightEncoder.getPosition() / DRIVETRAIN_ROTS_PER_FOOT;
   }
 
   public double getLRpm() {
@@ -148,11 +151,11 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public double getLVelocity() {
-    return getLRpm() / PhysicalConstants.DRIVETRAIN_ROTS_PER_FOOT / ConversionConstants.SECONDS_PER_MINUTE;
+    return getLRpm() / DRIVETRAIN_ROTS_PER_FOOT / SECONDS_PER_MINUTE;
   }
 
   public double getRVelocity() {
-    return getRRpm() / PhysicalConstants.DRIVETRAIN_ROTS_PER_FOOT / ConversionConstants.SECONDS_PER_MINUTE;
+    return getRRpm() / DRIVETRAIN_ROTS_PER_FOOT / SECONDS_PER_MINUTE;
   }
 
   public double getLVolts() {
@@ -161,6 +164,41 @@ public class DriveTrain extends SubsystemBase {
 
   public double getRVolts() {
     return rightMotors[0].getAppliedOutput();
+  }
+
+  public void setLRPM(double rpm){
+    setLRPM(rpm, 0);
+  }
+  public void setRRPM(double rpm){
+    setRRPM(rpm, 0);
+  }
+
+  public void setLRPM(double rpm, double rpms) {
+    for (CANSparkMax motor : leftMotors) {
+      motor.getPIDController().setReference(rpm, ControlType.kVelocity, 0, simpleFFL.calculate(rpm, rpms), ArbFFUnits.kVoltage);
+    }
+  }
+
+  public void setRRPM(double rpm, double rpms) {
+    for (CANSparkMax motor: rightMotors) {
+      motor.getPIDController().setReference(rpm, ControlType.kVelocity, 0, simpleFFR.calculate(rpm, rpms), ArbFFUnits.kVoltage);
+    }
+  }
+
+  public void setLVelocity(double velocity) {
+    setLVelocity(velocity, 0);
+  }
+
+  public void setRVelocity(double velocity) {
+    setRVelocity(velocity, 0);
+  }
+
+  public void setLVelocity(double velocity, double acceleration) {
+    setLRPM(velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT, acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
+  }
+
+  public void setRVelocity(double velocity, double acceleration) {
+    setRRPM(velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT, acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
   }
 
   private void setupAllMotorPIDs(PIDController pid) {

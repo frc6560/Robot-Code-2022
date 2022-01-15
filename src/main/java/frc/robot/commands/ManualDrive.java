@@ -7,6 +7,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
+import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
+
+
 
 
 public class ManualDrive extends CommandBase {
@@ -18,13 +21,21 @@ public class ManualDrive extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrain);
     this.driveTrain = driveTrain;
+
+
+    driveTrain.setLVelocity(0.0);
+    driveTrain.setRVelocity(0.0);
+
+    
   }
 
   
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
