@@ -65,8 +65,9 @@ public final class Constants {
         public static final int DRIVETRAIN_L_BACK_MOTOR = 10;
 
 
-        public static final int SHOOTER_MOTOR_LEFT = 42;
-        public static final int SHOOTER_MOTOR_RIGHT = 43;
+        public static final int SHOOTER_MOTOR_TOP = 4;
+        public static final int SHOOTER_MOTOR_BOTTOM = 6;
+
         
     }
 
