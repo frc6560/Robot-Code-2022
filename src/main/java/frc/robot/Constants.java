@@ -63,6 +63,9 @@ public final class Constants {
 
         public static final int DRIVETRAIN_L_FRONT_MOTOR = 11;
         public static final int DRIVETRAIN_L_BACK_MOTOR = 10;
+
+        public static final int INTAKE_MOTOR = 1; //Test num
+        public static final int INTAKE_SOLENOID = 1; //Test num
         
     }
 
