@@ -9,32 +9,52 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.Constants.*;
 
 public class ShooterVoltageTest extends SubsystemBase {
   /** Creates a new ShooterVoltageTest. */
 
-  private final TalonFX leftShooterMotor = new TalonFX(RobotIds.SHOOTER_MOTOR_LEFT);
-  private final TalonFX rightShooterMotor = new TalonFX(RobotIds.SHOOTER_MOTOR_RIGHT);
+  private final CANSparkMax topLeftShooterMotor = new CANSparkMax(RobotIds.SHOOTER_MOTOR_TOP, MotorType.kBrushless);
+  //private final CANSparkMax topRightShooterMotor = new CANSparkMax(RobotIds.SHOOTER_MOTOR_RIGHT, MotorType.kBrushless);
 
-  private NetworkTableEntry leftMotorTableEntry;
-  private NetworkTableEntry rightMotorTableEntry;
-  private NetworkTableEntry leftMotorRPM;
-  private NetworkTableEntry rightMotorRPM;
-  private NetworkTableEntry motorTableEntry;
+  private final CANSparkMax bottomLeftShooterMotor = new CANSparkMax(RobotIds.SHOOTER_MOTOR_BOTTOM, MotorType.kBrushless);
+  //private final CANSparkMax bottomRightShooterMotor = new CANSparkMax(RobotIds.SHOOTER_MOTOR_RIGHT, MotorType.kBrushless);
+
+
+
+  //private NetworkTableEntry topLeftMotorTableEntry;
+  //private NetworkTableEntry topRightMotorTableEntry;
+  private NetworkTableEntry topLeftMotorRPM;
+  //private NetworkTableEntry topRightMotorRPM;
+  private NetworkTableEntry bottomLeftMotorRPM;
+  //private NetworkTableEntry bottomRightMotorRPM;
+  private NetworkTableEntry bottomMotorTableEntry;
+  private NetworkTableEntry topMotorTableEntry;
 
   public ShooterVoltageTest() {
-    leftShooterMotor.configFactoryDefault();
-    rightShooterMotor.configFactoryDefault();
+    topLeftShooterMotor.restoreFactoryDefaults();
+    //topRightShooterMotor.restoreFactoryDefaults();
     
-    leftShooterMotor.configOpenloopRamp(1);
-    rightShooterMotor.configOpenloopRamp(1);
+    topLeftShooterMotor.setOpenLoopRampRate(0.1);
+    //topRightShooterMotor.setOpenLoopRampRate(0.1);
 
-    rightShooterMotor.setInverted(false);
-    leftShooterMotor.setInverted(true);
+    //topRightShooterMotor.setInverted(false);
+    topLeftShooterMotor.setInverted(false);
+
+
+    bottomLeftShooterMotor.restoreFactoryDefaults();
+    //bottomRightShooterMotor.restoreFactoryDefaults();
+    
+    bottomLeftShooterMotor.setOpenLoopRampRate(0.1);
+    //bottomRightShooterMotor.setOpenLoopRampRate(0.1);
+
+    //bottomRightShooterMotor.setInverted(false);
+    bottomLeftShooterMotor.setInverted(true);
 
     // TODO: Calculate optimal PID constants
     // leftShooterMotor.config_kF(0, 0.047197957);
@@ -54,13 +74,18 @@ public class ShooterVoltageTest extends SubsystemBase {
     //leftMotorTableEntry.setDouble(0.0);
     //rightMotorTableEntry.setDouble(0.0);
 
-    motorTableEntry = ntTable.getEntry("Motor Approx Target RPM");
-    motorTableEntry.setDouble(0.0);
+    topMotorTableEntry = ntTable.getEntry("TOP Motor Target RPM");
+    topMotorTableEntry.setDouble(0.0);
+
+    bottomMotorTableEntry = ntTable.getEntry("BOTTOM Motor Target RPM");
+    bottomMotorTableEntry.setDouble(0.0);
     
 
-    leftMotorRPM = ntTable.getEntry("Left Motor RPM");
-    rightMotorRPM = ntTable.getEntry("Right Motor RPM");
+    topLeftMotorRPM = ntTable.getEntry("TOP Motor RPM");
+    //topRightMotorRPM = ntTable.getEntry("TOP Right Motor RPM");
 
+    bottomLeftMotorRPM = ntTable.getEntry("BOTTOM Motor RPM");
+    //bottomRightMotorRPM = ntTable.getEntry("BOTTOM Right Motor RPM");
   }
 
   @Override
@@ -69,14 +94,22 @@ public class ShooterVoltageTest extends SubsystemBase {
     //double leftOutput = leftMotorTableEntry.getDouble(0) / 100.0;
     //double rightOutput = rightMotorTableEntry.getDouble(0) / 100.0;
 
-    double output = motorTableEntry.getDouble(0.0) / 6200.0 * (1+ (motorTableEntry.getDouble(0.0) - leftMotorRPM.getDouble(0.0))/6200);
-    //double output = motorTableEntry.getDouble(0.0) / PhysicalConstants.RPM_PER_FALCON_UNIT;
+    double topOutput = topMotorTableEntry.getDouble(0.0) / 5500.0;
+    double bottomOutput = bottomMotorTableEntry.getDouble(0.0) / 5500.0;
 
-    leftShooterMotor.set(ControlMode.PercentOutput, output);
-    rightShooterMotor.set(ControlMode.PercentOutput, output);
 
-    leftMotorRPM.setDouble(leftShooterMotor.getSelectedSensorVelocity() * PhysicalConstants.RPM_PER_FALCON_UNIT);
-    rightMotorRPM.setDouble(rightShooterMotor.getSelectedSensorVelocity() * PhysicalConstants.RPM_PER_FALCON_UNIT);
+    
+    topLeftShooterMotor.set(topOutput);
+    //topRightShooterMotor.set(topOutput);
+
+    bottomLeftShooterMotor.set(bottomOutput);
+    //bottomRightShooterMotor.set(bottomOutput);
+
+    topLeftMotorRPM.setDouble(topLeftShooterMotor.getEncoder().getVelocity());
+    // topRightMotorRPM.setDouble(topRightShooterMotor.getEncoder().getVelocity());
+
+    bottomLeftMotorRPM.setDouble(bottomLeftShooterMotor.getEncoder().getVelocity());
+    // bottomRightMotorRPM.setDouble(bottomRightShooterMotor.getEncoder().getVelocity());
   
   }
 }
