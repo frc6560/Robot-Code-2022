@@ -9,22 +9,37 @@ import frc.robot.subsystems.DriveTrain;
 
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 
 
 public class ManualDrive extends CommandBase {
   /** Creates a new ManualDrive. */
 
-  private final DriveTrain driveTrain;
+  public static interface Controls {
+    double getX();
+    double getY();
+    double getSpeed();
+  }
+  
 
-  public ManualDrive(DriveTrain driveTrain) {
+  private final DriveTrain driveTrain;
+  private final DifferentialDrive drive;
+
+  private final Controls controls;
+
+  public ManualDrive(DriveTrain driveTrain, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrain);
     this.driveTrain = driveTrain;
+    this.drive = driveTrain.drive;
 
+    this.controls = controls;
+    
 
-    driveTrain.setLVelocity(0.0);
-    driveTrain.setRVelocity(0.0);
+    ntDispTab("Joystick")
+      .add("X Joystick", () -> controls.getX())
+      .add("Y Joystick", () -> controls.getY());
 
     
   }
@@ -34,16 +49,36 @@ public class ManualDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    drive.stopMotor();
 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    double speed = controls.getSpeed();
+    double x = controls.getX() * speed;
+    double y = controls.getY() * speed;
+
+    if (Math.abs(x) < 0.1) {
+      x = 0;
+    }
+
+    if (Math.abs(y) < 0.1) {
+      y = 0;
+    }
+
+    drive.arcadeDrive(-y, x, true);
+
+
+
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    drive.stopMotor();
+  }
 
   // Returns true when the command should end.
   @Override

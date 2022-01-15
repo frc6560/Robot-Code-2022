@@ -7,15 +7,14 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 
-
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax;
@@ -39,7 +38,12 @@ public class DriveTrain extends SubsystemBase {
 
   //TODO: Implement PID, you lazy bastard!
 
-  private final CANSparkMax[] leftMotors = new CANSparkMax[]{
+  // private final CANSparkMax[] leftMotors = new CANSparkMax[]{
+  //   new CANSparkMax(RobotIds.DRIVETRAIN_L_FRONT_MOTOR, MotorType.kBrushless),
+  //   new CANSparkMax(RobotIds.DRIVETRAIN_L_BACK_MOTOR, MotorType.kBrushless)
+  // };
+
+  private final CANSparkMax[] leftMotors = new CANSparkMax[] {
     new CANSparkMax(RobotIds.DRIVETRAIN_L_FRONT_MOTOR, MotorType.kBrushless),
     new CANSparkMax(RobotIds.DRIVETRAIN_L_BACK_MOTOR, MotorType.kBrushless)
   };
@@ -48,6 +52,11 @@ public class DriveTrain extends SubsystemBase {
     new CANSparkMax(RobotIds.DRIVETRAIN_R_FRONT_MOTOR, MotorType.kBrushless),
     new CANSparkMax(RobotIds.DRIVETRAIN_R_BACK_MOTOR, MotorType.kBrushless)
   };
+
+  private final MotorControllerGroup leftMotorGroup = new MotorControllerGroup(leftMotors);
+  private final MotorControllerGroup rightMotorGroup = new MotorControllerGroup(rightMotors);
+
+  public final DifferentialDrive drive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
 
   private final RelativeEncoder leftEncoder = leftMotors[0].getEncoder();
   private final RelativeEncoder rightEncoder = rightMotors[0].getEncoder();
@@ -102,8 +111,6 @@ public class DriveTrain extends SubsystemBase {
     this.totalGyroAngle = headingConverter.getTotalHeading(this.gyroAngle);
 
     odometer.update(getGyroAngle(), getLPosition(), getRPosition());
-
-    
   }
 
   private void setupAllMotors() {
@@ -201,26 +208,26 @@ public class DriveTrain extends SubsystemBase {
     setRRPM(velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT, acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
   }
 
-  private void setupAllMotorPIDs(PIDController pid) {
-    for (CANSparkMax motor : leftMotors) {
-      setupMotorPID(motor, pid);
-    }
-    for (CANSparkMax motor : rightMotors) {
-      setupMotorPID(motor, pid);
-    }
-  }
+  // private void setupAllMotorPIDs(PIDController pid) {
+  //   for (CANSparkMax motor : leftMotors) {
+  //     setupMotorPID(motor, pid);
+  //   }
+  //   for (CANSparkMax motor : rightMotors) {
+  //     setupMotorPID(motor, pid);
+  //   }
+  // }
 
-  private void setupMotorPID(CANSparkMax motor, PIDController pid) {
-    SparkMaxPIDController pidController = motor.getPIDController();
+  // private void setupMotorPID(CANSparkMax motor, PIDController pid) {
+  //   SparkMaxPIDController pidController = motor.getPIDController();
 
-    pidController.setP(pid.getP());
-    pidController.setI(pid.getI());
-    pidController.setD(pid.getD());
+  //   pidController.setP(pid.getP());
+  //   pidController.setI(pid.getI());
+  //   pidController.setD(pid.getD());
 
-    // pidController.setFF(0);
-    // pidController.setIZone(0);
-    // pidController.setOutputRange(-1.0, 1.0);
-    // pidController.setIMaxAccum(0, 0);
-  }
+  //   // pidController.setFF(0);
+  //   // pidController.setIZone(0);
+  //   // pidController.setOutputRange(-1.0, 1.0);
+  //   // pidController.setIMaxAccum(0, 0);
+  // }
 
 }
