@@ -32,31 +32,31 @@ public class ConveyerCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (controls.getCamera() && checkRun()) {
+    if (controls.getCamera() && checkRun()) { //Checks if it can run
       output = 3.0;
     }
     else {
       output = 0.0;
     }
 
-    if (controls.getCamera() && debounceTimer <= 3) {
+    if (controls.getCamera() && debounceTimer <= 3) { //Checks if it has been three frames to run
       debounceTimer += 1;
     }
 
-    if (!controls.getCamera() && debounceTimer > 0) {
+    if (!controls.getCamera() && debounceTimer > 0) { //Checks if the ball is gone to increase spacing
       spacingTimer += 1;
     }
 
-    if (spacingTimer == 3) {
+    if (spacingTimer == 3) { //Checks if spacing is three as to reset
       spacingTimer = 0;
       debounceTimer = 0;
     }
 
-    conveyer.setConveyer(output);
+    conveyer.setConveyer(output); //Checks and sends output
   }
 
   private boolean checkRun() {
-    if (debounceTimer == 3) {
+    if (debounceTimer == 3) { //Checks if it can run
       return true;
     }
     return false;
