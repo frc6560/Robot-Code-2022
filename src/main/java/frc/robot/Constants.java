@@ -59,7 +59,7 @@ public final class Constants {
         
         //TODO: Motor controller ids are tbd
         public static final int DRIVETRAIN_R_FRONT_MOTOR = 3;
-        public static final int DRIVETRAIN_R_BACK_MOTOR = 1;
+        public static final int DRIVETRAIN_R_BACK_MOTOR = 2;
 
         public static final int DRIVETRAIN_L_FRONT_MOTOR = 4;
         public static final int DRIVETRAIN_L_BACK_MOTOR = 6;
