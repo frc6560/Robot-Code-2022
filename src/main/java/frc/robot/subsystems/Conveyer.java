@@ -13,24 +13,24 @@ import frc.robot.Constants.RobotIds;
 
 public class Conveyer extends SubsystemBase {
   private final CANSparkMax rollerMotor = new CANSparkMax(RobotIds.ROLLER_MOTOR, MotorType.kBrushless);
-  private final CANSparkMax conveyerMotor = new CANSparkMax(RobotIds.CONVEYER_MOTOR, MotorType.kBrushless);
-  private final CANSparkMax conveyerMotorOverhead = new CANSparkMax(RobotIds.CONVEYER_MOTOR_OVERHEAD, MotorType.kBrushless);
+  private final CANSparkMax conveyerMotorTop = new CANSparkMax(RobotIds.CONVEYER_MOTOR_TOP, MotorType.kBrushless);
+  private final CANSparkMax conveyerMotorBottom = new CANSparkMax(RobotIds.CONVEYER_MOTOR_BOTTOM, MotorType.kBrushless);
 
   /** Creates a new Conveyer. */
   public Conveyer() {
     rollerMotor.restoreFactoryDefaults();
-    conveyerMotor.restoreFactoryDefaults();
-    conveyerMotorOverhead.restoreFactoryDefaults();
+    conveyerMotorTop.restoreFactoryDefaults();
+    conveyerMotorBottom.restoreFactoryDefaults();
     rollerMotor.setOpenLoopRampRate(0.1);
-    conveyerMotor.setOpenLoopRampRate(0.1);
-    conveyerMotorOverhead.setOpenLoopRampRate(0.1);
+    conveyerMotorTop.setOpenLoopRampRate(0.1);
+    conveyerMotorBottom.setOpenLoopRampRate(0.1);
 
   }
 
   public void setConveyer(double output) {
     rollerMotor.set(output);
-    conveyerMotor.set(output);
-    conveyerMotorOverhead.set(output);
+    conveyerMotorTop.set(output);
+    conveyerMotorBottom.set(output);
   }
 
   @Override
