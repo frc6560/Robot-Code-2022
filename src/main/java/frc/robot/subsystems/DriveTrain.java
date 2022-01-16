@@ -89,16 +89,11 @@ public class DriveTrain extends SubsystemBase {
     ntDispTab("Odometer")
       .add("x", () -> odometer.getPoseMeters().getX())
       .add("y", () -> odometer.getPoseMeters().getY())
-      .add("r", () -> odometer.getPoseMeters().getRotation().getDegrees())
-      .add("rCont", () -> Math.toRadians(getGyroAngleDegrees()))
-      .add("lPos", this::getLPosition)
-      .add("rPos", this::getRPosition);
+      .add("r", () -> odometer.getPoseMeters().getRotation().getDegrees());
 
     ntDispTab("Drivetrain")
       .add("Left Velocity", this::getLVelocity)
-      .add("Right Velocity", this::getRVelocity)
-      .add("Right Volts", this::getLVolts)
-      .add("Left Volts", this::getRVolts);
+      .add("Right Velocity", this::getRVelocity);
       //Add target velocity?
 
 

@@ -23,7 +23,7 @@ public class ManualDrive extends CommandBase {
   }
   
 
-  private final DriveTrain driveTrain;
+  //private final DriveTrain driveTrain;
   private final DifferentialDrive drive;
 
   private final Controls controls;
@@ -31,7 +31,7 @@ public class ManualDrive extends CommandBase {
   public ManualDrive(DriveTrain driveTrain, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrain);
-    this.driveTrain = driveTrain;
+    //this.driveTrain = driveTrain;
     this.drive = driveTrain.drive;
 
     this.controls = controls;
