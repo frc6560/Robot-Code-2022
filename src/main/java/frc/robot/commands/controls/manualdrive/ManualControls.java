@@ -5,6 +5,7 @@
 package frc.robot.commands.controls.manualdrive;
 
 import frc.robot.commands.ManualDrive;
+import frc.robot.commands.ManualClimb;
 import frc.robot.utility.NumberStepper;
 import frc.robot.utility.PovNumberStepper;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -17,7 +18,7 @@ import static frc.robot.Constants.*;
 
 
 /** Add your docs here. */
-public class ManualControls implements ManualDrive.Controls{
+public class ManualControls implements ManualDrive.Controls, ManualClimb.Controls{
 
     private final Joystick xbox;
     private final PovNumberStepper speed;
@@ -62,5 +63,11 @@ public class ManualControls implements ManualDrive.Controls{
     @Override
     public double getTurnSpeed() {
         return turnSpeed.get();
+    }
+
+    @Override
+    public double getRotatorSpeed()  {
+        //TODO: figure out how to give it actual input
+        return Math.pow(xbox.getRawAxis(3), 2);
     }
 }

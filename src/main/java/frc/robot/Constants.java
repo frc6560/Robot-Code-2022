@@ -56,13 +56,19 @@ public final class Constants {
 
 
     public static final class RobotIds {
-        
         //TODO: Motor controller ids are tbd
         public static final int DRIVETRAIN_R_FRONT_MOTOR = 3;
         public static final int DRIVETRAIN_R_BACK_MOTOR = 2;
-
         public static final int DRIVETRAIN_L_FRONT_MOTOR = 4;
         public static final int DRIVETRAIN_L_BACK_MOTOR = 6;
+
+
+        public static final int CLIMB_ROTATOR_MOTOR = 5;
+        public static final int CLIMB_LEFT_EXTENSION_MOTOR = 0;
+        public static final int CLIMB_RIGHT_EXTENSION_MOTOR = 0;
+
+        public static final int CLIMB_LEFT_PISTON = 0;
+        public static final int CLIMB_RIGHT_PISTON = 0;
         
     }
 

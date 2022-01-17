@@ -7,9 +7,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.ManualClimb;
 import frc.robot.commands.ManualDrive;
 import frc.robot.commands.controls.manualdrive.ManualControls;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Climb;
+
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -24,6 +27,10 @@ public class RobotContainer {
   private DriveTrain driveTrain = new DriveTrain();
   private ManualDrive manualDrive;
 
+  private Climb climb = new Climb();
+  private ManualClimb manualClimb;
+  
+
   private Joystick xbox = new Joystick(0);
   private Joystick controlStation = new Joystick(1);
 
@@ -31,11 +38,16 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
     ManualControls controls = new ManualControls(xbox, controlStation);
 
     manualDrive = new ManualDrive(driveTrain, controls);
-
     driveTrain.setDefaultCommand(manualDrive);
+
+    manualClimb = new ManualClimb(climb, controls);
+    climb.setDefaultCommand(manualClimb);
+    
+
   }
 
   /**
