@@ -8,21 +8,18 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
-import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.kauailabs.navx.frc.AHRS;
 import com.kauailabs.navx.frc.AHRS.SerialDataType;
 
@@ -56,7 +53,7 @@ public class DriveTrain extends SubsystemBase {
   private final MotorControllerGroup leftMotorGroup = new MotorControllerGroup(leftMotors);
   private final MotorControllerGroup rightMotorGroup = new MotorControllerGroup(rightMotors);
 
-  public final DifferentialDrive drive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
+  private final DifferentialDrive differentialDrive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
 
   private final RelativeEncoder leftEncoder = leftMotors[0].getEncoder();
   private final RelativeEncoder rightEncoder = rightMotors[0].getEncoder();
@@ -72,6 +69,9 @@ public class DriveTrain extends SubsystemBase {
 
   private double gyroAngle = 0.0;
   private double totalGyroAngle = 0.0;
+
+
+  private SlewRateLimiter accelLimiter = new SlewRateLimiter(PhysicalConstants.MAX_ACCELERATION);
 
 
   public DriveTrain() {
@@ -120,6 +120,7 @@ public class DriveTrain extends SubsystemBase {
       motor.setInverted(inverted);
       motor.getEncoder().setPosition(0);
       motor.setClosedLoopRampRate(0.0);
+      motor.setIdleMode(IdleMode.kBrake);
     }
 
     // Changes default motor controller "send speed" from 20ms to 10ms
@@ -188,11 +189,13 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void setLVelocity(double velocity) {
-    setLVelocity(velocity, 0);
+    setLVelocity(accelLimiter.calculate(velocity), 0);
+    //setLVelocity(velocity, 0);
   }
 
   public void setRVelocity(double velocity) {
-    setRVelocity(velocity, 0);
+    setRVelocity(accelLimiter.calculate(velocity), 0);
+    //setRVelocity(velocity, 0);
   }
 
   public void setLVelocity(double velocity, double acceleration) {
@@ -202,6 +205,16 @@ public class DriveTrain extends SubsystemBase {
   public void setRVelocity(double velocity, double acceleration) {
     setRRPM(velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT, acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
   }
+
+  public void setVelocity(double forward, double turn) {
+    differentialDrive.arcadeDrive(accelLimiter.calculate(forward), turn);
+    //differentialDrive.arcadeDrive(forward, turn);
+  }
+
+  public DifferentialDrive getDifferentialDrive() {
+    return differentialDrive;
+  }
+
 
   // private void setupAllMotorPIDs(PIDController pid) {
   //   for (CANSparkMax motor : leftMotors) {

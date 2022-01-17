@@ -71,8 +71,10 @@ public final class Constants {
         public static final double DRIVETRAIN_ROTS_PER_FOOT = 6;
 
         //TODO: change these constants
-        public static final double MAX_SPEED = 15.0;
-        public static final double MAX_TURN_SPEED = 7.0;
+        public static final double MAX_SPEED = 1;
+        public static final double MAX_TURN_SPEED = 1;
+
+        public static final double MAX_ACCELERATION = 1;
     }
 
     public static final class ConversionConstants {

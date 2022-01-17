@@ -9,6 +9,7 @@ import frc.robot.subsystems.DriveTrain;
 
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 
@@ -20,26 +21,27 @@ public class ManualDrive extends CommandBase {
     double getX();
     double getY();
     double getSpeed();
+    double getTurnSpeed();
   }
   
 
-  //private final DriveTrain driveTrain;
-  private final DifferentialDrive drive;
+  private final DriveTrain driveTrain;
 
   private final Controls controls;
 
   public ManualDrive(DriveTrain driveTrain, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrain);
-    //this.driveTrain = driveTrain;
-    this.drive = driveTrain.drive;
+    this.driveTrain = driveTrain;
 
     this.controls = controls;
     
 
     ntDispTab("Joystick")
       .add("X Joystick", () -> controls.getX())
-      .add("Y Joystick", () -> controls.getY());
+      .add("Y Joystick", () -> controls.getY())
+      .add("Speed", () -> controls.getSpeed())
+      .add("Turn Speed", () -> controls.getTurnSpeed());
 
     
   }
@@ -49,26 +51,35 @@ public class ManualDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drive.stopMotor();
+    driveTrain.getDifferentialDrive().stopMotor();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     double speed = controls.getSpeed();
-    double x = controls.getX() * speed;
-    double y = controls.getY() * speed;
+    double turnSpeed = controls.getTurnSpeed();
+
+    double x = controls.getX();
+    double y = controls.getY();
 
     if (Math.abs(x) < 0.1) {
       x = 0;
+      // driveTrain.setLVelocity(0);
+      // driveTrain.setRVelocity(0);
     }
 
     if (Math.abs(y) < 0.1) {
       y = 0;
+      // driveTrain.setLVelocity(0);
+      // driveTrain.setRVelocity(0);
     }
 
-    drive.arcadeDrive(-y, x, true);
+    x *= turnSpeed;
 
+    y *= speed;
+
+    driveTrain.setVelocity(y, x);
 
 
   }
@@ -76,7 +87,7 @@ public class ManualDrive extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drive.stopMotor();
+    driveTrain.getDifferentialDrive().stopMotor();
   }
 
   // Returns true when the command should end.
