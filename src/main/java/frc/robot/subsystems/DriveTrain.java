@@ -64,11 +64,11 @@ public class DriveTrain extends SubsystemBase {
 
   private final AHRS gyro;
   private final DifferentialDriveOdometry odometer;
-  private final HeadingConversion headingConverter = new HeadingConversion();
 
 
   private double gyroAngle = 0.0;
   private double totalGyroAngle = 0.0;
+  private double prevGyroAngle = 0.0;
 
 
   private SlewRateLimiter accelLimiter = new SlewRateLimiter(PhysicalConstants.MAX_ACCELERATION);
@@ -89,7 +89,7 @@ public class DriveTrain extends SubsystemBase {
     ntDispTab("Odometer")
       .add("x", () -> odometer.getPoseMeters().getX())
       .add("y", () -> odometer.getPoseMeters().getY())
-      .add("r", () -> odometer.getPoseMeters().getRotation().getDegrees());
+      .add("r", this::getGyroAngleDegrees);
 
     ntDispTab("Drivetrain")
       .add("Left Velocity", this::getLVelocity)
@@ -103,8 +103,8 @@ public class DriveTrain extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     this.gyroAngle = gyro.getYaw();
-    this.totalGyroAngle = headingConverter.getTotalHeading(this.gyroAngle);
-
+    this.totalGyroAngle += HeadingConversion.getHeadingDiff(this.gyroAngle, this.prevGyroAngle);
+    this.prevGyroAngle = this.gyroAngle;
     odometer.update(getGyroAngle(), getLPosition(), getRPosition());
   }
 
