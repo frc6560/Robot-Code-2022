@@ -12,12 +12,14 @@ import edu.wpi.first.wpilibj.Joystick;
 
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
+import frc.robot.commands.ManualIntake;
+
 
 import static frc.robot.Constants.*;
 
 
 /** Add your docs here. */
-public class ManualControls implements ManualDrive.Controls{
+public class ManualControls implements ManualDrive.Controls, ManualIntake.Controls {
 
     private final Joystick xbox;
     private final PovNumberStepper speed;
@@ -62,5 +64,10 @@ public class ManualControls implements ManualDrive.Controls{
     @Override
     public double getTurnSpeed() {
         return turnSpeed.get();
+    }
+
+    @Override
+    public double getButtonA() {
+        return xbox.getRawAxis(ControllerIds.XBOX_A_BUTTON);
     }
 }

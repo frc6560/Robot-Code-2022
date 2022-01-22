@@ -8,17 +8,17 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.Intake;
 
-public class IntakeCommand extends CommandBase {
+public class ManualIntake extends CommandBase {
 
   private final Intake intake;
   private final Controls controls;
 
   public static interface Controls {
-    boolean getButtonA();
+    double getButtonA();
   }
 
   /** Creates a new IntakeCommand. */
-  public IntakeCommand(Intake intake, Controls controls) {
+  public ManualIntake(Intake intake, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
     this.intake = intake;
@@ -32,7 +32,13 @@ public class IntakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double output = controls.getButtonA() ? 3.0 : 0;
+    double output = 0;
+    if (controls.getButtonA() == 1) {
+      output = 3.0;
+    }
+    if (controls.getButtonA() == 0) {
+      output = 0;
+    }
     this.intake.setPiston(true);
     this.intake.setOutput(output);
   }
