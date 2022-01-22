@@ -11,12 +11,18 @@ import frc.robot.subsystems.Intake;
 public class IntakeCommand extends CommandBase {
 
   private final Intake intake;
+  private final Controls controls;
+
+  public static interface Controls {
+    boolean getButtonA();
+  }
 
   /** Creates a new IntakeCommand. */
-  public IntakeCommand(Intake intake) {
+  public IntakeCommand(Intake intake, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
     this.intake = intake;
+    this.controls = controls;
   }
 
   // Called when the command is initially scheduled.
