@@ -36,22 +36,8 @@ public final class Constants {
         public static final int XBOX_B_BUTTON = 2;
         public static final int XBOX_A_BUTTON = 1;
 
-        public static final int DRIVER_STATION_TOGGLE_1 = 10;
-        public static final int DRIVER_STATION_TOGGLE_2 = 8;
-        public static final int DRIVER_STATION_TOGGLE_3 = 6;
-        public static final int DRIVER_STATION_TOGGLE_4 = 4;
-        public static final int DRIVER_STATION_TOGGLE_5 = 2;
-        public static final int DRIVER_STATION_TOGGLE_6 = 5;
-
-        public static final int DRIVER_STATION_BUTTON_1 = 12;
-        public static final int DRIVER_STATION_BUTTON_2 = 11;
-        public static final int DRIVER_STATION_BUTTON_3 = 9;
-        public static final int DRIVER_STATION_BUTTON_4 = 7;
-        public static final int DRIVER_STATION_BUTTON_5 = 3;
-        public static final int DRIVER_STATION_BUTTON_6 = 1;
-
-        public static final int DRIVER_STATION_X_AXIS = 0;
-        public static final int DRIVER_STATION_Y_AXIS = 1;
+        public static final int DRIVER_STATION_PISTON_BUTTON = 69;
+        public static final int DRIVER_STATION_L_JOY_X = 420;
     }
 
 

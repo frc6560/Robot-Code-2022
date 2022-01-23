@@ -18,15 +18,18 @@ import static frc.robot.Constants.*;
 
 
 /** Add your docs here. */
-public class ManualControls implements ManualDrive.Controls, ManualClimb.Controls{
+public class ManualControls implements ManualDrive.Controls, ManualClimb.Controls {
 
     private final Joystick xbox;
+    private final Joystick controlStation;
+
     private final PovNumberStepper speed;
     private final PovNumberStepper turnSpeed;
 
 
     public ManualControls(Joystick xbox, Joystick controlStation) {
         this.xbox = xbox;
+        this.controlStation = controlStation;
 
         this.speed = new PovNumberStepper(
             new NumberStepper(0.5, 0.1, PhysicalConstants.MAX_SPEED, 0.1),
@@ -47,7 +50,7 @@ public class ManualControls implements ManualDrive.Controls, ManualClimb.Control
 
     @Override
     public double getX() {
-        return xbox.getRawAxis(ControllerIds.XBOX_R_JOY_X);
+        return xbox.getRawAxis(ControllerIds.XBOX_R_JOY_X); 
     }
 
     @Override
@@ -69,5 +72,15 @@ public class ManualControls implements ManualDrive.Controls, ManualClimb.Control
     public double getRotatorSpeed()  {
         //TODO: figure out how to give it actual input
         return Math.pow(xbox.getRawAxis(3), 2);
+    }
+
+    @Override
+    public boolean extendPistons() {
+        return !controlStation.getRawButton(ControllerIds.DRIVER_STATION_PISTON_BUTTON);
+    }
+
+    @Override
+    public double setExtensionMotors() {
+        return controlStation.getRawAxis(ControllerIds.DRIVER_STATION_L_JOY_X) * 5000;
     }
 }
