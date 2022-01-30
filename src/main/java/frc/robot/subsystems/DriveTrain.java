@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -129,6 +130,10 @@ public class DriveTrain extends SubsystemBase {
 
   }
 
+  public void resetOdometry(Pose2d pose){
+    setupAllMotors();
+    odometer.resetPosition(pose, gyro.getRotation2d());
+  }
   public double getGyroAngleDegrees() {
     // could multiply this.gyroAngle by 1.03163686 to account for errors associated with gyroscope (From Jack's 2021 code)
     return this.totalGyroAngle;
@@ -199,11 +204,12 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void setLVelocity(double velocity, double acceleration) {
-    setLRPM(velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT, acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
+    setLRPM(velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT * 10.5, acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
   }
 
   public void setRVelocity(double velocity, double acceleration) {
-    setRRPM(velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT, acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
+    
+    setRRPM(velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT * 10.5, acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
   }
 
   public void setVelocity(double forward, double turn) {
@@ -213,6 +219,9 @@ public class DriveTrain extends SubsystemBase {
 
   public DifferentialDrive getDifferentialDrive() {
     return differentialDrive;
+  }
+  public Pose2d getCurrentPose() {
+    return odometer.getPoseMeters();
   }
 
 
