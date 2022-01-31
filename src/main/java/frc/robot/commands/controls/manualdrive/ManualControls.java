@@ -8,10 +8,12 @@ import frc.robot.commands.ManualDrive;
 import frc.robot.utility.NumberStepper;
 import frc.robot.utility.PovNumberStepper;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.Controller;
 import edu.wpi.first.wpilibj.Joystick;
 
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
+import java.util.ResourceBundle.Control;
 
 import static frc.robot.Constants.*;
 
@@ -63,4 +65,19 @@ public class ManualControls implements ManualDrive.Controls{
     public double getTurnSpeed() {
         return turnSpeed.get();
     }
+
+    public double getRTrigger() {
+        return xbox.getRawAxis(ControllerIds.XBOX_R_TRIGGER);
+    }
+    public double getLTrigger(){
+        return xbox.getRawAxis(ControllerIds.XBOX_L_TRIGGER);
+    }
+    public double getRBumper(){
+        System.out.println(xbox.getRawAxis(4));
+        return xbox.getRawButton(5) ? 0.5 : 0;
+    }
+    public double getLBumper(){
+        return  xbox.getRawButton(6) ? 0.5 : 0;
+    } 
+
 }

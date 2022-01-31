@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -59,7 +63,7 @@ public final class Constants {
         
         //TODO: Motor controller ids are tbd
         public static final int DRIVETRAIN_R_FRONT_MOTOR = 3;
-        public static final int DRIVETRAIN_R_BACK_MOTOR = 2;
+        public static final int DRIVETRAIN_R_BACK_MOTOR = 22222;
 
         public static final int DRIVETRAIN_L_FRONT_MOTOR = 4;
         public static final int DRIVETRAIN_L_BACK_MOTOR = 6;
@@ -81,6 +85,9 @@ public final class Constants {
         //Autonomous
         public static final double kRamseteB = 2;
         public static final double kRamseteZeta = 0.7;
+
+        public static final RamseteController RAMSETE_CONTROLLER = new RamseteController(kRamseteB, kRamseteZeta);
+        public static final DifferentialDriveKinematics DIFFERENTIAL_DRIVE_KINEMATICS = new DifferentialDriveKinematics(trackWidthMeters);
     }
 
     public static final class ConversionConstants {

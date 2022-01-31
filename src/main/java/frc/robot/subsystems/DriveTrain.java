@@ -91,18 +91,20 @@ public class DriveTrain extends SubsystemBase {
       .add("x", () -> odometer.getPoseMeters().getX())
       .add("y", () -> odometer.getPoseMeters().getY())
       .add("r", this::getGyroAngleDegrees);
+      
 
     ntDispTab("Drivetrain")
       .add("Left Velocity", this::getLVelocity)
       .add("Right Velocity", this::getRVelocity);
       //Add target velocity?
 
-
+      
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
     this.gyroAngle = gyro.getYaw();
     this.totalGyroAngle += HeadingConversion.getHeadingDiff(this.gyroAngle, this.prevGyroAngle);
     this.prevGyroAngle = this.gyroAngle;
@@ -195,6 +197,7 @@ public class DriveTrain extends SubsystemBase {
 
   public void setLVelocity(double velocity) {
     setLVelocity(accelLimiter.calculate(velocity), 0);
+    
     //setLVelocity(velocity, 0);
   }
 
@@ -204,17 +207,23 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void setLVelocity(double velocity, double acceleration) {
-    setLRPM(velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT * 10.5, acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
+    System.out.println("DEBUG L VELOCITY: " + this.getLVelocity());
+    setLRPM(velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT, acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
   }
 
   public void setRVelocity(double velocity, double acceleration) {
-    
-    setRRPM(velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT * 10.5, acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
+    System.out.println("DEBUG R VELOCITY: " + this.getRVelocity());
+    setRRPM(velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT, acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
   }
 
   public void setVelocity(double forward, double turn) {
     differentialDrive.arcadeDrive(accelLimiter.calculate(forward), turn);
     //differentialDrive.arcadeDrive(forward, turn);
+  }
+
+  public void setTankVelocity(double left, double right) {
+    //TODO: add accel limiter
+    differentialDrive.tankDrive(left, right);
   }
 
   public DifferentialDrive getDifferentialDrive() {

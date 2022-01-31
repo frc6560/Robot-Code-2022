@@ -13,6 +13,7 @@ import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import frc.robot.Constants;
 import frc.robot.Constants.ConversionConstants;
 import frc.robot.Constants.PhysicalConstants;
 import frc.robot.subsystems.DriveTrain;
@@ -44,11 +45,10 @@ public class AutoUtil {
             return new RamseteCommand(
                 trajectory,
                 driveTrain::getCurrentPose,
-                new RamseteController(PhysicalConstants.kRamseteB, PhysicalConstants.kRamseteZeta),
-                new DifferentialDriveKinematics(PhysicalConstants.trackWidthMeters),
+                PhysicalConstants.RAMSETE_CONTROLLER,
+                PhysicalConstants.DIFFERENTIAL_DRIVE_KINEMATICS,
                 (x, y) -> {
-                    driveTrain.setLVelocity(x * ConversionConstants.METERS_TO_FEET, 0.8);
-                    driveTrain.setRVelocity(y * ConversionConstants.METERS_TO_FEET, 0.8);
+                    driveTrain.setTankVelocity(x, y);
                 },
                 driveTrain);
         } catch (IOException ex) {
