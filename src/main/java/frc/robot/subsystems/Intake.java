@@ -14,9 +14,12 @@ import edu.wpi.first.wpilibj.Solenoid;
 import frc.robot.Constants.RobotIds;
 
 public class Intake extends SubsystemBase {
-  private final CANSparkMax intakeMotor = new CANSparkMax(RobotIds.INTAKE_MOTOR, MotorType.kBrushless);
+  private final CANSparkMax intakeMotor = new CANSparkMax(RobotIds.INTAKE_BOTTOM_MOTOR, MotorType.kBrushless);
   private final Solenoid intakePiston = new Solenoid(PneumaticsModuleType.CTREPCM, RobotIds.INTAKE_SOLENOID);
+  private final CANSparkMax hopperMotor = new CANSparkMax(RobotIds.INTAKE_HOPPER_MOTOR, MotorType.kBrushless);
+
   private double requestedIntakeMotorOutput = 0.0;
+  private double requestedHopperMotorOutput = 0.0;
   private int downFrames = 0;
 
   /** Creates a new Intake. */
@@ -24,10 +27,17 @@ public class Intake extends SubsystemBase {
     intakeMotor.restoreFactoryDefaults();
     intakeMotor.setOpenLoopRampRate(0.1);
 
+    hopperMotor.restoreFactoryDefaults();
+    hopperMotor.setOpenLoopRampRate(0.1);
+
   }
 
-  public void setOutput(double output) {
+  public void setIntakeMotorOutput(double output) {
     requestedIntakeMotorOutput = output;
+  }
+
+  public void setHopperMotorOutput(double output) {
+    requestedHopperMotorOutput = output;
   }
 
   public void setPiston(boolean out) {
@@ -44,6 +54,7 @@ public class Intake extends SubsystemBase {
     }
     
     intakeMotor.set(canRunIntakeMotor() ? requestedIntakeMotorOutput : 0.0);
+    hopperMotor.set(canRunIntakeMotor() ? requestedHopperMotorOutput : 0.0);
   }
   
   private boolean canRunIntakeMotor() {
