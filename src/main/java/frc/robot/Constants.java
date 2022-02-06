@@ -63,7 +63,7 @@ public final class Constants {
         
         //TODO: Motor controller ids are tbd
         public static final int DRIVETRAIN_R_FRONT_MOTOR = 3;
-        public static final int DRIVETRAIN_R_BACK_MOTOR = 22222;
+        public static final int DRIVETRAIN_R_BACK_MOTOR = 2;
 
         public static final int DRIVETRAIN_L_FRONT_MOTOR = 4;
         public static final int DRIVETRAIN_L_BACK_MOTOR = 6;
@@ -72,7 +72,7 @@ public final class Constants {
 
     public static final class PhysicalConstants {
         // TODO: change this constant;
-        public static final double DRIVETRAIN_ROTS_PER_FOOT = 1.0 / (6.0 / 12.0) * Math.PI;
+        public static final double DRIVETRAIN_ROTS_PER_FOOT = 1 / ((6.0 / 12.0) * Math.PI);
 
         //TODO: change these constants
         public static final double MAX_SPEED = 1;
@@ -83,8 +83,8 @@ public final class Constants {
         public static final double trackWidthMeters = 0.70104;
 
         //Autonomous
-        public static final double kRamseteB = 2;
-        public static final double kRamseteZeta = 0.7;
+        public static final double kRamseteB = 1;
+        public static final double kRamseteZeta = 0.2;
 
         public static final RamseteController RAMSETE_CONTROLLER = new RamseteController(kRamseteB, kRamseteZeta);
         public static final DifferentialDriveKinematics DIFFERENTIAL_DRIVE_KINEMATICS = new DifferentialDriveKinematics(trackWidthMeters);

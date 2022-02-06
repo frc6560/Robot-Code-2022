@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utility.NetworkTable.NtValueDisplay;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -28,7 +29,6 @@ import static frc.robot.Constants.*;
 import static frc.robot.Constants.PhysicalConstants.*;
 import static frc.robot.Constants.ConversionConstants.*;
 
-import frc.robot.utility.HeadingConversion;
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
 public class DriveTrain extends SubsystemBase {
@@ -68,12 +68,14 @@ public class DriveTrain extends SubsystemBase {
 
 
   private double gyroAngle = 0.0;
-  private double totalGyroAngle = 0.0;
-  private double prevGyroAngle = 0.0;
-
 
   private SlewRateLimiter accelLimiter = new SlewRateLimiter(PhysicalConstants.MAX_ACCELERATION);
 
+  private SlewRateLimiter rightTankLimiter = new SlewRateLimiter(1.0);
+  private SlewRateLimiter leftTankLimiter = new SlewRateLimiter(1.0);
+
+  NtValueDisplay<Double> leftTarget;
+  NtValueDisplay<Double> rightTarget;
 
   public DriveTrain() {
     setupAllMotors();
@@ -95,8 +97,13 @@ public class DriveTrain extends SubsystemBase {
 
     ntDispTab("Drivetrain")
       .add("Left Velocity", this::getLVelocity)
-      .add("Right Velocity", this::getRVelocity);
-      //Add target velocity?
+      .add("Right Velocity", this::getRVelocity)
+      .add("Left RPM", this::getLRpm)
+      .add("Right RPM", this::getRRpm);
+    
+    leftTarget = new NtValueDisplay<Double>("Drivetrain", "left target");
+    rightTarget = new NtValueDisplay<Double>("Drivetrain", "right target");
+
 
       
   }
@@ -106,8 +113,7 @@ public class DriveTrain extends SubsystemBase {
     // This method will be called once per scheduler run
 
     this.gyroAngle = gyro.getYaw();
-    this.totalGyroAngle += HeadingConversion.getHeadingDiff(this.gyroAngle, this.prevGyroAngle);
-    this.prevGyroAngle = this.gyroAngle;
+    
     odometer.update(getGyroAngle(), getLPosition(), getRPosition());
   }
 
@@ -134,15 +140,15 @@ public class DriveTrain extends SubsystemBase {
 
   public void resetOdometry(Pose2d pose){
     setupAllMotors();
-    odometer.resetPosition(pose, gyro.getRotation2d());
+    odometer.resetPosition(pose, getGyroAngle());
   }
   public double getGyroAngleDegrees() {
     // could multiply this.gyroAngle by 1.03163686 to account for errors associated with gyroscope (From Jack's 2021 code)
-    return this.totalGyroAngle;
+    return getGyroAngle().getDegrees();
   }
 
   public Rotation2d getGyroAngle() {
-    return Rotation2d.fromDegrees(getGyroAngleDegrees());
+    return gyro.getRotation2d();
   }
 
   public double getLPosition() {
@@ -222,8 +228,15 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void setTankVelocity(double left, double right) {
-    //TODO: add accel limiter
-    differentialDrive.tankDrive(left, right);
+    
+    double leftVel = left; //leftTankLimiter.calculate(left);
+    double rightVel = right; //rightTankLimiter.calculate(right);
+    
+    System.out.println("Left: " + left + "  vel: " + leftVel);
+    leftTarget.update(left);
+    rightTarget.update(right);
+
+    differentialDrive.tankDrive(leftVel, rightVel);
   }
 
   public DifferentialDrive getDifferentialDrive() {

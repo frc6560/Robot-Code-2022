@@ -6,15 +6,11 @@ package frc.robot.utility;
 
 import java.io.IOException;
 
-import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import frc.robot.Constants;
-import frc.robot.Constants.ConversionConstants;
 import frc.robot.Constants.PhysicalConstants;
 import frc.robot.subsystems.DriveTrain;
 
@@ -48,6 +44,7 @@ public class AutoUtil {
                 PhysicalConstants.RAMSETE_CONTROLLER,
                 PhysicalConstants.DIFFERENTIAL_DRIVE_KINEMATICS,
                 (x, y) -> {
+                    
                     driveTrain.setTankVelocity(x, y);
                 },
                 driveTrain);

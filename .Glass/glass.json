@@ -1,11 +1,17 @@
 {
   "NetworkTables": {
+    "Drivetrain": {
+      "open": true
+    },
     "Shooter": {
       "open": true
     },
     "types": {
       "/FMSInfo": "FMSInfo",
-      "/LiveWindow/Ungrouped/Scheduler": "Scheduler"
+      "/LiveWindow/DriveTrain": "Subsystem",
+      "/LiveWindow/Ungrouped/DifferentialDrive[1]": "DifferentialDrive",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/navX-Sensor[1]": "Gyro"
     }
   },
   "NetworkTables Settings": {
@@ -20,13 +26,31 @@
           "series": [
             {
               "color": [
-                0.2980392277240753,
-                0.44705885648727417,
-                0.6901960968971252,
+                0.8666667342185974,
+                0.5176470875740051,
+                0.32156863808631897,
                 1.0
               ],
-              "id": "NT:/Shooter/Right Motor RPM"
+              "id": "NT:/Drivetrain/left target"
             },
+            {
+              "color": [
+                0.32156869769096375,
+                0.8321669101715088,
+                0.8666667342185974,
+                1.0
+              ],
+              "id": "NT:/Drivetrain/Left RPM"
+            }
+          ]
+        }
+      ]
+    },
+    "Plot <1>": {
+      "plots": [
+        {
+          "height": 332,
+          "series": [
             {
               "color": [
                 0.8666667342185974,
@@ -34,7 +58,16 @@
                 0.32156863808631897,
                 1.0
               ],
-              "id": "NT:/Shooter/Left Motor RPM"
+              "id": "NT:/Drivetrain/right target"
+            },
+            {
+              "color": [
+                0.32156869769096375,
+                0.69416743516922,
+                0.8666667342185974,
+                1.0
+              ],
+              "id": "NT:/Drivetrain/Right RPM"
             }
           ]
         }

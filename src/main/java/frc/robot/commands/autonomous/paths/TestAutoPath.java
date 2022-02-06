@@ -18,8 +18,8 @@ public class TestAutoPath extends SequentialCommandGroup {
   AutoUtil path2;
   
   public TestAutoPath(DriveTrain driveTrain) {
-    path1 = new AutoUtil("paths/output/Test1.wpilib.json", driveTrain);
-    path2 = new AutoUtil("paths/output/Test2.wpilib.json", driveTrain);
+    path1 = new AutoUtil("paths/output/straight.wpilib.json", driveTrain);
+    path2 = new AutoUtil("paths/output/right.wpilib.json", driveTrain);
     
     driveTrain.resetOdometry(path1.getTrajectory().getInitialPose());
     addCommands(
