@@ -83,8 +83,9 @@ public final class Constants {
         public static final double trackWidthMeters = 0.70104;
 
         //Autonomous
-        public static final double kRamseteB = 1;
-        public static final double kRamseteZeta = 0.2;
+        // "Recommended" 2, 0.7
+        public static final double kRamseteB = 0.2;
+        public static final double kRamseteZeta = 0.01;
 
         public static final RamseteController RAMSETE_CONTROLLER = new RamseteController(kRamseteB, kRamseteZeta);
         public static final DifferentialDriveKinematics DIFFERENTIAL_DRIVE_KINEMATICS = new DifferentialDriveKinematics(trackWidthMeters);

@@ -67,7 +67,7 @@ public class DriveTrain extends SubsystemBase {
   private final DifferentialDriveOdometry odometer;
 
 
-  private double gyroAngle = 0.0;
+  private double gyroAngle;
 
   private SlewRateLimiter accelLimiter = new SlewRateLimiter(PhysicalConstants.MAX_ACCELERATION);
 
@@ -80,6 +80,7 @@ public class DriveTrain extends SubsystemBase {
   public DriveTrain() {
     setupAllMotors();
 
+    this.gyroAngle = 0.0;
     gyro = new AHRS(SerialPort.Port.kMXP, SerialDataType.kProcessedData, (byte) 100);
     gyro.calibrate();
 
@@ -229,8 +230,8 @@ public class DriveTrain extends SubsystemBase {
 
   public void setTankVelocity(double left, double right) {
     
-    double leftVel = left; //leftTankLimiter.calculate(left);
-    double rightVel = right; //rightTankLimiter.calculate(right);
+    double leftVel = leftTankLimiter.calculate(left);
+    double rightVel = rightTankLimiter.calculate(right);
     
     System.out.println("Left: " + left + "  vel: " + leftVel);
     leftTarget.update(left);
