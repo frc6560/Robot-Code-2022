@@ -39,8 +39,9 @@ public class ManualIntake extends CommandBase {
     if (controls.getButtonA() == 0) {
       output = 0;
     }
-    this.intake.setPiston(true);
-    this.intake.setOutput(output);
+    this.intake.setPiston(false);
+    this.intake.setIntakeMotorOutput(output);
+    this.intake.setHopperMotorOutput(output);
   }
 
   // Called once the command ends or is interrupted.

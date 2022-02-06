@@ -64,9 +64,9 @@ public final class Constants {
         public static final int DRIVETRAIN_L_FRONT_MOTOR = 4;
         public static final int DRIVETRAIN_L_BACK_MOTOR = 6;
 
-        public static final int INTAKE_BOTTOM_MOTOR = 420;
-        public static final int INTAKE_SOLENOID = 420;
-        public static final int INTAKE_HOPPER_MOTOR = 420;
+        public static final int INTAKE_BOTTOM_MOTOR = 0;
+        public static final int INTAKE_SOLENOID = 0;
+        public static final int INTAKE_HOPPER_MOTOR = 1;
 
         
     }

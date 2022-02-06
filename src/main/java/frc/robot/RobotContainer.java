@@ -12,6 +12,9 @@ import frc.robot.commands.controls.manualdrive.ManualControls;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
 
+import frc.robot.subsystems.Intake;
+import frc.robot.commands.ManualIntake;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -27,6 +30,9 @@ public class RobotContainer {
   private Joystick xbox = new Joystick(0);
   private Joystick controlStation = new Joystick(1);
 
+  private Intake intake = new Intake();
+  private ManualIntake manualIntake;
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
@@ -36,6 +42,10 @@ public class RobotContainer {
     manualDrive = new ManualDrive(driveTrain, controls);
 
     driveTrain.setDefaultCommand(manualDrive);
+
+
+    manualIntake = new ManualIntake(intake, controls);
+    intake.setDefaultCommand(manualIntake);
   }
 
   /**
