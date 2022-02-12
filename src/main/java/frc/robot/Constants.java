@@ -22,8 +22,8 @@ public final class Constants {
         public static final int XBOX_L_JOY_X = 0;
         public static final int XBOX_L_JOY_Y = 1;
 
-        public static final int XBOX_R_JOY_X = 4;
-        public static final int XBOX_R_JOY_Y = 5;
+        public static final int XBOX_R_JOY_X = 2;
+        public static final int XBOX_R_JOY_Y = 3;
 
         public static final int XBOX_L_BUMPER = 5;
         public static final int XBOX_R_BUMPER = 6;
@@ -58,26 +58,23 @@ public final class Constants {
     public static final class RobotIds {
         
         //TODO: Motor controller ids are tbd
-        public static final int DRIVETRAIN_R_FRONT_MOTOR = 20;
-        public static final int DRIVETRAIN_R_BACK_MOTOR = 18;
+        public static final int DRIVETRAIN_R_FRONT_MOTOR = 3;
+        public static final int DRIVETRAIN_R_BACK_MOTOR = 2;
 
-        public static final int DRIVETRAIN_L_FRONT_MOTOR = 11;
-        public static final int DRIVETRAIN_L_BACK_MOTOR = 10;
-
-        public static final int SHOOTER_MOTOR_LEFT = -1;
-        public static final int SHOOTER_MOTOR_RIGHT = -1;
-
-        public static final int SHOOTER_HOOD_MOTOR = -1;
-        public static final int SHOOTER_HOOD_ENCODER_A = -1;
-        public static final int SHOOTER_HOOD_ENCODER_B = -1;
+        public static final int DRIVETRAIN_L_FRONT_MOTOR = 4;
+        public static final int DRIVETRAIN_L_BACK_MOTOR = 6;
         
     }
 
     public static final class PhysicalConstants {
-        // TODO: change this constants;
+        // TODO: change this constant;
         public static final double DRIVETRAIN_ROTS_PER_FOOT = 6;
-        public static final double RPM_PER_FALCON_UNIT = 10.0 * 60.0 / 2048.0;
-        public static final double MAX_HOOD_ENCODER_DISTANCE = 3630;
+
+        //TODO: change these constants
+        public static final double MAX_SPEED = 1;
+        public static final double MAX_TURN_SPEED = 1;
+
+        public static final double MAX_ACCELERATION = 1;
     }
 
     public static final class ConversionConstants {

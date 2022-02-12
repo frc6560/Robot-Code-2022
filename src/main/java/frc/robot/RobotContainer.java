@@ -5,8 +5,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ManualDrive;
+import frc.robot.commands.controls.manualdrive.ManualControls;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -18,14 +20,22 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final DriveTrain driveTrain = new DriveTrain();
 
-  private final ManualDrive manualDrive = new ManualDrive(driveTrain);
+  private DriveTrain driveTrain = new DriveTrain();
+  private ManualDrive manualDrive;
+
+  private Joystick xbox = new Joystick(0);
+  private Joystick controlStation = new Joystick(1);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    ManualControls controls = new ManualControls(xbox, controlStation);
+
+    manualDrive = new ManualDrive(driveTrain, controls);
+
+    driveTrain.setDefaultCommand(manualDrive);
   }
 
   /**
@@ -43,6 +53,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return manualDrive;
+    return null;
   }
 }
