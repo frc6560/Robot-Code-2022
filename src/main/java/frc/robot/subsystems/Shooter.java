@@ -42,13 +42,6 @@ public class Shooter extends SubsystemBase {
     shooterMotorL.configFactoryDefault();
     shooterMotorR.configFactoryDefault();
 
-    //??
-    shooterMotorL.configVoltageCompSaturation(12.0);
-    shooterMotorR.configVoltageCompSaturation(12.0);
-
-    shooterMotorL.enableVoltageCompensation(true);
-    shooterMotorR.enableVoltageCompensation(true);
-
     //get PID
     shooterMotorL.config_kF(0, 0.047197957);
     shooterMotorL.config_kP(0, 0.15);
@@ -91,10 +84,6 @@ public class Shooter extends SubsystemBase {
 
   public void setShooterRpm(double rpm) {
     targetRPM = rpm;
-  }
-
-  public void releaseShooter() {
-    targetRPM = 0;
   }
 
   public double getHoodPos() {

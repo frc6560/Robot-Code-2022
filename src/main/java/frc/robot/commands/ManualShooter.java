@@ -27,6 +27,7 @@ public class ManualShooter extends CommandBase {
     this.shooter = shooter;
     this.controls = controls;
     this.limelight = limelight;
+
     addRequirements(shooter);
 
   }
@@ -45,6 +46,9 @@ public class ManualShooter extends CommandBase {
       shooter.setShooterRpm(getShooterRpm(limelight.distanceToTarget()));
       shooter.setHoodPos(getShooterAngle(limelight.distanceToTarget()));
     }
+    else {
+      shooter.setShooterRpm(0.0);
+    }
   }
 
   public double getShooterRpm(double distance) {
@@ -57,7 +61,9 @@ public class ManualShooter extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    shooter.setShooterRpm(0.0);
+  }
 
   // Returns true when the command should end.
   @Override
