@@ -70,7 +70,7 @@ public class Shooter extends SubsystemBase {
     hoodServo.setBounds(2.0, 1.6, 1.5, 1.4, 1.0);
     hoodEncoder.reset();
 
-    ntTable = NetworkTableInstance.getDefault().getTable("shoot");
+    ntTable = NetworkTableInstance.getDefault().getTable("Shooter");
   }
 
   @Override
