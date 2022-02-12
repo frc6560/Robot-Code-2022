@@ -10,11 +10,13 @@ import frc.robot.subsystems.Conveyer;
 
 public class ConveyerCommand extends CommandBase {
 
+  
+
   private final Conveyer conveyer;
 
   private int debounceTimer = 0;
   private int spacingTimer = 0;
-  private Double output = 0.0;
+  private double output = 0.0;
 
   /** Creates a new ConveyerCommand. */
   public ConveyerCommand(Conveyer conveyer) {
@@ -32,31 +34,31 @@ public class ConveyerCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (controls.getCamera() && checkRun()) { //Checks if it can run
+    if (checkRun()) {
       output = 3.0;
     }
     else {
       output = 0.0;
     }
 
-    if (controls.getCamera() && debounceTimer <= 3) { //Checks if it has been three frames to run
+    if (debounceTimer <= 3) { //Checks if it has been three frames to run
       debounceTimer += 1;
     }
 
-    if (!controls.getCamera() && debounceTimer > 0) { //Checks if the ball is gone to increase spacing
+    if (debounceTimer > 0) { //Checks if the ball is gone to increase spacing
       spacingTimer += 1;
     }
 
-    if (spacingTimer == 3) { //Checks if spacing is three as to reset
+    if (spacingTimer >= 3) { //Checks if spacing is three to reset
       spacingTimer = 0;
       debounceTimer = 0;
     }
 
-    conveyer.setConveyer(output); //Checks and sends output
+    conveyer.setConveyer(output);
   }
 
   private boolean checkRun() {
-    if (debounceTimer == 3) { //Checks if it can run
+    if (debounceTimer == 3) {
       return true;
     }
     return false;
@@ -64,7 +66,9 @@ public class ConveyerCommand extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    conveyer.setConveyer(0.0);
+  }
 
   // Returns true when the command should end.
   @Override
