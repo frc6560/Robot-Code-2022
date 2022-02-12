@@ -6,7 +6,6 @@ package frc.robot;
 
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -26,7 +25,7 @@ public final class Constants {
         public static final int XBOX_L_JOY_X = 0;
         public static final int XBOX_L_JOY_Y = 1;
 
-        public static final int XBOX_R_JOY_X = 4;
+        public static final int XBOX_R_JOY_X = 2;
         public static final int XBOX_R_JOY_Y = 3;
 
         public static final int XBOX_L_BUMPER = 5;
@@ -71,8 +70,11 @@ public final class Constants {
     }
 
     public static final class PhysicalConstants {
+        public static final RamseteController RAMSETE_CONTROLLER = new RamseteController(PhysicalConstants.kRamseteB, PhysicalConstants.kRamseteZeta);
+        public static final DifferentialDriveKinematics DIFFERENTIAL_DRIVE_KINEMATICS = new DifferentialDriveKinematics(PhysicalConstants.trackWidthMeters);
+
         // TODO: change this constant;
-        public static final double DRIVETRAIN_ROTS_PER_FOOT = 1 / ((6.0 / 12.0) * Math.PI);
+        public static final double DRIVETRAIN_ROTS_PER_FOOT = 1.0 / ((6.0 / 12.0) * Math.PI);
 
         //TODO: change these constants
         public static final double MAX_SPEED = 1;
@@ -83,17 +85,12 @@ public final class Constants {
         public static final double trackWidthMeters = 0.70104;
 
         //Autonomous
-        // "Recommended" 2, 0.7
-        public static final double kRamseteB = 0.2;
-        public static final double kRamseteZeta = 0.01;
-
-        public static final RamseteController RAMSETE_CONTROLLER = new RamseteController(kRamseteB, kRamseteZeta);
-        public static final DifferentialDriveKinematics DIFFERENTIAL_DRIVE_KINEMATICS = new DifferentialDriveKinematics(trackWidthMeters);
+        public static final double kRamseteB = 2.0 / 15.0;
+        public static final double kRamseteZeta = 0.7;
     }
 
     public static final class ConversionConstants {
         public static final double SECONDS_PER_MINUTE = 60.0;
-        public static final double METERS_TO_FEET = 3.28084;
     }
 
 }
