@@ -11,17 +11,22 @@ public class ManualShooter extends CommandBase {
 
   public static interface Controls {
     boolean isShooting();
-    double distance();
+  }
+
+  public static interface Limelight {
+    double distanceToTarget();
   }
 
 
   private Shooter shooter;
   private Controls controls;
+  private Limelight limelight;
 
-  public ManualShooter(Shooter shooter, Controls controls) {
+  public ManualShooter(Shooter shooter, Controls controls, Limelight limelight) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
     this.controls = controls;
+    this.limelight = limelight;
     addRequirements(shooter);
 
   }
@@ -37,8 +42,8 @@ public class ManualShooter extends CommandBase {
   @Override
   public void execute() {
     if (controls.isShooting()) {
-      shooter.setShooterRpm(getShooterRpm(controls.distance()));
-      shooter.setHoodPos(getShooterAngle(controls.distance()));
+      shooter.setShooterRpm(getShooterRpm(limelight.distanceToTarget()));
+      shooter.setHoodPos(getShooterAngle(limelight.distanceToTarget()));
     }
   }
 
