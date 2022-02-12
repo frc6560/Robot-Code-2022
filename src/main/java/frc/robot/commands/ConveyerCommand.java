@@ -10,17 +10,20 @@ import frc.robot.subsystems.Conveyer;
 
 public class ConveyerCommand extends CommandBase {
 
+  public static interface Controls {
+    double ballProximityDist();
+  }
+
   private final Conveyer conveyer;
+  private final Controls controls;
 
-  private int debounceTimer = 0;
-  private int spacingTimer = 0;
-  private Double output = 0.0;
-
-  /** Creates a new ConveyerCommand. */
-  public ConveyerCommand(Conveyer conveyer) {
+  /** Creates a new ConveyerCommand2. */
+  public ConveyerCommand(Conveyer conveyer, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
+
     addRequirements(conveyer);
     this.conveyer = conveyer;
+    this.controls = controls;
   }
 
   // Called when the command is initially scheduled.
@@ -32,39 +35,16 @@ public class ConveyerCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (controls.getCamera() && checkRun()) { //Checks if it can run
-      output = 3.0;
+    if (controls.ballProximityDist() < 3){
+      conveyer.setConveyer(1);
     }
-    else {
-      output = 0.0;
-    }
-
-    if (controls.getCamera() && debounceTimer <= 3) { //Checks if it has been three frames to run
-      debounceTimer += 1;
-    }
-
-    if (!controls.getCamera() && debounceTimer > 0) { //Checks if the ball is gone to increase spacing
-      spacingTimer += 1;
-    }
-
-    if (spacingTimer == 3) { //Checks if spacing is three as to reset
-      spacingTimer = 0;
-      debounceTimer = 0;
-    }
-
-    conveyer.setConveyer(output); //Checks and sends output
-  }
-
-  private boolean checkRun() {
-    if (debounceTimer == 3) { //Checks if it can run
-      return true;
-    }
-    return false;
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    conveyer.setConveyer(0);
+  }
 
   // Returns true when the command should end.
   @Override
