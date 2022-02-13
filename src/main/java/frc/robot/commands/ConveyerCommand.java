@@ -36,7 +36,7 @@ public class ConveyerCommand extends CommandBase {
   @Override
   public void execute() {
     if (controls.ballProximityDist() < 3){
-      conveyer.setConveyer(1);
+      conveyer.setConveyer(0.5);
     }
   }
 
