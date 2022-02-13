@@ -22,7 +22,7 @@ public final class Constants {
         public static final int XBOX_L_JOY_X = 0;
         public static final int XBOX_L_JOY_Y = 1;
 
-        public static final int XBOX_R_JOY_X = 4;
+        public static final int XBOX_R_JOY_X = 2;
         public static final int XBOX_R_JOY_Y = 3;
 
         public static final int XBOX_L_BUMPER = 5;
@@ -58,36 +58,31 @@ public final class Constants {
     public static final class RobotIds {
         
         //TODO: Motor controller ids are tbd
-        public static final int DRIVETRAIN_R_FRONT_MOTOR = 1;
-        public static final int DRIVETRAIN_R_BACK_MOTOR = 20;
+        public static final int DRIVETRAIN_R_FRONT_MOTOR = 3;
+        public static final int DRIVETRAIN_R_BACK_MOTOR = 2;
 
-        public static final int DRIVETRAIN_L_FRONT_MOTOR = 18;
-        public static final int DRIVETRAIN_L_BACK_MOTOR = 19;
+        public static final int DRIVETRAIN_L_FRONT_MOTOR = 4;
+        public static final int DRIVETRAIN_L_BACK_MOTOR = 6;
 
-        public static final int INTAKE_BOTTOM_MOTOR = 2;
-        public static final int INTAKE_SOLENOID = 0;
-        public static final int INTAKE_HOPPER_MOTOR = 5;
-
+        public static final int ROLLER_MOTOR = 1; //Test num
+        public static final int CONVEYER_MOTOR_TOP = 1; //Test num
+        public static final int CONVEYER_MOTOR_BOTTOM = 1; //Test num
         
     }
 
     public static final class PhysicalConstants {
         // TODO: change this constant;
-        public static final double DRIVETRAIN_ROTS_PER_FOOT = 1.0 / (6.0 / 12.0) * Math.PI;
+        public static final double DRIVETRAIN_ROTS_PER_FOOT = 6;
 
         //TODO: change these constants
         public static final double MAX_SPEED = 1;
         public static final double MAX_TURN_SPEED = 1;
 
-        public static final double MAX_ACCELERATION = 2;
-
-        public static final double trackWidthMeters = 0.70104;
-
+        public static final double MAX_ACCELERATION = 1;
     }
 
     public static final class ConversionConstants {
         public static final double SECONDS_PER_MINUTE = 60.0;
-        public static final double METERS_TO_FEET = 3.28084;
     }
 
 }
