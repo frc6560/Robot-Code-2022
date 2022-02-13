@@ -14,7 +14,8 @@ public class ManualIntake extends CommandBase {
   private final Controls controls;
 
   public static interface Controls {
-    double getButtonA();
+    double getIntakeRunning();
+    boolean isIntakePistonEngaged();
   }
 
   /** Creates a new IntakeCommand. */
@@ -33,13 +34,9 @@ public class ManualIntake extends CommandBase {
   @Override
   public void execute() {
     double output = 0;
-    if (controls.getButtonA() == 1) {
-      output = 3.0;
-    }
-    if (controls.getButtonA() == 0) {
-      output = 0;
-    }
-    this.intake.setPiston(false);
+    output = -controls.getIntakeRunning();
+    System.out.println(controls.isIntakePistonEngaged());
+    this.intake.setPiston(controls.isIntakePistonEngaged());
     this.intake.setIntakeMotorOutput(output);
     this.intake.setHopperMotorOutput(output);
   }

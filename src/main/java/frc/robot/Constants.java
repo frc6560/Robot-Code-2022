@@ -58,15 +58,15 @@ public final class Constants {
     public static final class RobotIds {
         
         //TODO: Motor controller ids are tbd
-        public static final int DRIVETRAIN_R_FRONT_MOTOR = 3;
-        public static final int DRIVETRAIN_R_BACK_MOTOR = 22222;
+        public static final int DRIVETRAIN_R_FRONT_MOTOR = 1;
+        public static final int DRIVETRAIN_R_BACK_MOTOR = 20;
 
-        public static final int DRIVETRAIN_L_FRONT_MOTOR = 4;
-        public static final int DRIVETRAIN_L_BACK_MOTOR = 6;
+        public static final int DRIVETRAIN_L_FRONT_MOTOR = 18;
+        public static final int DRIVETRAIN_L_BACK_MOTOR = 19;
 
-        public static final int INTAKE_BOTTOM_MOTOR = 0;
+        public static final int INTAKE_BOTTOM_MOTOR = 2;
         public static final int INTAKE_SOLENOID = 0;
-        public static final int INTAKE_HOPPER_MOTOR = 1;
+        public static final int INTAKE_HOPPER_MOTOR = 5;
 
         
     }

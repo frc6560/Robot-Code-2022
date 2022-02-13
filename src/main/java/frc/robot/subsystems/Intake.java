@@ -53,8 +53,11 @@ public class Intake extends SubsystemBase {
       downFrames = 0;
     }
     
-    intakeMotor.set(canRunIntakeMotor() ? requestedIntakeMotorOutput : 0.0);
-    hopperMotor.set(canRunIntakeMotor() ? requestedHopperMotorOutput : 0.0);
+    intakeMotor.set(requestedHopperMotorOutput);
+    
+
+    //intakeMotor.set(canRunIntakeMotor() ? requestedIntakeMotorOutput : 0.0);
+    //hopperMotor.set(canRunIntakeMotor() ? requestedHopperMotorOutput : 0.0);
   }
   
   private boolean canRunIntakeMotor() {

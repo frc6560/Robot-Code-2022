@@ -67,7 +67,12 @@ public class ManualControls implements ManualDrive.Controls, ManualIntake.Contro
     }
 
     @Override
-    public double getButtonA() {
-        return xbox.getRawAxis(ControllerIds.XBOX_A_BUTTON);
+    public double getIntakeRunning() {
+        return xbox.getRawAxis(3);
+    }
+
+    @Override
+    public boolean isIntakePistonEngaged() {
+        return xbox.getRawButton(1);
     }
 }
