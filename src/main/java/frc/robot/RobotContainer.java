@@ -8,12 +8,11 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ManualDrive;
+import frc.robot.commands.ManualShooter;
 import frc.robot.commands.controls.manualdrive.ManualControls;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
-
-import frc.robot.subsystems.Intake;
-import frc.robot.commands.ManualIntake;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -26,12 +25,12 @@ public class RobotContainer {
 
   private DriveTrain driveTrain = new DriveTrain();
   private ManualDrive manualDrive;
+  
+  private Shooter shooter = new Shooter();
+  private ManualShooter manualShooter;
 
   private Joystick xbox = new Joystick(0);
   private Joystick controlStation = new Joystick(1);
-
-  private Intake intake = new Intake();
-  private ManualIntake manualIntake;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -40,12 +39,10 @@ public class RobotContainer {
     ManualControls controls = new ManualControls(xbox, controlStation);
 
     manualDrive = new ManualDrive(driveTrain, controls);
-
     driveTrain.setDefaultCommand(manualDrive);
 
-
-    manualIntake = new ManualIntake(intake, controls);
-    intake.setDefaultCommand(manualIntake);
+    manualShooter = new ManualShooter(shooter, controls, limelight);
+    shooter.setDefaultCommand(manualShooter);
   }
 
   /**

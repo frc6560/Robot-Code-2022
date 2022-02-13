@@ -68,6 +68,13 @@ public final class Constants {
         public static final int CONVEYER_MOTOR_TOP = 1; //Test num
         public static final int CONVEYER_MOTOR_BOTTOM = 1; //Test num
         
+
+        public static final int SHOOTER_MOTOR_LEFT = -1;
+        public static final int SHOOTER_MOTOR_RIGHT = -1;
+
+        public static final int SHOOTER_HOOD_MOTOR = -1;
+        public static final int SHOOTER_HOOD_ENCODER_A = -1;
+        public static final int SHOOTER_HOOD_ENCODER_B = -1;
     }
 
     public static final class PhysicalConstants {
@@ -79,6 +86,9 @@ public final class Constants {
         public static final double MAX_TURN_SPEED = 1;
 
         public static final double MAX_ACCELERATION = 1;
+
+        public static final double RPM_PER_FALCON_UNIT = 10.0 * 60.0 / 2048.0;
+        public static final double MAX_HOOD_ENCODER_DISTANCE = 3630;
     }
 
     public static final class ConversionConstants {
