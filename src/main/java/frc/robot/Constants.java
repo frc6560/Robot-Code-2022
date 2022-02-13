@@ -57,24 +57,29 @@ public final class Constants {
 
     public static final class RobotIds {
         
-        //TODO: Motor controller ids are tbd
-        public static final int DRIVETRAIN_R_FRONT_MOTOR = 3;
-        public static final int DRIVETRAIN_R_BACK_MOTOR = 2;
+        //TODO: Negative Motor controller ids are tbd
+        public static final int DRIVETRAIN_R_FRONT_MOTOR = 1;
+        public static final int DRIVETRAIN_R_BACK_MOTOR = 20;
 
-        public static final int DRIVETRAIN_L_FRONT_MOTOR = 4;
-        public static final int DRIVETRAIN_L_BACK_MOTOR = 6;
+        public static final int DRIVETRAIN_L_FRONT_MOTOR = 19;
+        public static final int DRIVETRAIN_L_BACK_MOTOR = 18;
 
-        public static final int ROLLER_MOTOR = 1; //Test num
-        public static final int CONVEYER_MOTOR_TOP = 1; //Test num
-        public static final int CONVEYER_MOTOR_BOTTOM = 1; //Test num
+        public static final int ROLLER_MOTOR = -1;
+        public static final int CONVEYER_MOTOR_TOP = -2;
+        public static final int CONVEYER_MOTOR_BOTTOM = -3;
         
 
-        public static final int SHOOTER_MOTOR_LEFT = -1;
-        public static final int SHOOTER_MOTOR_RIGHT = -1;
+        public static final int SHOOTER_MOTOR_LEFT = -4;
+        public static final int SHOOTER_MOTOR_RIGHT = -5;
 
-        public static final int SHOOTER_HOOD_MOTOR = -1;
-        public static final int SHOOTER_HOOD_ENCODER_A = -1;
-        public static final int SHOOTER_HOOD_ENCODER_B = -1;
+        public static final int SHOOTER_HOOD_MOTOR = -6;
+        public static final int SHOOTER_HOOD_ENCODER_A = -7;
+        public static final int SHOOTER_HOOD_ENCODER_B = -8;
+
+
+        public static final int INTAKE_BOTTOM_MOTOR = -1;
+        public static final int INTAKE_SOLENOID = -1;
+        public static final int INTAKE_HOPPER_MOTOR = -1;
     }
 
     public static final class PhysicalConstants {
