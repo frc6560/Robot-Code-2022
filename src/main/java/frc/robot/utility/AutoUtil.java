@@ -44,7 +44,7 @@ public class AutoUtil {
                 PhysicalConstants.RAMSETE_CONTROLLER,
                 PhysicalConstants.DIFFERENTIAL_DRIVE_KINEMATICS,
                 (x, y) -> {
-                    
+                    System.out.println("uwu");
                     driveTrain.setTankVelocity(x, y);
                 },
                 driveTrain);

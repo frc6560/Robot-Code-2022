@@ -85,12 +85,13 @@ public final class Constants {
         public static final double trackWidthMeters = 0.70104;
 
         //Autonomous
-        public static final double kRamseteB = 2.0 / 15.0;
-        public static final double kRamseteZeta = 0.7;
+        public static final double kRamseteB = 0;
+        public static final double kRamseteZeta = 0;
     }
 
     public static final class ConversionConstants {
         public static final double SECONDS_PER_MINUTE = 60.0;
+        public static final double FEET_PER_METER = 3.28084;
     }
 
 }

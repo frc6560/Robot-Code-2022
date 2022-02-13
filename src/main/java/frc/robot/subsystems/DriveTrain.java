@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utility.NetworkTable.NtValueDisplay;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -67,12 +68,11 @@ public class DriveTrain extends SubsystemBase {
   private final DifferentialDriveOdometry odometer;
 
 
-  private double gyroAngle;
 
   private SlewRateLimiter accelLimiter = new SlewRateLimiter(PhysicalConstants.MAX_ACCELERATION);
 
-  private SlewRateLimiter rightTankLimiter = new SlewRateLimiter(1.0);
-  private SlewRateLimiter leftTankLimiter = new SlewRateLimiter(1.0);
+  private SlewRateLimiter rightTankLimiter = new SlewRateLimiter(0.2);
+  private SlewRateLimiter leftTankLimiter = new SlewRateLimiter(0.2);
 
   NtValueDisplay<Double> leftTarget;
   NtValueDisplay<Double> rightTarget;
@@ -80,7 +80,6 @@ public class DriveTrain extends SubsystemBase {
   public DriveTrain() {
     setupAllMotors();
 
-    this.gyroAngle = 0.0;
     gyro = new AHRS(SerialPort.Port.kMXP, SerialDataType.kProcessedData, (byte) 100);
     gyro.calibrate();
 
@@ -113,7 +112,6 @@ public class DriveTrain extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    this.gyroAngle = gyro.getYaw();
     
     odometer.update(getGyroAngle(), getLPosition(), getRPosition());
   }
@@ -230,14 +228,28 @@ public class DriveTrain extends SubsystemBase {
 
   public void setTankVelocity(double left, double right) {
     
-    double leftVel = leftTankLimiter.calculate(left);
-    double rightVel = rightTankLimiter.calculate(right);
+  left = 10 * left / (DRIVETRAIN_ROTS_PER_FOOT / FEET_PER_METER);
+
+  right = 10 * right / (DRIVETRAIN_ROTS_PER_FOOT / FEET_PER_METER);
+
+    double leftVel = leftTankLimiter.calculate(simpleFFL.calculate(left));
+    double rightVel = rightTankLimiter.calculate(simpleFFR.calculate(right));
     
     System.out.println("Left: " + left + "  vel: " + leftVel);
+    System.out.println("Right: " + right + " vel: " + rightVel);
+    System.out.println("Actual Left RPM: " + getLRpm());
+    System.out.println("Actual Right RPM: " + getRRpm());
+    
     leftTarget.update(left);
     rightTarget.update(right);
 
-    differentialDrive.tankDrive(leftVel, rightVel);
+    for (CANSparkMax motor : leftMotors) {
+      motor.set(leftVel);
+    }
+
+    for (CANSparkMax motor : rightMotors) {
+      motor.set(rightVel);
+    }
   }
 
   public DifferentialDrive getDifferentialDrive() {
