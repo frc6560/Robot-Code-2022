@@ -25,6 +25,10 @@ public class Conveyer extends SubsystemBase {
     conveyerMotorTop.setOpenLoopRampRate(0.1);
     conveyerMotorBottom.setOpenLoopRampRate(0.1);
 
+    rollerMotor.set(0.0);
+    conveyerMotorTop.set(0.0);
+    conveyerMotorBottom.set(0.0);
+    
   }
 
   public void setConveyer(double output) {
