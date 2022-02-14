@@ -5,13 +5,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
+import frc.robot.Constants.RobotIds;
 import frc.robot.subsystems.Conveyer;
 
 public class ConveyerCommand extends CommandBase {
-
   public static interface Controls {
-    double ballProximityDist();
     boolean isIntakeEngaged();
   }
 
@@ -36,7 +34,7 @@ public class ConveyerCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (controls.ballProximityDist() < 3 && controls.isIntakeEngaged()){
+    if (!conveyer.getSensor() && controls.isIntakeEngaged()){
       conveyer.setConveyer(0.5);
     }
   }

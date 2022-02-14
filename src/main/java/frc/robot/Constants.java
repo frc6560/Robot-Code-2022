@@ -67,6 +67,8 @@ public final class Constants {
         public static final int ROLLER_MOTOR = 1; //Test num
         public static final int CONVEYER_MOTOR_TOP = 1; //Test num
         public static final int CONVEYER_MOTOR_BOTTOM = 1; //Test num
+
+        public static final int CONVEYER_SENSOR = 1; //Test num
         
     }
 
