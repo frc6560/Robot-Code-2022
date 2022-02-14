@@ -8,10 +8,9 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ManualDrive;
-import frc.robot.commands.ManualShooter;
 import frc.robot.commands.controls.manualdrive.ManualControls;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Limelight;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -23,14 +22,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  private DriveTrain driveTrain = new DriveTrain();
-  private ManualDrive manualDrive;
-  
-  private Shooter shooter = new Shooter();
-  private ManualShooter manualShooter;
+  private final DriveTrain driveTrain = new DriveTrain();
+  private final ManualDrive manualDrive;
 
-  private Joystick xbox = new Joystick(0);
-  private Joystick controlStation = new Joystick(1);
+  private final Limelight limelight;
+
+
+  private final Joystick xbox = new Joystick(0);
+  private final Joystick controlStation = new Joystick(1);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -41,8 +40,9 @@ public class RobotContainer {
     manualDrive = new ManualDrive(driveTrain, controls);
     driveTrain.setDefaultCommand(manualDrive);
 
-    manualShooter = new ManualShooter(shooter, controls, limelight);
-    shooter.setDefaultCommand(manualShooter);
+    limelight = new Limelight(new ManualControls(xbox, controlStation));
+
+
   }
 
   /**

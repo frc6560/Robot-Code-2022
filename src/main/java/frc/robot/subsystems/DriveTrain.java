@@ -27,7 +27,6 @@ import static frc.robot.Constants.*;
 import static frc.robot.Constants.PhysicalConstants.*;
 import static frc.robot.Constants.ConversionConstants.*;
 
-import frc.robot.utility.HeadingConversion;
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
 public class DriveTrain extends SubsystemBase {
@@ -66,11 +65,6 @@ public class DriveTrain extends SubsystemBase {
   private final DifferentialDriveOdometry odometer;
 
 
-  private double gyroAngle = 0.0;
-  private double totalGyroAngle = 0.0;
-  private double prevGyroAngle = 0.0;
-
-
   private SlewRateLimiter accelLimiter = new SlewRateLimiter(PhysicalConstants.MAX_ACCELERATION);
 
 
@@ -102,9 +96,6 @@ public class DriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    this.gyroAngle = gyro.getYaw();
-    this.totalGyroAngle += HeadingConversion.getHeadingDiff(this.gyroAngle, this.prevGyroAngle);
-    this.prevGyroAngle = this.gyroAngle;
     odometer.update(getGyroAngle(), getLPosition(), getRPosition());
   }
 
@@ -131,11 +122,11 @@ public class DriveTrain extends SubsystemBase {
 
   public double getGyroAngleDegrees() {
     // could multiply this.gyroAngle by 1.03163686 to account for errors associated with gyroscope (From Jack's 2021 code)
-    return this.totalGyroAngle;
+    return getGyroAngle().getDegrees();
   }
 
   public Rotation2d getGyroAngle() {
-    return Rotation2d.fromDegrees(getGyroAngleDegrees());
+    return gyro.getRotation2d();
   }
 
   public double getLPosition() {
