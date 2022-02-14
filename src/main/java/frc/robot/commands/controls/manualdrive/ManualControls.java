@@ -5,10 +5,11 @@
 package frc.robot.commands.controls.manualdrive;
 
 import frc.robot.commands.ManualDrive;
+import frc.robot.commands.ManualIntake;
 import frc.robot.commands.ManualShooter;
+
 import frc.robot.utility.NumberStepper;
 import frc.robot.utility.PovNumberStepper;
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.Joystick;
 
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
@@ -18,15 +19,18 @@ import static frc.robot.Constants.*;
 
 
 /** Add your docs here. */
-public class ManualControls implements ManualDrive.Controls, ManualShooter.Controls{
+public class ManualControls implements ManualDrive.Controls, ManualIntake.Controls, ManualShooter.Controls {
 
     private final Joystick xbox;
+    private final Joystick controlStation;
+
     private final PovNumberStepper speed;
     private final PovNumberStepper turnSpeed;
 
 
     public ManualControls(Joystick xbox, Joystick controlStation) {
         this.xbox = xbox;
+        this.controlStation = controlStation;
 
         this.speed = new PovNumberStepper(
             new NumberStepper(0.5, 0.1, PhysicalConstants.MAX_SPEED, 0.1),
@@ -66,8 +70,22 @@ public class ManualControls implements ManualDrive.Controls, ManualShooter.Contr
     }
 
     @Override
-    public boolean isShooting() {
-        return true; //TODO: Add button (probably control station)
+    public double getIntakeRunning() {
+        return xbox.getRawAxis(3);
     }
 
+    @Override
+    public boolean isIntakePistonEngaged() {
+        return xbox.getRawButton(1); // Button A
+    }
+
+    @Override
+    public boolean isShooting() {
+        //TODO: set actual button
+        return xbox.getRawButton(2); // Button B, I believe (too lazy to check)
+    }
+
+    public int getLimelightPipeline(){
+        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_5) ? 1 : 0;
+    }
 }

@@ -6,6 +6,8 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
+import frc.robot.commands.controls.manualdrive.ManualControls;
+import frc.robot.subsystems.Limelight;
 
 public class ManualShooter extends CommandBase {
 
@@ -13,9 +15,6 @@ public class ManualShooter extends CommandBase {
     boolean isShooting();
   }
 
-  public static interface Limelight {
-    double distanceToTarget();
-  }
 
 
   private Shooter shooter;
@@ -43,8 +42,8 @@ public class ManualShooter extends CommandBase {
   @Override
   public void execute() {
     if (controls.isShooting()) {
-      shooter.setShooterRpm(getShooterRpm(limelight.distanceToTarget()));
-      shooter.setHoodPos(getShooterAngle(limelight.distanceToTarget()));
+      shooter.setShooterRpm(getShooterRpm(limelight.getDistance()));
+      shooter.setHoodPos(getShooterAngle(limelight.getDistance()));
     }
     else {
       shooter.setShooterRpm(0.0);

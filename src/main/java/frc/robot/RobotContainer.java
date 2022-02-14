@@ -8,9 +8,13 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ManualDrive;
+import frc.robot.commands.ManualIntake;
+import frc.robot.commands.ManualShooter;
 import frc.robot.commands.controls.manualdrive.ManualControls;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -27,6 +31,11 @@ public class RobotContainer {
 
   private final Limelight limelight;
 
+  private final Shooter shooter = new Shooter();
+  private final ManualShooter manualShooter;
+
+  private final Intake intake = new Intake();
+  private final ManualIntake manualIntake;
 
   private final Joystick xbox = new Joystick(0);
   private final Joystick controlStation = new Joystick(1);
@@ -40,7 +49,14 @@ public class RobotContainer {
     manualDrive = new ManualDrive(driveTrain, controls);
     driveTrain.setDefaultCommand(manualDrive);
 
-    limelight = new Limelight(new ManualControls(xbox, controlStation));
+    limelight = new Limelight(controls);
+
+    manualShooter = new ManualShooter(shooter, controls, limelight);
+    shooter.setDefaultCommand(manualShooter);
+
+    manualIntake = new ManualIntake(intake, controls);
+    intake.setDefaultCommand(manualIntake);
+
 
 
   }
