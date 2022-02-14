@@ -12,6 +12,7 @@ public class ConveyerCommand extends CommandBase {
 
   public static interface Controls {
     double ballProximityDist();
+    boolean isIntakeEngaged();
   }
 
   private final Conveyer conveyer;
@@ -35,7 +36,7 @@ public class ConveyerCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (controls.ballProximityDist() < 3){
+    if (controls.ballProximityDist() < 3 && controls.isIntakeEngaged()){
       conveyer.setConveyer(0.5);
     }
   }
