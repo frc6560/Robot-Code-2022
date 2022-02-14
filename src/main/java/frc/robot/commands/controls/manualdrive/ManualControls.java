@@ -75,7 +75,7 @@ public class ManualControls implements ManualDrive.Controls, ManualIntake.Contro
     }
 
     @Override
-    public boolean isIntakePistonEngaged() {
+    public boolean isIntakeEngaged() {
         return xbox.getRawButton(1); // Button A
     }
 
