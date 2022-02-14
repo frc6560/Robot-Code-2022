@@ -5,24 +5,24 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
+import frc.robot.Constants.RobotIds;
 import frc.robot.subsystems.Conveyer;
 
 public class ConveyerCommand extends CommandBase {
-
-  
+  public static interface Controls {
+    boolean isIntakeEngaged();
+  }
 
   private final Conveyer conveyer;
+  private final Controls controls;
 
-  private int debounceTimer = 0;
-  private int spacingTimer = 0;
-  private double output = 0.0;
-
-  /** Creates a new ConveyerCommand. */
-  public ConveyerCommand(Conveyer conveyer) {
+  /** Creates a new ConveyerCommand2. */
+  public ConveyerCommand(Conveyer conveyer, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
+
     addRequirements(conveyer);
     this.conveyer = conveyer;
+    this.controls = controls;
   }
 
   // Called when the command is initially scheduled.
@@ -34,40 +34,15 @@ public class ConveyerCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (checkRun()) {
-      output = 3.0;
+    if (!conveyer.getSensor() && controls.isIntakeEngaged()){
+      conveyer.setConveyer(0.5);
     }
-    else {
-      output = 0.0;
-    }
-
-    if (debounceTimer <= 3) { //Checks if it has been three frames to run
-      debounceTimer += 1;
-    }
-
-    if (debounceTimer > 0) { //Checks if the ball is gone to increase spacing
-      spacingTimer += 1;
-    }
-
-    if (spacingTimer >= 3) { //Checks if spacing is three to reset
-      spacingTimer = 0;
-      debounceTimer = 0;
-    }
-
-    conveyer.setConveyer(output);
-  }
-
-  private boolean checkRun() {
-    if (debounceTimer == 3) {
-      return true;
-    }
-    return false;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    conveyer.setConveyer(0.0);
+    conveyer.setConveyer(0);
   }
 
   // Returns true when the command should end.

@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.CANSparkMax;
@@ -15,6 +16,7 @@ public class Conveyer extends SubsystemBase {
   private final CANSparkMax rollerMotor = new CANSparkMax(RobotIds.ROLLER_MOTOR, MotorType.kBrushless);
   private final CANSparkMax conveyerMotorTop = new CANSparkMax(RobotIds.CONVEYER_MOTOR_TOP, MotorType.kBrushless);
   private final CANSparkMax conveyerMotorBottom = new CANSparkMax(RobotIds.CONVEYER_MOTOR_BOTTOM, MotorType.kBrushless);
+  private final DigitalInput conveyerSensor = new DigitalInput(RobotIds.CONVEYER_SENSOR);
 
   /** Creates a new Conveyer. */
   public Conveyer() {
@@ -35,6 +37,10 @@ public class Conveyer extends SubsystemBase {
     rollerMotor.set(output);
     conveyerMotorTop.set(output);
     conveyerMotorBottom.set(output);
+  }
+
+  public boolean getSensor() {
+    return(conveyerSensor.get());
   }
 
   @Override
