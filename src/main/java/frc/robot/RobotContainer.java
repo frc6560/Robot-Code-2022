@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -23,7 +25,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   private DriveTrain driveTrain = new DriveTrain();
-  private ManualDrive manualDrive;
+  
 
   private Joystick xbox = new Joystick(0);
   private Joystick controlStation = new Joystick(1);
@@ -33,7 +35,7 @@ public class RobotContainer {
   //private AutoUtil path2 = new AutoUtil("paths/output/Test2.wpilib.json", driveTrain);
 
   private AutoUtil linCircle = new AutoUtil("paths/output/Unnamed.wpilib.json", driveTrain);
-
+  private ManualDrive manualDrive;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -43,9 +45,9 @@ public class RobotContainer {
     configureButtonBindings();
     ManualControls controls = new ManualControls(xbox, controlStation);
 
-    //manualDrive = new ManualDrive(driveTrain, controls);
+    manualDrive = new ManualDrive(driveTrain, controls);
 
-    //driveTrain.setDefaultCommand(manualDrive);
+    driveTrain.setDefaultCommand(manualDrive);
   }
 
   /**
@@ -63,7 +65,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    driveTrain.resetOdometry(linCircle.getTrajectory().getInitialPose());
+    driveTrain.resetOdometry(new Pose2d(0.0, 8.2296, new Rotation2d(0, 0)));
     return linCircle.getCommand();
   }
 }

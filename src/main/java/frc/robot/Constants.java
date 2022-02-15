@@ -25,8 +25,8 @@ public final class Constants {
         public static final int XBOX_L_JOY_X = 0;
         public static final int XBOX_L_JOY_Y = 1;
 
-        public static final int XBOX_R_JOY_X = 2;
-        public static final int XBOX_R_JOY_Y = 3;
+        public static final int XBOX_R_JOY_X = 4;
+        public static final int XBOX_R_JOY_Y = 5;
 
         public static final int XBOX_L_BUMPER = 5;
         public static final int XBOX_R_BUMPER = 6;
@@ -85,8 +85,8 @@ public final class Constants {
         public static final double trackWidthMeters = 0.70104;
 
         //Autonomous
-        public static final double kRamseteB = 0;
-        public static final double kRamseteZeta = 0;
+        public static final double kRamseteB = 2;
+        public static final double kRamseteZeta = 0.7;
     }
 
     public static final class ConversionConstants {

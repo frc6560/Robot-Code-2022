@@ -83,7 +83,7 @@ public class DriveTrain extends SubsystemBase {
     gyro = new AHRS(SerialPort.Port.kMXP, SerialDataType.kProcessedData, (byte) 100);
     gyro.calibrate();
 
-    odometer = new DifferentialDriveOdometry(getGyroAngle());
+    odometer = new DifferentialDriveOdometry(new Rotation2d(0,0));
 
     simpleFFL = new SimpleMotorFeedforward(0.12826078, 0.00210809109, 0.0004);
     simpleFFR = new SimpleMotorFeedforward(0.12032416, 0.00209926402, 0.0004);
@@ -113,7 +113,7 @@ public class DriveTrain extends SubsystemBase {
     // This method will be called once per scheduler run
 
     
-    odometer.update(getGyroAngle(), getLPosition(), getRPosition());
+    odometer.update(new Rotation2d(0,0), getLPosition(), getRPosition());
   }
 
   private void setupAllMotors() {
@@ -139,7 +139,7 @@ public class DriveTrain extends SubsystemBase {
 
   public void resetOdometry(Pose2d pose){
     setupAllMotors();
-    odometer.resetPosition(pose, getGyroAngle());
+    odometer.resetPosition(pose, pose.getRotation());
   }
   public double getGyroAngleDegrees() {
     // could multiply this.gyroAngle by 1.03163686 to account for errors associated with gyroscope (From Jack's 2021 code)
@@ -256,6 +256,7 @@ public class DriveTrain extends SubsystemBase {
     return differentialDrive;
   }
   public Pose2d getCurrentPose() {
+    System.out.println(odometer.getPoseMeters());
     return odometer.getPoseMeters();
   }
 
