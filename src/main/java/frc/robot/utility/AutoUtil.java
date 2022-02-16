@@ -12,13 +12,14 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.Constants.PhysicalConstants;
+import frc.robot.commands.LeoRamsete;
 import frc.robot.subsystems.DriveTrain;
 
 /** Add your docs here. */
 public class AutoUtil {
     private Trajectory trajectory;
     private DriveTrain driveTrain;
-    private RamseteCommand command;
+    private LeoRamsete command;
 
     public AutoUtil(String filePath, DriveTrain driveTrain) {
         this.driveTrain = driveTrain;
@@ -29,22 +30,22 @@ public class AutoUtil {
         return trajectory;
     }
 
-    public RamseteCommand getCommand(){
+    public LeoRamsete getCommand(){
         return command;
     }
 
 
-    private RamseteCommand pathToCommand(String filePath) {
+    private LeoRamsete pathToCommand(String filePath) {
         try {
             trajectory = TrajectoryUtil.fromPathweaverJson(Filesystem.getDeployDirectory().toPath().resolve(filePath));
 
-            return new RamseteCommand(
+            return new LeoRamsete(
                 trajectory,
                 driveTrain::getCurrentPose,
                 PhysicalConstants.RAMSETE_CONTROLLER,
                 PhysicalConstants.DIFFERENTIAL_DRIVE_KINEMATICS,
                 (x, y) -> {
-                    System.out.println("uwu");
+                    //System.out.println("uwu");
                     driveTrain.setTankVelocity(x, y);
                 },
                 driveTrain);

@@ -81,7 +81,7 @@ public class ManualDrive extends CommandBase {
 
     driveTrain.setVelocity(y, x);
 
-    System.out.println(driveTrain.getCurrentPose());
+    //System.out.println(driveTrain.getCurrentPose());
   }
 
   // Called once the command ends or is interrupted.

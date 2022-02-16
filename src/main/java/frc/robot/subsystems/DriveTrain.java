@@ -79,9 +79,11 @@ public class DriveTrain extends SubsystemBase {
 
   public DriveTrain() {
     setupAllMotors();
+    differentialDrive.setSafetyEnabled(false);
 
     gyro = new AHRS(SerialPort.Port.kMXP, SerialDataType.kProcessedData, (byte) 100);
     gyro.calibrate();
+    gyro.reset();
 
     odometer = new DifferentialDriveOdometry(new Rotation2d(0,0));
 
@@ -112,8 +114,11 @@ public class DriveTrain extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
+    if(gyro.isCalibrating()){
+      System.out.println("Still Calibarting!!");
+    }
     
-    odometer.update(new Rotation2d(0,0), getLPosition(), getRPosition());
+    odometer.update(gyro.getRotation2d(), getLPosition(), getRPosition());
   }
 
   private void setupAllMotors() {
@@ -140,6 +145,7 @@ public class DriveTrain extends SubsystemBase {
   public void resetOdometry(Pose2d pose){
     setupAllMotors();
     odometer.resetPosition(pose, pose.getRotation());
+    gyro.setAngleAdjustment(gyro.getAngle() - pose.getRotation().getDegrees());
   }
   public double getGyroAngleDegrees() {
     // could multiply this.gyroAngle by 1.03163686 to account for errors associated with gyroscope (From Jack's 2021 code)
@@ -151,11 +157,11 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public double getLPosition() {
-    return this.leftEncoder.getPosition() / DRIVETRAIN_ROTS_PER_FOOT;
+    return this.leftEncoder.getPosition() / (DRIVETRAIN_ROTS_PER_FOOT * ConversionConstants.FEET_PER_METER * 7.98);
   }
 
   public double getRPosition() {
-    return this.rightEncoder.getPosition() / DRIVETRAIN_ROTS_PER_FOOT;
+    return this.rightEncoder.getPosition() / (DRIVETRAIN_ROTS_PER_FOOT * ConversionConstants.FEET_PER_METER * 7.98);
   }
 
   public double getLRpm() {
@@ -212,13 +218,11 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void setLVelocity(double velocity, double acceleration) {
-    System.out.println("DEBUG L VELOCITY: " + this.getLVelocity());
-    setLRPM(velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT, acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
+    setLRPM(9.0 * velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT, acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
   }
 
   public void setRVelocity(double velocity, double acceleration) {
-    System.out.println("DEBUG R VELOCITY: " + this.getRVelocity());
-    setRRPM(velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT, acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
+    setRRPM(9.0 * velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT, acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
   }
 
   public void setVelocity(double forward, double turn) {
@@ -228,17 +232,17 @@ public class DriveTrain extends SubsystemBase {
 
   public void setTankVelocity(double left, double right) {
     
-  left = 10 * left / (DRIVETRAIN_ROTS_PER_FOOT / FEET_PER_METER);
+  left = 10.0 * left / (DRIVETRAIN_ROTS_PER_FOOT / FEET_PER_METER);
 
-  right = 10 * right / (DRIVETRAIN_ROTS_PER_FOOT / FEET_PER_METER);
+  right = 10.0 * right / (DRIVETRAIN_ROTS_PER_FOOT / FEET_PER_METER);
 
     double leftVel = leftTankLimiter.calculate(simpleFFL.calculate(left));
     double rightVel = rightTankLimiter.calculate(simpleFFR.calculate(right));
     
-    System.out.println("Left: " + left + "  vel: " + leftVel);
-    System.out.println("Right: " + right + " vel: " + rightVel);
-    System.out.println("Actual Left RPM: " + getLRpm());
-    System.out.println("Actual Right RPM: " + getRRpm());
+    // System.out.println("Left: " + left + "  vel: " + leftVel);
+    // System.out.println("Right: " + right + " vel: " + rightVel);
+    // System.out.println("Actual Left RPM: " + getLRpm());
+    // System.out.println("Actual Right RPM: " + getRRpm());
     
     leftTarget.update(left);
     rightTarget.update(right);
@@ -256,7 +260,7 @@ public class DriveTrain extends SubsystemBase {
     return differentialDrive;
   }
   public Pose2d getCurrentPose() {
-    System.out.println(odometer.getPoseMeters());
+    //System.out.println(odometer.getPoseMeters());
     return odometer.getPoseMeters();
   }
 

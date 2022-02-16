@@ -92,6 +92,7 @@ public final class Constants {
     public static final class ConversionConstants {
         public static final double SECONDS_PER_MINUTE = 60.0;
         public static final double FEET_PER_METER = 3.28084;
+        public static final Double METERS_TO_FEET = 1.0/FEET_PER_METER;
     }
 
 }

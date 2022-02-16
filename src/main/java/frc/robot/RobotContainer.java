@@ -65,7 +65,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    driveTrain.resetOdometry(new Pose2d(0.0, 8.2296, new Rotation2d(0, 0)));
+    driveTrain.resetOdometry(linCircle.getTrajectory().getInitialPose());
     return linCircle.getCommand();
   }
 }
