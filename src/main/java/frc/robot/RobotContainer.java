@@ -62,7 +62,7 @@ public class RobotContainer {
     manualIntake = new ManualIntake(intake, controls);
     intake.setDefaultCommand(manualIntake);
 
-    conveyerCommand = new ConveyerCommand(conveyer);
+    conveyerCommand = new ConveyerCommand(conveyer, controls);
     conveyer.setDefaultCommand(conveyerCommand);
 
   }

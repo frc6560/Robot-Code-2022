@@ -16,6 +16,7 @@ public class Conveyer extends SubsystemBase {
   private final CANSparkMax rollerMotor = new CANSparkMax(RobotIds.ROLLER_MOTOR, MotorType.kBrushless);
   private final CANSparkMax conveyerMotorTop = new CANSparkMax(RobotIds.CONVEYER_MOTOR_TOP, MotorType.kBrushless);
   private final CANSparkMax conveyerMotorBottom = new CANSparkMax(RobotIds.CONVEYER_MOTOR_BOTTOM, MotorType.kBrushless);
+  
   private final DigitalInput conveyerSensor = new DigitalInput(RobotIds.CONVEYER_SENSOR);
 
   /** Creates a new Conveyer. */

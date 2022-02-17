@@ -7,6 +7,7 @@ package frc.robot.commands.controls.manualdrive;
 import frc.robot.commands.ManualDrive;
 import frc.robot.commands.ManualIntake;
 import frc.robot.commands.ManualShooter;
+import frc.robot.commands.ConveyerCommand;
 
 import frc.robot.utility.NumberStepper;
 import frc.robot.utility.PovNumberStepper;
@@ -19,7 +20,7 @@ import static frc.robot.Constants.*;
 
 
 /** Add your docs here. */
-public class ManualControls implements ManualDrive.Controls, ManualIntake.Controls, ManualShooter.Controls {
+public class ManualControls implements ManualDrive.Controls, ManualIntake.Controls, ManualShooter.Controls, ConveyerCommand.Controls {
 
     private final Joystick xbox;
     private final Joystick controlStation;
