@@ -14,7 +14,8 @@ public class ManualIntake extends CommandBase {
   private final Controls controls;
 
   public static interface Controls {
-    double getIntakeRunning();
+    boolean getIntakeOut();
+    boolean getBallChainReverse();
     boolean isIntakeEngaged();
   }
 
@@ -28,21 +29,21 @@ public class ManualIntake extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    this.intake.setPiston(false);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double output = 0;
-    output = -controls.getIntakeRunning();
-    this.intake.setPiston(controls.isIntakeEngaged());
-    this.intake.setIntakeMotorOutput(output);
-    this.intake.setHopperMotorOutput(output);
+    this.intake.setPiston(controls.getIntakeOut());
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    intake.setPiston(false);
+  }
 
   // Returns true when the command should end.
   @Override

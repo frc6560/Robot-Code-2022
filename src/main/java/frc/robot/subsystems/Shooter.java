@@ -21,7 +21,8 @@ public class Shooter extends SubsystemBase {
   private final TalonFX shooterMotorL;
   private final TalonFX shooterMotorR;
 
-  private final PWM hoodServo;
+  private final PWM hoodServoL;
+  private final PWM hoodServoR;
   private final Encoder hoodEncoder;
 
   private double targetRPM;
@@ -57,10 +58,12 @@ public class Shooter extends SubsystemBase {
     shooterMotorR.setInverted(false);
 
     // Hood setup
-    hoodServo = new PWM(RobotIds.SHOOTER_HOOD_MOTOR);
+    hoodServoL = new PWM(RobotIds.SHOOTER_HOOD_ACTUATOR_LEFT);
+    hoodServoR = new PWM(RobotIds.SHOOTER_HOOD_ACTUATOR_RIGHT);
     hoodEncoder = new Encoder(RobotIds.SHOOTER_HOOD_ENCODER_A, RobotIds.SHOOTER_HOOD_ENCODER_B);
 
-    hoodServo.setBounds(2.0, 1.6, 1.5, 1.4, 1.0);
+    hoodServoL.setBounds(2.0, 1.6, 1.5, 1.4, 1.0);
+    hoodServoR.setBounds(2.0, 1.6, 1.5, 1.4, 1.0);
     hoodEncoder.reset();
 
     ntTable = NetworkTableInstance.getDefault().getTable("Shooter");
@@ -72,7 +75,8 @@ public class Shooter extends SubsystemBase {
     setHoodPos(ntTable.getEntry("Hood Position").getDouble(0.0));
     setShooterRpm(ntTable.getEntry("Shooter RPM").getDouble(0.0));
 
-    hoodServo.setSpeed(Util.getLimited((targetHoodPos - hoodEncoder.getDistance()) / 40.0, 1.0));
+    hoodServoL.setSpeed(Util.getLimited((targetHoodPos - hoodEncoder.getDistance()) / 40.0, 1.0));
+    hoodServoR.setSpeed(Util.getLimited((targetHoodPos - hoodEncoder.getDistance()) / 40.0, 1.0));
 
     shooterMotorL.set(ControlMode.Velocity, targetRPM / PhysicalConstants.RPM_PER_FALCON_UNIT);
     shooterMotorR.set(ControlMode.Velocity, targetRPM / PhysicalConstants.RPM_PER_FALCON_UNIT);

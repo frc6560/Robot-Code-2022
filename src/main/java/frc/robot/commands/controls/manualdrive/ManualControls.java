@@ -7,7 +7,7 @@ package frc.robot.commands.controls.manualdrive;
 import frc.robot.commands.ManualDrive;
 import frc.robot.commands.ManualIntake;
 import frc.robot.commands.ManualShooter;
-import frc.robot.commands.ConveyerCommand;
+import frc.robot.commands.ManualConveyor;
 
 import frc.robot.utility.NumberStepper;
 import frc.robot.utility.PovNumberStepper;
@@ -20,7 +20,7 @@ import static frc.robot.Constants.*;
 
 
 /** Add your docs here. */
-public class ManualControls implements ManualDrive.Controls, ManualIntake.Controls, ManualShooter.Controls, ConveyerCommand.Controls {
+public class ManualControls implements ManualDrive.Controls, ManualIntake.Controls, ManualShooter.Controls, ManualConveyor.Controls {
 
     private final Joystick xbox;
     private final Joystick controlStation;
@@ -71,13 +71,23 @@ public class ManualControls implements ManualDrive.Controls, ManualIntake.Contro
     }
 
     @Override
-    public double getIntakeRunning() {
-        return xbox.getRawAxis(3);
+    public boolean getIntakeOut() {
+        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_BUTTON_1) || controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_1);
     }
 
     @Override
-    public boolean isIntakeEngaged() {
-        return xbox.getRawButton(1); // Button A
+    public boolean isIntakeEngaged(){
+        return getIntakeOut();
+    }
+
+    @Override
+    public boolean getConveyorMotor() {
+        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_BUTTON_3);
+    }
+
+    @Override
+    public boolean getBallChainReverse(){
+        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_BUTTON_1);
     }
 
     @Override
@@ -87,6 +97,6 @@ public class ManualControls implements ManualDrive.Controls, ManualIntake.Contro
     }
 
     public int getLimelightPipeline(){
-        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_5) ? 1 : 0;
+        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_3) ? 1 : 0;
     }
 }

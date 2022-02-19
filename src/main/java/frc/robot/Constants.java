@@ -36,19 +36,14 @@ public final class Constants {
         public static final int XBOX_B_BUTTON = 2;
         public static final int XBOX_A_BUTTON = 1;
 
-        public static final int DRIVER_STATION_TOGGLE_1 = 10;
-        public static final int DRIVER_STATION_TOGGLE_2 = 8;
+        public static final int DRIVER_STATION_TOGGLE_1 = 2;
+        public static final int DRIVER_STATION_TOGGLE_2 = 5;
         public static final int DRIVER_STATION_TOGGLE_3 = 6;
-        public static final int DRIVER_STATION_TOGGLE_4 = 4;
-        public static final int DRIVER_STATION_TOGGLE_5 = 2;
-        public static final int DRIVER_STATION_TOGGLE_6 = 5;
+        public static final int DRIVER_STATION_TOGGLE_4 = 9;
 
-        public static final int DRIVER_STATION_BUTTON_1 = 12;
-        public static final int DRIVER_STATION_BUTTON_2 = 11;
-        public static final int DRIVER_STATION_BUTTON_3 = 9;
-        public static final int DRIVER_STATION_BUTTON_4 = 7;
-        public static final int DRIVER_STATION_BUTTON_5 = 3;
-        public static final int DRIVER_STATION_BUTTON_6 = 1;
+        public static final int DRIVER_STATION_BUTTON_1 = 4;
+        public static final int DRIVER_STATION_BUTTON_2 = 1;
+        public static final int DRIVER_STATION_BUTTON_3 = 3;
 
         public static final int DRIVER_STATION_X_AXIS = 0;
         public static final int DRIVER_STATION_Y_AXIS = 1;
@@ -64,22 +59,22 @@ public final class Constants {
         public static final int DRIVETRAIN_L_FRONT_MOTOR = 19;
         public static final int DRIVETRAIN_L_BACK_MOTOR = 18;
 
-        public static final int ROLLER_MOTOR = -1;
-        public static final int CONVEYER_MOTOR_TOP = -2;
-        public static final int CONVEYER_MOTOR_BOTTOM = -3;
-        public static final int CONVEYER_SENSOR = 2;
+        public static final int CONVEYOR_MOTOR_TOP = 16;
+        public static final int CONVEYOR_MOTOR_BOTTOM = 15;
+        public static final int CONVEYOR_SENSOR = 2;
 
-        public static final int SHOOTER_MOTOR_LEFT = -4;
-        public static final int SHOOTER_MOTOR_RIGHT = -5;
+        public static final int SHOOTER_MOTOR_LEFT = 9;
+        public static final int SHOOTER_MOTOR_RIGHT = 10;
 
-        public static final int SHOOTER_HOOD_MOTOR = -6;
-        public static final int SHOOTER_HOOD_ENCODER_A = -7;
-        public static final int SHOOTER_HOOD_ENCODER_B = -8;
+        public static final int SHOOTER_HOOD_ACTUATOR_LEFT = 8;
+        public static final int SHOOTER_HOOD_ACTUATOR_RIGHT = 11;
+        public static final int SHOOTER_HOOD_ENCODER_A = 8;
+        public static final int SHOOTER_HOOD_ENCODER_B = 11;
 
 
-        public static final int INTAKE_BOTTOM_MOTOR = -1;
-        public static final int INTAKE_SOLENOID = -1;
-        public static final int INTAKE_HOPPER_MOTOR = -1;
+        public static final int INTAKE_MOTOR = 2;
+        public static final int INTAKE_OVERHEAD_MOTOR = 3;
+        public static final int INTAKE_SOLENOID = 0;
     }
 
     public static final class PhysicalConstants {
