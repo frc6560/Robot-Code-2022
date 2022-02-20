@@ -15,13 +15,12 @@ public class ManualShooter extends CommandBase {
     boolean isShooting();
   }
 
-
-
   private Shooter shooter;
-  private Controls controls;
+  private ManualControls controls;
   private Limelight limelight;
+  private final double maxShooterSpeed = 5000;
 
-  public ManualShooter(Shooter shooter, Controls controls, Limelight limelight) {
+  public ManualShooter(Shooter shooter, ManualControls controls, Limelight limelight) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
     this.controls = controls;
@@ -42,8 +41,12 @@ public class ManualShooter extends CommandBase {
   @Override
   public void execute() {
     if (controls.isShooting()) {
-      shooter.setShooterRpm(getShooterRpm(limelight.getDistance()));
-      shooter.setHoodPos(getShooterAngle(limelight.getDistance()));
+      // shooter.setShooterRpm(getShooterRpm(limelight.getDistance()));
+      // shooter.setHoodPos(getShooterAngle(limelight.getDistance()));
+
+      shooter.setHoodPos(shooter.getHoodPos() + controls.shooterHoodTest()* 0.5);
+      shooter.setTurretPos(shooter.getTurretPos() + controls.shooterTurretTest() * 50);
+      shooter.setShooterRpm(controls.shooterRPMTest() * maxShooterSpeed);
     }
     else {
       shooter.setShooterRpm(0.0);

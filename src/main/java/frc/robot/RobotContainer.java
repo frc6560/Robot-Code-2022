@@ -44,12 +44,13 @@ public class RobotContainer {
 
   private final Joystick xbox = new Joystick(0);
   private final Joystick controlStation = new Joystick(1);
+  private final Joystick xbox2 = new Joystick(2);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    ManualControls controls = new ManualControls(xbox, controlStation);
+    ManualControls controls = new ManualControls(xbox, controlStation, xbox2);
 
     manualDrive = new ManualDrive(driveTrain, controls);
     driveTrain.setDefaultCommand(manualDrive);

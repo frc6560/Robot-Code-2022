@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -21,12 +23,15 @@ public class Shooter extends SubsystemBase {
   private final TalonFX shooterMotorL;
   private final TalonFX shooterMotorR;
 
+  private final CANSparkMax turretMotor;
+
   private final PWM hoodServoL;
   private final PWM hoodServoR;
   private final Encoder hoodEncoder;
 
   private double targetRPM;
   private double targetHoodPos;
+  private double targetTurretPos;
 
   private NetworkTable ntTable;
 
@@ -35,10 +40,14 @@ public class Shooter extends SubsystemBase {
   public Shooter() {
     targetRPM = 0;
     targetHoodPos = 0;
+    targetTurretPos = 0;
 
     // Shooter setup
     shooterMotorL = new TalonFX(RobotIds.SHOOTER_MOTOR_LEFT);
     shooterMotorR = new TalonFX(RobotIds.SHOOTER_MOTOR_RIGHT);
+
+    turretMotor = new CANSparkMax(RobotIds.SHOOTER_TURRET_MOTOR, MotorType.kBrushless);
+
 
     shooterMotorL.configFactoryDefault();
     shooterMotorR.configFactoryDefault();
@@ -80,10 +89,20 @@ public class Shooter extends SubsystemBase {
 
     shooterMotorL.set(ControlMode.Velocity, targetRPM / PhysicalConstants.RPM_PER_FALCON_UNIT);
     shooterMotorR.set(ControlMode.Velocity, targetRPM / PhysicalConstants.RPM_PER_FALCON_UNIT);
+
+    if(Math.abs(getHoodPos()-targetHoodPos) > 5){
+      turretMotor.set(0.3);
+    }else{
+      turretMotor.set(0.0);
+    }
   }
 
   public void setHoodPos(double pos) {
     targetHoodPos = pos - PhysicalConstants.MAX_HOOD_ENCODER_DISTANCE;
+  }
+
+  public void setTurretPos(double pos){
+    targetTurretPos = pos;
   }
 
   public void setShooterRpm(double rpm) {
@@ -96,5 +115,9 @@ public class Shooter extends SubsystemBase {
 
   public double getShooterRpm() {
       return shooterMotorL.getSelectedSensorVelocity() * PhysicalConstants.RPM_PER_FALCON_UNIT;
+  }
+
+  public double getTurretPos(){
+    return turretMotor.getEncoder().getPosition();
   }
 }

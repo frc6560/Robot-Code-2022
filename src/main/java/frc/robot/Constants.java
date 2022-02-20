@@ -70,6 +70,7 @@ public final class Constants {
         public static final int SHOOTER_HOOD_ACTUATOR_RIGHT = 11;
         public static final int SHOOTER_HOOD_ENCODER_A = 8;
         public static final int SHOOTER_HOOD_ENCODER_B = 11;
+        public static final int SHOOTER_TURRET_MOTOR = 4;
 
 
         public static final int INTAKE_MOTOR = 2;

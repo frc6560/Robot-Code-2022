@@ -24,14 +24,17 @@ public class ManualControls implements ManualDrive.Controls, ManualIntake.Contro
 
     private final Joystick xbox;
     private final Joystick controlStation;
+    
+    private final Joystick xbox2;
 
     private final PovNumberStepper speed;
     private final PovNumberStepper turnSpeed;
 
 
-    public ManualControls(Joystick xbox, Joystick controlStation) {
+    public ManualControls(Joystick xbox, Joystick controlStation, Joystick xbox2) {
         this.xbox = xbox;
         this.controlStation = controlStation;
+        this.xbox2 = xbox2;
 
         this.speed = new PovNumberStepper(
             new NumberStepper(0.5, 0.1, PhysicalConstants.MAX_SPEED, 0.1),
@@ -99,4 +102,16 @@ public class ManualControls implements ManualDrive.Controls, ManualIntake.Contro
     public int getLimelightPipeline(){
         return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_3) ? 1 : 0;
     }
+
+    public double shooterTurretTest(){
+        return xbox2.getRawAxis(ControllerIds.XBOX_L_JOY_X);
+    }
+    public double shooterHoodTest(){
+        return xbox2.getRawAxis(ControllerIds.XBOX_L_JOY_Y);
+    }
+    public double shooterRPMTest(){
+        return xbox2.getRawAxis(ControllerIds.XBOX_R_TRIGGER);
+    }
+
+
 }
