@@ -37,6 +37,11 @@ public class ManualIntake extends CommandBase {
   @Override
   public void execute() {
     this.intake.setPiston(controls.getIntakeOut());
+    if(controls.getBallChainReverse()){
+      intake.setReversed(true);
+    } else {
+      intake.setReversed(false);
+    }
   }
 
   // Called once the command ends or is interrupted.

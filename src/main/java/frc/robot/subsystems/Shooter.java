@@ -58,8 +58,8 @@ public class Shooter extends SubsystemBase {
     shooterMotorR.setInverted(false);
 
     // Hood setup
-    hoodServoL = new PWM(RobotIds.SHOOTER_HOOD_ACTUATOR_LEFT);
-    hoodServoR = new PWM(RobotIds.SHOOTER_HOOD_ACTUATOR_RIGHT);
+    hoodServoL = new PWM(1);
+    hoodServoR = new PWM(2);
     hoodEncoder = new Encoder(RobotIds.SHOOTER_HOOD_ENCODER_A, RobotIds.SHOOTER_HOOD_ENCODER_B);
 
     hoodServoL.setBounds(2.0, 1.6, 1.5, 1.4, 1.0);

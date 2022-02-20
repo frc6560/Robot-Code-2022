@@ -23,7 +23,10 @@ public class ManualConveyor extends CommandBase {
 
   private final NetworkTable ntTable;
   private NetworkTableEntry ntConveyorSpeed;
+  private NetworkTableEntry ntTargetOverHead;
   private double conveyorSpeed;
+  private double overHeadSpeed;
+  
 
   /** Creates a new ConveyorCommand2. */
   public ManualConveyor(Conveyor conveyor, Controls controls) {
@@ -37,6 +40,10 @@ public class ManualConveyor extends CommandBase {
 
     ntConveyorSpeed = ntTable.getEntry("Conveyor Speed");
     ntConveyorSpeed.setDouble(0.3);
+
+    ntTargetOverHead = ntTable.getEntry("Over-head Speed");
+    ntTargetOverHead.setDouble(0.3);
+
   }
 
   // Called when the command is initially scheduled.
@@ -49,13 +56,22 @@ public class ManualConveyor extends CommandBase {
   @Override
   public void execute() {
     conveyorSpeed = ntConveyorSpeed.getDouble(0.0);
+    overHeadSpeed = ntTargetOverHead.getDouble(0.0);
 
     if (controls.getBallChainReverse()){
       conveyor.setConveyor(-conveyorSpeed);
+      conveyor.setOverHead(-overHeadSpeed);
     } else if (controls.getConveyorMotor() || controls.isIntakeEngaged()){
       if(!conveyor.getSensor()){
         conveyor.setConveyor(conveyorSpeed);
+        conveyor.setOverHead(overHeadSpeed);
+      }else{
+        conveyor.setConveyor(0.0);
+        conveyor.setOverHead(0.0);
       }
+    } else {
+      conveyor.setConveyor(0.0);
+      conveyor.setOverHead(0.0);
     }
   }
 

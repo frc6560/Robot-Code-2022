@@ -87,7 +87,7 @@ public class ManualControls implements ManualDrive.Controls, ManualIntake.Contro
 
     @Override
     public boolean getBallChainReverse(){
-        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_BUTTON_1);
+        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_BUTTON_2);
     }
 
     @Override

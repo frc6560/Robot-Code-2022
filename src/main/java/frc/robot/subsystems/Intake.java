@@ -19,17 +19,16 @@ import frc.robot.Constants.RobotIds;
 public class Intake extends SubsystemBase {
   private final CANSparkMax intakeMotor = new CANSparkMax(RobotIds.INTAKE_MOTOR, MotorType.kBrushless);
   private final Solenoid intakePiston = new Solenoid(PneumaticsModuleType.CTREPCM, RobotIds.INTAKE_SOLENOID);
-  private final CANSparkMax overHeadMotor = new CANSparkMax(RobotIds.INTAKE_OVERHEAD_MOTOR, MotorType.kBrushless);
 
-  private final int minFramesDown = 30;
+  private final int minFramesDown = 35;
 
   private double targetIntakeMotorOutput = 0.0;
-  private double targetOverHeadMotorOutput = 0.0;
+
+  private boolean reversed = false;
 
   private final NetworkTable ntTable;
 
   private NetworkTableEntry ntTargetIntake;
-  private NetworkTableEntry ntTargetOverHead;
 
   private int downFrames = 0;
 
@@ -37,26 +36,16 @@ public class Intake extends SubsystemBase {
   public Intake() {
     intakeMotor.restoreFactoryDefaults();
     intakeMotor.setOpenLoopRampRate(0.1);
-
-    overHeadMotor.restoreFactoryDefaults();
-    overHeadMotor.setOpenLoopRampRate(0.1);
+    intakeMotor.setInverted(true);
     
     ntTable = NetworkTableInstance.getDefault().getTable("Intake");
 
     ntTargetIntake = ntTable.getEntry("Intake Speed");
     ntTargetIntake.setDouble(0.3);
-
-    ntTargetOverHead = ntTable.getEntry("Over-head Speed");
-    ntTargetOverHead.setDouble(0.3);
-
   }
 
   public void setIntakeMotorOutput(double output) {
     targetIntakeMotorOutput = output;
-  }
-
-  public void setOverHeadMotorOutput(double output) {
-    targetOverHeadMotorOutput = output;
   }
 
   public void setPiston(boolean out) {
@@ -65,8 +54,7 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    this.targetIntakeMotorOutput = ntTargetIntake.getDouble(0.0);
-    this.targetOverHeadMotorOutput = ntTargetOverHead.getDouble(0.0);
+    this.targetIntakeMotorOutput = ntTargetIntake.getDouble(0.0) * (reversed ? -1 : 1); // go reverse if "reversed" true
     
     // This method will be called once per scheduler run
     if (intakePiston.get()) {
@@ -76,7 +64,6 @@ public class Intake extends SubsystemBase {
     }
     
     intakeMotor.set(canRunIntakeMotor() ? targetIntakeMotorOutput : 0.0);
-    overHeadMotor.set(canRunIntakeMotor() ? targetOverHeadMotorOutput : 0.0);
   }
   
   private boolean canRunIntakeMotor() {
@@ -85,5 +72,9 @@ public class Intake extends SubsystemBase {
     } else {
       return false;
     }
+  }
+  
+  public void setReversed(boolean state){
+    this.reversed = state;
   }
 }
