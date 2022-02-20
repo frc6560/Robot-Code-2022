@@ -57,6 +57,7 @@ public class ManualDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println(driveTrain.getCurrentPose().getRotation());
     double speed = controls.getSpeed();
     double turnSpeed = controls.getTurnSpeed();
 

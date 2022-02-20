@@ -1,7 +1,7 @@
 {
   "SysId": {
-    "Analysis Type": "General Mechanism",
-    "AnalyzerJSONLocation": "C:\\Users\\space\\Downloads\\sysid_data20220114-155309.json",
+    "Analysis Type": "Drivetrain",
+    "AnalyzerJSONLocation": "C:\\Users\\Leo Jiang\\Documents\\FRC\\New folder\\sysid_data20220219-123124.json",
     "NetworkTables Settings": {
       "serverTeam": "6560"
     },

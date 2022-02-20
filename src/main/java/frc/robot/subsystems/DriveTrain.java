@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utility.NetworkTable.NtValueDisplay;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -85,7 +86,7 @@ public class DriveTrain extends SubsystemBase {
     gyro.calibrate();
     gyro.reset();
 
-    odometer = new DifferentialDriveOdometry(new Rotation2d(0,0));
+    odometer = new DifferentialDriveOdometry(gyro.getRotation2d());
 
     simpleFFL = new SimpleMotorFeedforward(0.12826078, 0.00210809109, 0.0004);
     simpleFFR = new SimpleMotorFeedforward(0.12032416, 0.00209926402, 0.0004);
@@ -97,28 +98,29 @@ public class DriveTrain extends SubsystemBase {
       .add("r", this::getGyroAngleDegrees);
       
 
-    ntDispTab("Drivetrain")
-      .add("Left Velocity", this::getLVelocity)
-      .add("Right Velocity", this::getRVelocity)
-      .add("Left RPM", this::getLRpm)
-      .add("Right RPM", this::getRRpm);
+    // ntDispTab("Drivetrain")
+    //   .add("Left Velocity", this::getLVelocity)
+    //   .add("Right Velocity", this::getRVelocity)
+    //   .add("Left RPM", this::getLRpm)
+    //   .add("Right RPM", this::getRRpm);
     
     leftTarget = new NtValueDisplay<Double>("Drivetrain", "left target");
     rightTarget = new NtValueDisplay<Double>("Drivetrain", "right target");
 
-
+    // leftMotorGroup.setInverted(false);
+    // rightMotorGroup.setInverted(false);
       
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
     if(gyro.isCalibrating()){
       System.out.println("Still Calibarting!!");
     }
     
     odometer.update(gyro.getRotation2d(), getLPosition(), getRPosition());
+    // System.out.println(getCurrentPose());
   }
 
   private void setupAllMotors() {
@@ -144,8 +146,7 @@ public class DriveTrain extends SubsystemBase {
 
   public void resetOdometry(Pose2d pose){
     setupAllMotors();
-    odometer.resetPosition(pose, pose.getRotation());
-    gyro.setAngleAdjustment(gyro.getAngle() - pose.getRotation().getDegrees());
+    odometer.resetPosition(pose, gyro.getRotation2d());
   }
   public double getGyroAngleDegrees() {
     // could multiply this.gyroAngle by 1.03163686 to account for errors associated with gyroscope (From Jack's 2021 code)
@@ -171,12 +172,27 @@ public class DriveTrain extends SubsystemBase {
     return rightEncoder.getVelocity();
   }
 
-  public double getLVelocity() {
+  public double getLVelocityFeet() {
     return getLRpm() / DRIVETRAIN_ROTS_PER_FOOT / SECONDS_PER_MINUTE;
   }
 
-  public double getRVelocity() {
+  public double getLVelocityMeters(){
+    //System.out.println(getLRpm());
+    return getLRpm() * PhysicalConstants.RPMTOMETERSPERSEC;
+  }
+
+  public double getRVelocityFeet() {
     return getRRpm() / DRIVETRAIN_ROTS_PER_FOOT / SECONDS_PER_MINUTE;
+  }
+
+  public double getRVelocityMeters(){
+    return getRRpm() * PhysicalConstants.RPMTOMETERSPERSEC;
+  }
+  
+  public DifferentialDriveWheelSpeeds getVelocity(){
+    System.out.println("Current speed:");
+    System.out.println(new DifferentialDriveWheelSpeeds(getLVelocityMeters(), getRVelocityMeters()));
+    return new DifferentialDriveWheelSpeeds(getLVelocityMeters(), getRVelocityMeters());
   }
 
   public double getLVolts() {
@@ -185,6 +201,15 @@ public class DriveTrain extends SubsystemBase {
 
   public double getRVolts() {
     return rightMotors[0].getAppliedOutput();
+  }
+
+  public void setTankVolts(double lVolts, double rVolts){
+    System.out.println("lVolts: " + lVolts + " rVolts: " + rVolts);
+    //System.out.println("lActual: " + leftMotorGroup.get() + " rActual: " + rightMotorGroup.get());
+    double constant1 = 1.0;
+    leftMotorGroup.setVoltage(lVolts);
+    rightMotorGroup.setVoltage(rVolts);
+    differentialDrive.feed();
   }
 
   public void setLRPM(double rpm){

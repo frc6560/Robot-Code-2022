@@ -72,7 +72,8 @@ public final class Constants {
     public static final class PhysicalConstants {
         public static final RamseteController RAMSETE_CONTROLLER = new RamseteController(PhysicalConstants.kRamseteB, PhysicalConstants.kRamseteZeta);
         public static final DifferentialDriveKinematics DIFFERENTIAL_DRIVE_KINEMATICS = new DifferentialDriveKinematics(PhysicalConstants.trackWidthMeters);
-
+        public static final double RPMTOMETERSPERSEC = (((0.5 * Math.PI) * 0.305) / 60.0) / 10.38; 
+        public static final double ROTATIONSTOMETERS = ((0.5 * Math.PI) * 0.305) / 10.38;
         // TODO: change this constant;
         public static final double DRIVETRAIN_ROTS_PER_FOOT = 1.0 / ((6.0 / 12.0) * Math.PI);
 
@@ -85,8 +86,8 @@ public final class Constants {
         public static final double trackWidthMeters = 0.70104;
 
         //Autonomous
-        public static final double kRamseteB = 2;
-        public static final double kRamseteZeta = 0.7;
+        public static final double kRamseteB = 2; //2
+        public static final double kRamseteZeta = 0.7; //0.7
     }
 
     public static final class ConversionConstants {

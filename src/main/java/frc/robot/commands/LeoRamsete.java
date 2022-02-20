@@ -167,7 +167,10 @@ public class LeoRamsete extends CommandBase {
     var targetWheelSpeeds =
         m_kinematics.toWheelSpeeds(
             m_follower.calculate(m_pose.get(), m_trajectory.sample(curTime)));
-
+    
+    //System.out.println("-------------------------------");
+    System.out.println("Target Speed: ");
+    System.out.println(targetWheelSpeeds);
     System.out.println("Current: " + m_pose.get());
     System.out.println(" Trajectory: " + m_trajectory.sample(curTime).poseMeters);
     System.out.println("-------------------------------");
