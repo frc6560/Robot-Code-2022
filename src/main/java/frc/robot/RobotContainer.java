@@ -40,7 +40,7 @@ public class RobotContainer {
   private final ManualIntake manualIntake;
 
   private final Conveyor conveyor = new Conveyor();
-  private final ManualConveyor conveyorCommand;
+  private final ManualConveyor manualConveyor;
 
   private final Joystick xbox = new Joystick(0);
   private final Joystick controlStation = new Joystick(1);
@@ -62,8 +62,8 @@ public class RobotContainer {
     manualIntake = new ManualIntake(intake, controls);
     intake.setDefaultCommand(manualIntake);
 
-    conveyorCommand = new ManualConveyor(conveyor, controls);
-    conveyor.setDefaultCommand(conveyorCommand);
+    manualConveyor = new ManualConveyor(conveyor, controls);
+    conveyor.setDefaultCommand(manualConveyor);
 
   }
 
