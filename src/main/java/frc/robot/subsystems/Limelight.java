@@ -13,7 +13,7 @@ import frc.robot.commands.controls.manualdrive.ManualControls;
 public class Limelight extends SubsystemBase {
   /** Creates a new Limelight. */
   public static interface Controls {
-    int getPipeline();
+    int getLimelightPipeline();
   }
     
   private final NetworkTableEntry ntX = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx");
@@ -21,10 +21,10 @@ public class Limelight extends SubsystemBase {
   private final NetworkTableEntry ntV = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv");
   private final NetworkTableEntry ntPipeline = NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline");
 
-  private final ManualControls controls;
+  private final Controls controls;
   private boolean forceOff = true;
 
-  public Limelight(ManualControls controls) {
+  public Limelight(Controls controls) {
     this.controls = controls;
     setForceOff(true);
 

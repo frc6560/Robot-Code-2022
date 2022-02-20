@@ -13,14 +13,17 @@ public class ManualShooter extends CommandBase {
 
   public static interface Controls {
     boolean isShooting();
+    double shooterHoodTest();
+    double shooterTurretTest();
+    double shooterRPMTest();
   }
 
   private Shooter shooter;
-  private ManualControls controls;
+  private Controls controls;
   private Limelight limelight;
   private final double maxShooterSpeed = 5000;
 
-  public ManualShooter(Shooter shooter, ManualControls controls, Limelight limelight) {
+  public ManualShooter(Shooter shooter, Controls controls, Limelight limelight) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
     this.controls = controls;
@@ -44,7 +47,7 @@ public class ManualShooter extends CommandBase {
       // shooter.setShooterRpm(getShooterRpm(limelight.getDistance()));
       // shooter.setHoodPos(getShooterAngle(limelight.getDistance()));
 
-      shooter.setHoodPos(shooter.getHoodPos() + controls.shooterHoodTest()* 0.5);
+      shooter.setHoodPos(shooter.getHoodPos() + controls.shooterHoodTest() * 0.5);
       shooter.setTurretPos(shooter.getTurretPos() + controls.shooterTurretTest());
       shooter.setShooterRpm(controls.shooterRPMTest() * maxShooterSpeed);
     }

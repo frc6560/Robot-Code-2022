@@ -20,8 +20,7 @@ import frc.robot.Constants.*;
 public class Climb extends SubsystemBase {
   /** Creates a new Climb. */
 
-  private final Solenoid leftPiston = new Solenoid(PneumaticsModuleType.CTREPCM, RobotIds.CLIMB_LEFT_PISTON);
-  private final Solenoid rightPiston = new Solenoid(PneumaticsModuleType.CTREPCM, RobotIds.CLIMB_RIGHT_PISTON);
+  private final Solenoid piston = new Solenoid(PneumaticsModuleType.CTREPCM, RobotIds.CLIMB_PISTON);
 
   private final CANSparkMax rotatorMotor = new CANSparkMax(RobotIds.CLIMB_ROTATOR_MOTOR, MotorType.kBrushless);
   private final CANSparkMax leftExtensionMotor = new CANSparkMax(RobotIds.CLIMB_LEFT_EXTENSION_MOTOR, MotorType.kBrushless);
@@ -29,8 +28,8 @@ public class Climb extends SubsystemBase {
 
   private final SlewRateLimiter accelLimiter = new SlewRateLimiter(3);
 
-  private final double EPSILON = 5.08;
-  private final double compConstant = 1.06;
+  private static final double EPSILON = 5.08;
+  private static final double compConstant = 1.06;
 
   private double targetVelocity;
 
@@ -60,7 +59,7 @@ public class Climb extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    double diff = checkDifference();
+    double diff = getLeftPosition() - getRightPosition();
     
     if (diff > 0) setLeftVelocity(targetVelocity * diff * compConstant);
     if (diff < 0) setRightVelocity(targetVelocity * -diff * compConstant);
@@ -98,9 +97,8 @@ public class Climb extends SubsystemBase {
     rightExtensionMotor.set(0);
   }
 
-  public void extendPistons(boolean extended) {
-    leftPiston.set(extended);
-    rightPiston.set(extended);
+  public void setPiston(boolean extended) {
+    piston.set(extended);
   }
 
   public void runLeftExtensionMotor(double output) {
@@ -138,10 +136,6 @@ public class Climb extends SubsystemBase {
 
   public void setLeftPosition(double position) {
     leftExtensionMotor.getPIDController().setReference(position, ControlType.kPosition);
-  }
-
-  public double checkDifference() {
-    return getLeftPosition() - getRightPosition();
   }
 
 }

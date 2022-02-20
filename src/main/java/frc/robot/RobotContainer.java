@@ -7,11 +7,13 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.ManualClimb;
 import frc.robot.commands.ManualConveyor;
 import frc.robot.commands.ManualDrive;
 import frc.robot.commands.ManualIntake;
 import frc.robot.commands.ManualShooter;
 import frc.robot.commands.controls.manualdrive.ManualControls;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
@@ -42,6 +44,9 @@ public class RobotContainer {
   private final Conveyor conveyor = new Conveyor();
   private final ManualConveyor manualConveyor;
 
+  private final Climb climb = new Climb();
+  private final ManualClimb manualClimb;
+
   private final Joystick xbox = new Joystick(0);
   private final Joystick controlStation = new Joystick(1);
   private final Joystick xbox2 = new Joystick(2);
@@ -66,6 +71,8 @@ public class RobotContainer {
     manualConveyor = new ManualConveyor(conveyor, controls);
     conveyor.setDefaultCommand(manualConveyor);
 
+    manualClimb = new ManualClimb(climb,controls);
+    climb.setDefaultCommand(manualClimb);
   }
 
   /**
