@@ -104,10 +104,10 @@ public class ManualControls implements ManualDrive.Controls, ManualIntake.Contro
     }
 
     public double shooterTurretTest(){
-        return xbox2.getRawAxis(ControllerIds.XBOX_L_JOY_X);
+        return xbox2.getRawButton(ControllerIds.XBOX_R_BUMPER) ? 1 : xbox2.getRawButton(ControllerIds.XBOX_L_BUMPER) ? -1 : 0 ;
     }
     public double shooterHoodTest(){
-        return xbox2.getRawAxis(ControllerIds.XBOX_L_JOY_Y);
+        return xbox2.getRawAxis(ControllerIds.XBOX_R_JOY_Y);
     }
     public double shooterRPMTest(){
         return xbox2.getRawAxis(ControllerIds.XBOX_R_TRIGGER);

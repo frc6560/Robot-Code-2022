@@ -39,14 +39,16 @@ public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   public Shooter() {
     targetRPM = 0;
-    targetHoodPos = 0;
     targetTurretPos = 0;
+    targetHoodPos = 0;
+
 
     // Shooter setup
     shooterMotorL = new TalonFX(RobotIds.SHOOTER_MOTOR_LEFT);
     shooterMotorR = new TalonFX(RobotIds.SHOOTER_MOTOR_RIGHT);
 
     turretMotor = new CANSparkMax(RobotIds.SHOOTER_TURRET_MOTOR, MotorType.kBrushless);
+    turretMotor.getEncoder().setPosition(0.0);
 
 
     shooterMotorL.configFactoryDefault();
@@ -63,8 +65,8 @@ public class Shooter extends SubsystemBase {
     shooterMotorR.config_kI(0, 0.0);
     shooterMotorR.config_kD(0, 0.0);  
 
-    shooterMotorL.setInverted(true);
-    shooterMotorR.setInverted(false);
+    shooterMotorL.setInverted(false);
+    shooterMotorR.setInverted(true);
 
     // Hood setup
     hoodServoL = new PWM(1);
@@ -81,19 +83,21 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    setHoodPos(ntTable.getEntry("Hood Position").getDouble(0.0));
-    setShooterRpm(ntTable.getEntry("Shooter RPM").getDouble(0.0));
 
     hoodServoL.setSpeed(Util.getLimited((targetHoodPos - hoodEncoder.getDistance()) / 40.0, 1.0));
     hoodServoR.setSpeed(Util.getLimited((targetHoodPos - hoodEncoder.getDistance()) / 40.0, 1.0));
 
-    shooterMotorL.set(ControlMode.Velocity, targetRPM / PhysicalConstants.RPM_PER_FALCON_UNIT);
-    shooterMotorR.set(ControlMode.Velocity, targetRPM / PhysicalConstants.RPM_PER_FALCON_UNIT);
+    shooterMotorL.set(ControlMode.PercentOutput, targetRPM);
+    shooterMotorR.set(ControlMode.PercentOutput, targetRPM);
+    System.out.println("rpm " + targetRPM);
 
-    if(Math.abs(getHoodPos()-targetHoodPos) > 5){
-      turretMotor.set(0.3);
-    }else{
+    // shooterMotorL.set(ControlMode.PercentOutput, 0.5);
+    
+
+    if(Math.abs(getTurretPos()-targetTurretPos) < 1){
       turretMotor.set(0.0);
+    }else{
+      turretMotor.set(0.05 * Math.copySign(1, getTurretPos()-targetTurretPos));
     }
   }
 

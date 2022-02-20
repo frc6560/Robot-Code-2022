@@ -63,8 +63,8 @@ public final class Constants {
         public static final int CONVEYOR_MOTOR_BOTTOM = 15;
         public static final int CONVEYOR_SENSOR = 2;
 
-        public static final int SHOOTER_MOTOR_LEFT = 9;
-        public static final int SHOOTER_MOTOR_RIGHT = 10;
+        public static final int SHOOTER_MOTOR_LEFT = 21;
+        public static final int SHOOTER_MOTOR_RIGHT = 22;
 
         public static final int SHOOTER_HOOD_ACTUATOR_LEFT = 8;
         public static final int SHOOTER_HOOD_ACTUATOR_RIGHT = 11;

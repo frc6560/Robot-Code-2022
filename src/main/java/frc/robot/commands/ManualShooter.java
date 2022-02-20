@@ -40,17 +40,18 @@ public class ManualShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (controls.isShooting()) {
+    if (true) {
       // shooter.setShooterRpm(getShooterRpm(limelight.getDistance()));
       // shooter.setHoodPos(getShooterAngle(limelight.getDistance()));
 
       shooter.setHoodPos(shooter.getHoodPos() + controls.shooterHoodTest()* 0.5);
-      shooter.setTurretPos(shooter.getTurretPos() + controls.shooterTurretTest() * 50);
+      shooter.setTurretPos(shooter.getTurretPos() + controls.shooterTurretTest());
       shooter.setShooterRpm(controls.shooterRPMTest() * maxShooterSpeed);
     }
     else {
       shooter.setShooterRpm(0.0);
     }
+
   }
 
   public double getShooterRpm(double distance) {
