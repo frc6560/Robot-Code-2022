@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.*;
 import frc.robot.utility.Util;
+import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
 public class Shooter extends SubsystemBase {
   private final TalonFX shooterMotorL;
@@ -70,7 +71,7 @@ public class Shooter extends SubsystemBase {
 
     // Hood setup
     hoodServoL = new PWM(1);
-    hoodServoR = new PWM(2);
+    hoodServoR = new PWM(0);
     hoodEncoder = new Encoder(RobotIds.SHOOTER_HOOD_ENCODER_A, RobotIds.SHOOTER_HOOD_ENCODER_B);
 
     hoodServoL.setBounds(2.0, 1.6, 1.5, 1.4, 1.0);
@@ -78,18 +79,20 @@ public class Shooter extends SubsystemBase {
     hoodEncoder.reset();
 
     ntTable = NetworkTableInstance.getDefault().getTable("Shooter");
+
+    ntDispTab("Shooter")
+      .add("Actual RPM", this::getShooterRpm);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
 
-    hoodServoL.setSpeed(Util.getLimited((targetHoodPos - hoodEncoder.getDistance()) / 40.0, 1.0));
-    hoodServoR.setSpeed(Util.getLimited((targetHoodPos - hoodEncoder.getDistance()) / 40.0, 1.0));
+    hoodServoL.setPosition(targetHoodPos);
+    hoodServoR.setPosition(targetHoodPos);
 
-    shooterMotorL.set(ControlMode.PercentOutput, targetRPM);
-    shooterMotorR.set(ControlMode.PercentOutput, targetRPM);
-    System.out.println("rpm " + targetRPM);
+    shooterMotorL.set(ControlMode.Velocity, targetRPM);
+    shooterMotorR.set(ControlMode.Velocity, targetRPM);
 
     // shooterMotorL.set(ControlMode.PercentOutput, 0.5);
     
@@ -102,7 +105,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setHoodPos(double pos) {
-    targetHoodPos = pos - PhysicalConstants.MAX_HOOD_ENCODER_DISTANCE;
+    targetHoodPos = pos;
   }
 
   public void setTurretPos(double pos){
@@ -114,7 +117,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getHoodPos() {
-      return hoodEncoder.getDistance() + PhysicalConstants.MAX_HOOD_ENCODER_DISTANCE;
+      return hoodEncoder.getDistance();
   }
 
   public double getShooterRpm() {

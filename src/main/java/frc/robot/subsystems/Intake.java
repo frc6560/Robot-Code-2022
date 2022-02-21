@@ -41,7 +41,7 @@ public class Intake extends SubsystemBase {
     ntTable = NetworkTableInstance.getDefault().getTable("Intake");
 
     ntTargetIntake = ntTable.getEntry("Intake Speed");
-    ntTargetIntake.setDouble(0.3);
+    ntTargetIntake.setDouble(0.45);
   }
 
   public void setIntakeMotorOutput(double output) {

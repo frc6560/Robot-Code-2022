@@ -38,8 +38,8 @@ public class Limelight extends SubsystemBase {
    * 
    * @return distance to target from center of robot
    */
-  public double getDistance() { // TODO calibrate this
-    return 3.457 / Math.tan(Math.toRadians(23.6338 + ntY.getDouble(0.0)));
+  public double getDistance() {
+    return 3.457 / Math.tan(Math.toRadians(50.0 + ntY.getDouble(0.0))); //TODO: Seriously calibrate this <-------- 2/20/2022 bro fr suck it
   }
 
   public double getAngle() {
@@ -47,7 +47,7 @@ public class Limelight extends SubsystemBase {
   }
 
   public boolean hasTarget(){
-    return ntV.getDouble(0.0) == 1.0 ? true : false;
+    return ntV.getDouble(0.0) == 1.0;
   }
 
   public void setForceOff(boolean value) {

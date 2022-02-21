@@ -22,8 +22,8 @@ public final class Constants {
         public static final int XBOX_L_JOY_X = 0;
         public static final int XBOX_L_JOY_Y = 1;
 
-        public static final int XBOX_R_JOY_X = 2;
-        public static final int XBOX_R_JOY_Y = 3;
+        public static final int XBOX_R_JOY_X = 4;
+        public static final int XBOX_R_JOY_Y = 5;
 
         public static final int XBOX_L_BUMPER = 5;
         public static final int XBOX_R_BUMPER = 6;
@@ -77,10 +77,10 @@ public final class Constants {
         public static final int INTAKE_OVERHEAD_MOTOR = 3;
         public static final int INTAKE_SOLENOID = 0;
 
-        public static final int CLIMB_PISTON = -2;
-        public static final int CLIMB_ROTATOR_MOTOR = -3;
-        public static final int CLIMB_LEFT_EXTENSION_MOTOR = -4;
-        public static final int CLIMB_RIGHT_EXTENSION_MOTOR = -5;
+        public static final int CLIMB_PISTON = 1;
+        public static final int CLIMB_ROTATOR_MOTOR = 17;
+        public static final int CLIMB_LEFT_EXTENSION_MOTOR = 5;
+        public static final int CLIMB_RIGHT_EXTENSION_MOTOR = 14;
     }
 
     public static final class PhysicalConstants {

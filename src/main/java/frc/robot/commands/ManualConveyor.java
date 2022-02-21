@@ -39,10 +39,10 @@ public class ManualConveyor extends CommandBase {
     ntTable = NetworkTableInstance.getDefault().getTable("Intake");
 
     ntConveyorSpeed = ntTable.getEntry("Conveyor Speed");
-    ntConveyorSpeed.setDouble(0.3);
+    ntConveyorSpeed.setDouble(0.45);
 
     ntTargetOverHead = ntTable.getEntry("Over-head Speed");
-    ntTargetOverHead.setDouble(0.3);
+    ntTargetOverHead.setDouble(0.7);
 
   }
 

@@ -18,7 +18,7 @@ public class Conveyor extends SubsystemBase {
   
   private final CANSparkMax overHeadMotor = new CANSparkMax(RobotIds.INTAKE_OVERHEAD_MOTOR, MotorType.kBrushless);
   
-  // private final DigitalInput conveyorSensor = new DigitalInput(RobotIds.CONVEYOR_SENSOR);
+  private final DigitalInput conveyorSensor = new DigitalInput(RobotIds.CONVEYOR_SENSOR);
 
   /** Creates a new Conveyor. */
   public Conveyor() {
@@ -48,8 +48,8 @@ public class Conveyor extends SubsystemBase {
   }
 
   public boolean getSensor() {
-    // return(conveyorSensor.get());
-    return false;
+    return(conveyorSensor.get());
+    //return false;
   }
 
   @Override

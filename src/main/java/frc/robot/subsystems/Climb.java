@@ -84,7 +84,7 @@ public class Climb extends SubsystemBase {
   }
 
   public void runRotatorMotor(double output) {
-    rotatorMotor.set(accelLimiter.calculate(output));
+    // rotatorMotor.set(accelLimiter.calculate(output));
   }
 
   public void setRotatorPosition(double pos) {

@@ -12,9 +12,9 @@ public class ManualClimb extends CommandBase {
   /** Creates a new ManualClimb. */
 
   public static interface Controls {
-    double getClimbRotatorSpeed();
-    boolean setClimbPiston();
-    double setClimbExtensionMotors();
+    double getClimbRotation();
+    boolean getClimbPiston();
+    double getClimbExtensionMotors();
   }
 
 
@@ -38,9 +38,9 @@ public class ManualClimb extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climb.runRotatorMotor(controls.getClimbRotatorSpeed());
-    climb.setPiston(controls.setClimbPiston());
-    climb.setTargetVelocity(controls.setClimbExtensionMotors());
+    climb.runRotatorMotor(controls.getClimbRotation());
+    climb.setPiston(controls.getClimbPiston());
+    climb.setTargetVelocity(controls.getClimbExtensionMotors());
   }
 
   // Called once the command ends or is interrupted.

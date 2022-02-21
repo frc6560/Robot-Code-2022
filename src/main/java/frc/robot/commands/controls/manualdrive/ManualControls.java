@@ -108,31 +108,35 @@ public class ManualControls implements ManualDrive.Controls, ManualIntake.Contro
 
     @Override
     public double shooterTurretTest(){
-        return xbox2.getRawButton(ControllerIds.XBOX_R_BUMPER) ? 1 : xbox2.getRawButton(ControllerIds.XBOX_L_BUMPER) ? -1 : 0 ;
+        return controlStation.getRawAxis(ControllerIds.DRIVER_STATION_X_AXIS);
     }
 
     @Override
     public double shooterHoodTest(){
-        return xbox2.getRawAxis(ControllerIds.XBOX_R_JOY_Y);
+        double value = controlStation.getRawAxis(ControllerIds.DRIVER_STATION_Y_AXIS);
+        if(Math.abs(value) < 0.1){
+            return 0.0;
+        }
+        return value;
     }
 
     @Override
     public double shooterRPMTest(){
-        return xbox2.getRawAxis(ControllerIds.XBOX_R_TRIGGER);
+        return xbox.getRawAxis(ControllerIds.XBOX_R_TRIGGER);
     }
 
     @Override
-    public double getClimbRotatorSpeed() {
-        return controlStation.getRawAxis(ControllerIds.DRIVER_STATION_Y_AXIS) * 1.0; //TODO: change 1.0 to whatever speed we want
+    public double getClimbRotation() {
+        return controlStation.getRawAxis(ControllerIds.DRIVER_STATION_Y_AXIS);
     }
 
     @Override
-    public double setClimbExtensionMotors() {
-        return controlStation.getRawAxis(ControllerIds.DRIVER_STATION_X_AXIS) * 1.0; //TODO: change 1.0 to whatever speed we want
+    public double getClimbExtensionMotors() {
+        return controlStation.getRawAxis(ControllerIds.DRIVER_STATION_X_AXIS);
     }
 
     @Override
-    public boolean setClimbPiston() {
+    public boolean getClimbPiston() {
         return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_4);
     }
 }
