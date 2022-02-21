@@ -36,10 +36,10 @@ public class Limelight extends SubsystemBase {
 
    /**
    * 
-   * @return distance to target from center of robot
+   * @return distance to target from center of robot **IN FEET**!!!!
    */
   public double getDistance() {
-    return 3.457 / Math.tan(Math.toRadians(50.0 + ntY.getDouble(0.0))); //TODO: Seriously calibrate this <-------- 2/20/2022 bro fr suck it
+    return ((104 - 24) / Math.tan(Math.toRadians(50.0 + ntY.getDouble(0.0)))) / 12;
   }
 
   public double getAngle() {
