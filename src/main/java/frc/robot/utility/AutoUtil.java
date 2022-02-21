@@ -68,8 +68,8 @@ public class AutoUtil {
                 new DifferentialDriveKinematics(PhysicalConstants.trackWidthMeters),
                 driveTrain::getVelocity, 
                 //new PIDController(12.756, 0, 0),
-                new PIDController(0, 0, 0),
-                new PIDController(0, 0, 0), 
+                new PIDController(0.004, 0, 0),
+                new PIDController(0.004, 0, 0), 
                 driveTrain::setTankVolts, 
                 driveTrain);
 
