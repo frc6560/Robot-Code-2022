@@ -91,7 +91,7 @@ public final class Constants {
         public static final double MAX_SPEED = 1;
         public static final double MAX_TURN_SPEED = 1;
 
-        public static final double MAX_ACCELERATION = 1;
+        public static final double MAX_ACCELERATION = 1.5;
 
         public static final double RPM_PER_FALCON_UNIT = 10.0 * 60.0 / 2048.0;
         public static final double MAX_HOOD_ENCODER_DISTANCE = 3630;
