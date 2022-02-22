@@ -122,7 +122,8 @@ public class ManualControls implements ManualDrive.Controls, ManualIntake.Contro
 
     @Override
     public double shooterRPMTest(){
-        return xbox.getRawAxis(ControllerIds.XBOX_R_TRIGGER);
+        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_2) ? 1 : 0;
+        // return xbox.getRawAxis(ControllerIds.XBOX_R_TRIGGER);
     }
 
     @Override

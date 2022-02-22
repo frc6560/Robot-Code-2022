@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PWM;
@@ -21,6 +22,10 @@ import frc.robot.utility.Util;
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
 public class Shooter extends SubsystemBase {
+  private static final double RPMAcceptableDiff = 100;
+  private static final double turretAcceptableDiff = 1.2;
+  private static final double hoodAcceptableDiff = 0.1;
+
   private final TalonFX shooterMotorL;
   private final TalonFX shooterMotorR;
 
@@ -35,6 +40,7 @@ public class Shooter extends SubsystemBase {
   private double targetTurretPos;
 
   private NetworkTable ntTable;
+  private NetworkTableEntry ntShooterReady;
 
 
   /** Creates a new Shooter. */
@@ -80,6 +86,9 @@ public class Shooter extends SubsystemBase {
 
     ntTable = NetworkTableInstance.getDefault().getTable("Shooter");
 
+    ntShooterReady = ntTable.getEntry("Shooter Ready");
+    ntShooterReady.setBoolean(false);
+
     ntDispTab("Shooter")
       .add("Actual RPM", this::getShooterRpm);
   }
@@ -87,6 +96,7 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    ntShooterReady.setBoolean(isShooterReady());
 
     hoodServoL.setPosition(targetHoodPos);
     hoodServoR.setPosition(targetHoodPos);
@@ -126,5 +136,12 @@ public class Shooter extends SubsystemBase {
 
   public double getTurretPos(){
     return turretMotor.getEncoder().getPosition();
+  }
+
+  public boolean isShooterReady(){
+    return 
+      Math.abs(getShooterRpm() - targetRPM) < RPMAcceptableDiff &&
+      Math.abs(getTurretPos() - targetTurretPos) < turretAcceptableDiff &&
+      Math.abs(getHoodPos() - targetHoodPos) < hoodAcceptableDiff;
   }
 }

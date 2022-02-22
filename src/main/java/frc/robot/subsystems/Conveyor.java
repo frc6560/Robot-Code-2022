@@ -48,7 +48,7 @@ public class Conveyor extends SubsystemBase {
   }
 
   public boolean getSensor() {
-    return(conveyorSensor.get());
+    return !conveyorSensor.get();
     //return false;
   }
 

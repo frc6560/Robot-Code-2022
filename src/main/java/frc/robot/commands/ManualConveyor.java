@@ -16,6 +16,7 @@ public class ManualConveyor extends CommandBase {
     boolean getConveyorMotor();
     boolean getBallChainReverse();
     boolean isIntakeEngaged();
+    double shooterRPMTest();
   }
 
   private final Conveyor conveyor;
@@ -24,6 +25,9 @@ public class ManualConveyor extends CommandBase {
   private final NetworkTable ntTable;
   private NetworkTableEntry ntConveyorSpeed;
   private NetworkTableEntry ntTargetOverHead;
+
+  private NetworkTableEntry ntShooterReady;
+
   private double conveyorSpeed;
   private double overHeadSpeed;
   
@@ -44,6 +48,7 @@ public class ManualConveyor extends CommandBase {
     ntTargetOverHead = ntTable.getEntry("Over-head Speed");
     ntTargetOverHead.setDouble(0.7);
 
+    ntShooterReady = ntTable.getEntry("Shooter Ready");
   }
 
   // Called when the command is initially scheduled.
@@ -62,13 +67,12 @@ public class ManualConveyor extends CommandBase {
       conveyor.setConveyor(-conveyorSpeed);
       conveyor.setOverHead(-overHeadSpeed);
     } else if (controls.getConveyorMotor() || controls.isIntakeEngaged()){
-      if(!conveyor.getSensor()){
+      if(!conveyor.getSensor() || controls.shooterRPMTest() != 0){
         conveyor.setConveyor(conveyorSpeed);
-        conveyor.setOverHead(overHeadSpeed);
       }else{
         conveyor.setConveyor(0.0);
-        conveyor.setOverHead(0.0);
       }
+      conveyor.setOverHead(overHeadSpeed);
     } else {
       conveyor.setConveyor(0.0);
       conveyor.setOverHead(0.0);
