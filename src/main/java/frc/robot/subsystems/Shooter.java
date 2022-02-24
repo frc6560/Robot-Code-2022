@@ -12,13 +12,11 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PWM;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.*;
-import frc.robot.utility.Util;
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
 public class Shooter extends SubsystemBase {
@@ -33,7 +31,6 @@ public class Shooter extends SubsystemBase {
 
   private final PWM hoodServoL;
   private final PWM hoodServoR;
-  private final Encoder hoodEncoder;
 
   private double targetRPM;
   private double targetHoodPos;
@@ -78,11 +75,9 @@ public class Shooter extends SubsystemBase {
     // Hood setup
     hoodServoL = new PWM(1);
     hoodServoR = new PWM(0);
-    hoodEncoder = new Encoder(RobotIds.SHOOTER_HOOD_ENCODER_A, RobotIds.SHOOTER_HOOD_ENCODER_B);
 
     hoodServoL.setBounds(2.0, 1.6, 1.5, 1.4, 1.0);
     hoodServoR.setBounds(2.0, 1.6, 1.5, 1.4, 1.0);
-    hoodEncoder.reset();
 
     ntTable = NetworkTableInstance.getDefault().getTable("Shooter");
 
@@ -103,7 +98,6 @@ public class Shooter extends SubsystemBase {
 
     shooterMotorL.set(ControlMode.Velocity, targetRPM);
     shooterMotorR.set(ControlMode.Velocity, targetRPM);
-
     // shooterMotorL.set(ControlMode.PercentOutput, 0.5);
     
 
@@ -127,7 +121,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getHoodPos() {
-      return hoodEncoder.getDistance();
+      return targetHoodPos;
   }
 
   public double getShooterRpm() {
