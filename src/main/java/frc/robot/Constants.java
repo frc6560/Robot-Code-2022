@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import frc.robot.utility.ShootCalibrationMap;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -66,8 +68,8 @@ public final class Constants {
         public static final int SHOOTER_MOTOR_LEFT = 21;
         public static final int SHOOTER_MOTOR_RIGHT = 22;
 
-        public static final int SHOOTER_HOOD_ACTUATOR_LEFT = 8;
-        public static final int SHOOTER_HOOD_ACTUATOR_RIGHT = 11;
+        public static final int SHOOTER_HOOD_ACTUATOR_LEFT = 0;
+        public static final int SHOOTER_HOOD_ACTUATOR_RIGHT = 1;
         public static final int SHOOTER_HOOD_ENCODER_A = 8;
         public static final int SHOOTER_HOOD_ENCODER_B = 11;
         public static final int SHOOTER_TURRET_MOTOR = 4;
@@ -101,4 +103,23 @@ public final class Constants {
         public static final double SECONDS_PER_MINUTE = 60.0;
     }
 
+    public static final class ShooterCalibrations {
+        
+    public static final ShootCalibrationMap SHOOT_CALIBRATION_MAP = new ShootCalibrationMap();
+        
+        static {
+            SHOOT_CALIBRATION_MAP.add(4.0, new ShootCalibrationMap.Trajectory(4350.0, 2300.0));
+            SHOOT_CALIBRATION_MAP.add(6.0, new ShootCalibrationMap.Trajectory(4750.0, 2700.0));
+            SHOOT_CALIBRATION_MAP.add(8.0, new ShootCalibrationMap.Trajectory(5250.0, 3050.0));
+            SHOOT_CALIBRATION_MAP.add(10.0, new ShootCalibrationMap.Trajectory(5550.0, 3250.0));
+            SHOOT_CALIBRATION_MAP.add(12.0, new ShootCalibrationMap.Trajectory(5650.0, 3300.0));
+            SHOOT_CALIBRATION_MAP.add(14.0, new ShootCalibrationMap.Trajectory(5700.0, 3350.0));
+            SHOOT_CALIBRATION_MAP.add(16.0, new ShootCalibrationMap.Trajectory(5950.0, 3450.0));
+            SHOOT_CALIBRATION_MAP.add(18.0, new ShootCalibrationMap.Trajectory(6150.0, 3500.0));
+            SHOOT_CALIBRATION_MAP.add(20.0, new ShootCalibrationMap.Trajectory(6350.0, 3600.0));
+            SHOOT_CALIBRATION_MAP.add(34.0, new ShootCalibrationMap.Trajectory(6600.0, 3600.0));
+            SHOOT_CALIBRATION_MAP.add(37.0, new ShootCalibrationMap.Trajectory(6800.0, 3600.0));
+            SHOOT_CALIBRATION_MAP.add(100.0, new ShootCalibrationMap.Trajectory(6800.0, 3600.0));
+        }
+    }
 }

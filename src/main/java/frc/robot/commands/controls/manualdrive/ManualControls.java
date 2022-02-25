@@ -91,6 +91,11 @@ public class ManualControls implements ManualDrive.Controls, ManualIntake.Contro
     }
 
     @Override
+    public boolean getFeedShooter() {
+        return xbox.getRawAxis(ControllerIds.XBOX_R_TRIGGER) > 0.1;
+    }
+
+    @Override
     public boolean getBallChainReverse(){
         return controlStation.getRawButton(ControllerIds.DRIVER_STATION_BUTTON_2);
     }
@@ -121,9 +126,8 @@ public class ManualControls implements ManualDrive.Controls, ManualIntake.Contro
     }
 
     @Override
-    public double shooterRPMTest(){
-        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_2) ? 1 : 0;
-        // return xbox.getRawAxis(ControllerIds.XBOX_R_TRIGGER);
+    public boolean getAimShooter(){
+        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_2);
     }
 
     @Override

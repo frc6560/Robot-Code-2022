@@ -4,12 +4,18 @@
 
 package frc.robot.commands;
 
+import java.lang.invoke.ConstantBootstraps;
+
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
+import frc.robot.utility.ShootCalibrationMap;
 import frc.robot.utility.Util;
+import frc.robot.Constants;
+import frc.robot.Constants.ShooterCalibrations;
 import frc.robot.commands.controls.manualdrive.ManualControls;
 import frc.robot.subsystems.Limelight;
 
@@ -19,7 +25,7 @@ public class ManualShooter extends CommandBase {
     boolean isShooting();
     double shooterHoodTest();
     double shooterTurretTest();
-    double shooterRPMTest();
+    boolean getAimShooter();
   }
 
   private Shooter shooter;
@@ -45,7 +51,7 @@ public class ManualShooter extends CommandBase {
     this.ntTable = NetworkTableInstance.getDefault().getTable("Shooter");
 
     ntTestHood = ntTable.getEntry("Hood Angle");
-    ntTestHood.setDouble(-1.0);
+    ntTestHood.setDouble(0.0);
 
     ntTestRPM = ntTable.getEntry("Target RPM");
     ntTestRPM.setDouble(0.0);
@@ -62,33 +68,50 @@ public class ManualShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (true) {
-      targetHoodPos += controls.shooterHoodTest()/100;
-      targetHoodPos = Util.getLimited(targetHoodPos, 1);
+    if(controls.getAimShooter()){
+      targetHoodPos = ntTestHood.getDouble(0.0); 
+      // targetHoodPos += controls.shooterHoodTest()/100; // updating hood through  using climb joystick
+      // targetHoodPos = Util.getLimited(targetHoodPos, 1);
 
-      ntTestHood.setDouble(targetHoodPos);
+      shooter.setShooterRpm(getShooterRpm(limelight.getDistance()));
+      
+      if(targetHoodPos >= -1){
+        shooter.setHoodPos(targetHoodPos);
+      }
 
-      shooter.setShooterRpm(getShooterRpm(limelight.getDistance()) * controls.shooterRPMTest());
-      shooter.setHoodPos(targetHoodPos);
-      // shooter.setTurretPos(limelight.getAngle());
+      // shooter.setTurretPos(shooter.getTurretPos() + controls.shooterTurretTest()); // manual control of turret using climb joystick (button board);
+      shooter.setTurretPos(limelight.getHorizontalAngle()); // limelight controlled turret pos;
 
-      // shooter.setHoodPos(shooter.getHoodPos() + controls.shooterHoodTest() * 0.5);
-      shooter.setTurretPos(shooter.getTurretPos() + controls.shooterTurretTest());
-      // shooter.setShooterRpm(controls.shooterRPMTest() * maxShooterSpeed);
+      // ntTestHood.setDouble(targetHoodPos);
+    }else{
+      shooter.setShooterRpm(0);
     }
-    else {
-      shooter.setShooterRpm(0.0);
-    }
-
   }
 
   public double getShooterRpm(double distance) {
-    return ntTestRPM.getDouble(0.0) * 3.454545457;
+    ShootCalibrationMap.Trajectory traj;
+    try {
+      traj = Constants.ShooterCalibrations.SHOOT_CALIBRATION_MAP.get(distance);
+      
+    } catch (ShootCalibrationMap.OutOfBoundsException e) {
+      return 0.0;
+    }
+
+    return traj.shooterRpm;
+    // return ntTestRPM.getDouble(0.0) * 3.454545457;
     // return distance; //TODO: add function
   }
 
   public double getShooterAngle(double distance) {
-    return ntTestHood.getDouble(0.0);
+    ShootCalibrationMap.Trajectory traj;
+    try {
+      traj = Constants.ShooterCalibrations.SHOOT_CALIBRATION_MAP.get(distance);
+      
+    } catch (ShootCalibrationMap.OutOfBoundsException e) {
+      return -2;
+    }
+
+    return traj.hoodPos;
     // return distance; //TODO: add function
   }
 

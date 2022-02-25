@@ -22,13 +22,11 @@ public class Intake extends SubsystemBase {
 
   private final int minFramesDown = 35;
 
-  private double targetIntakeMotorOutput = 0.0;
+  private double targetIntakeMotorOutput = 0.4;
 
   private boolean reversed = false;
 
   private final NetworkTable ntTable;
-
-  private NetworkTableEntry ntTargetIntake;
 
   private int downFrames = 0;
 
@@ -39,9 +37,6 @@ public class Intake extends SubsystemBase {
     intakeMotor.setInverted(true);
     
     ntTable = NetworkTableInstance.getDefault().getTable("Intake");
-
-    ntTargetIntake = ntTable.getEntry("Intake Speed");
-    ntTargetIntake.setDouble(0.45);
   }
 
   public void setIntakeMotorOutput(double output) {
@@ -53,9 +48,7 @@ public class Intake extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {
-    this.targetIntakeMotorOutput = ntTargetIntake.getDouble(0.0) * (reversed ? -1 : 1); // go reverse if "reversed" true
-    
+  public void periodic() {    
     // This method will be called once per scheduler run
     if (intakePiston.get()) {
       downFrames++;

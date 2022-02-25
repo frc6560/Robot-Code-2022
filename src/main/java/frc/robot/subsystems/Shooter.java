@@ -15,14 +15,17 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PWM;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 
 import static frc.robot.Constants.*;
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
 public class Shooter extends SubsystemBase {
-  private static final double RPMAcceptableDiff = 100;
-  private static final double turretAcceptableDiff = 1.2;
-  private static final double hoodAcceptableDiff = 0.1;
+  private final double RPMAcceptableDiff = 100;
+  private final double turretAcceptableDiff = 3;
+  private final double hoodAcceptableDiff = 1;
+
+  private final double turretTurnSpeed = 0.35;
 
   private final TalonFX shooterMotorL;
   private final TalonFX shooterMotorR;
@@ -73,10 +76,10 @@ public class Shooter extends SubsystemBase {
     shooterMotorR.setInverted(true);
 
     // Hood setup
-    hoodServoL = new PWM(1);
-    hoodServoR = new PWM(0);
+    hoodServoL = new PWM(RobotIds.SHOOTER_HOOD_ACTUATOR_LEFT);
+    hoodServoR = new PWM(RobotIds.SHOOTER_HOOD_ACTUATOR_RIGHT);
 
-    hoodServoL.setBounds(2.0, 1.6, 1.5, 1.4, 1.0);
+    hoodServoL.setBounds(2.0, 1.6, 1.5, 1.4, 1.0);  // what does this do? (take out?)
     hoodServoR.setBounds(2.0, 1.6, 1.5, 1.4, 1.0);
 
     ntTable = NetworkTableInstance.getDefault().getTable("Shooter");
@@ -93,18 +96,33 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
     ntShooterReady.setBoolean(isShooterReady());
 
-    hoodServoL.setPosition(targetHoodPos);
-    hoodServoR.setPosition(targetHoodPos);
+    hoodServoL.setSpeed(targetHoodPos);
+    hoodServoR.setSpeed(targetHoodPos);
+
+    // hoodServoL.set
+    // hoodServoL.setPosition(targetHoodPos);
+    // hoodServoR.setPosition(targetHoodPos);
+    
+    // hoodServoL.set
 
     shooterMotorL.set(ControlMode.Velocity, targetRPM);
     shooterMotorR.set(ControlMode.Velocity, targetRPM);
     // shooterMotorL.set(ControlMode.PercentOutput, 0.5);
     
 
-    if(Math.abs(getTurretPos()-targetTurretPos) < 1){
+    System.out.println("Turret angle " + getTurretPosDegrees());
+    if(Math.abs(targetTurretPos) < turretAcceptableDiff || Math.abs(getTurretPosDegrees()) > 85){
       turretMotor.set(0.0);
     }else{
-      turretMotor.set(0.05 * Math.copySign(1, getTurretPos()-targetTurretPos));
+      double speed = Math.abs(targetTurretPos) > turretAcceptableDiff * 3  ?
+                    turretTurnSpeed :
+                      Math.abs(targetTurretPos) > turretAcceptableDiff * 2 ?
+                    turretTurnSpeed / (3 * (3 * turretAcceptableDiff - Math.abs(targetTurretPos)) / (turretAcceptableDiff)): // basically a gradient down from 1 to 1/3
+                    turretTurnSpeed / 3
+    ;
+
+      turretMotor.set(speed * Math.copySign(1, targetTurretPos));
+      
     }
   }
 
@@ -132,8 +150,13 @@ public class Shooter extends SubsystemBase {
     return turretMotor.getEncoder().getPosition();
   }
 
+  public double getTurretPosDegrees(){
+    return getTurretPos() / 45 / (5.33333 * 1.028571428571429) * 360;
+  }
+
   public boolean isShooterReady(){
     return 
+      Math.abs(getShooterRpm()) > 200 &&
       Math.abs(getShooterRpm() - targetRPM) < RPMAcceptableDiff &&
       Math.abs(getTurretPos() - targetTurretPos) < turretAcceptableDiff &&
       Math.abs(getHoodPos() - targetHoodPos) < hoodAcceptableDiff;

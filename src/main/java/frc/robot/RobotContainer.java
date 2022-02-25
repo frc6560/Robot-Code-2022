@@ -68,7 +68,7 @@ public class RobotContainer {
     manualIntake = new ManualIntake(intake, controls);
     intake.setDefaultCommand(manualIntake);
 
-    manualConveyor = new ManualConveyor(conveyor, controls);
+    manualConveyor = new ManualConveyor(conveyor, controls, shooter);
     conveyor.setDefaultCommand(manualConveyor);
 
     manualClimb = new ManualClimb(climb,controls);

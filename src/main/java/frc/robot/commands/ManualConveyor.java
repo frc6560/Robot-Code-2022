@@ -10,45 +10,37 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.RobotIds;
 import frc.robot.subsystems.Conveyor;
+import frc.robot.subsystems.Shooter;
 
 public class ManualConveyor extends CommandBase {
   public static interface Controls {
     boolean getConveyorMotor();
     boolean getBallChainReverse();
     boolean isIntakeEngaged();
-    double shooterRPMTest();
+    boolean getFeedShooter();
   }
 
   private final Conveyor conveyor;
   private final Controls controls;
+  private final Shooter shooter;
 
   private final NetworkTable ntTable;
-  private NetworkTableEntry ntConveyorSpeed;
-  private NetworkTableEntry ntTargetOverHead;
 
-  private NetworkTableEntry ntShooterReady;
-
-  private double conveyorSpeed;
-  private double overHeadSpeed;
+  private final double conveyorSpeed = 0.45;
+  private final double overHeadSpeed = 0.7;
   
 
   /** Creates a new ConveyorCommand2. */
-  public ManualConveyor(Conveyor conveyor, Controls controls) {
+  public ManualConveyor(Conveyor conveyor, Controls controls, Shooter shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
 
     addRequirements(conveyor);
     this.conveyor = conveyor;
     this.controls = controls;
 
-    ntTable = NetworkTableInstance.getDefault().getTable("Intake");
+    this.shooter = shooter; // this is to be able to read wether or not the shooter is ready to shoot.
 
-    ntConveyorSpeed = ntTable.getEntry("Conveyor Speed");
-    ntConveyorSpeed.setDouble(0.45);
-
-    ntTargetOverHead = ntTable.getEntry("Over-head Speed");
-    ntTargetOverHead.setDouble(0.7);
-
-    ntShooterReady = ntTable.getEntry("Shooter Ready");
+    ntTable = NetworkTableInstance.getDefault().getTable("Transfer");
   }
 
   // Called when the command is initially scheduled.
@@ -60,19 +52,21 @@ public class ManualConveyor extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    conveyorSpeed = ntConveyorSpeed.getDouble(0.0);
-    overHeadSpeed = ntTargetOverHead.getDouble(0.0);
-
     if (controls.getBallChainReverse()){
       conveyor.setConveyor(-conveyorSpeed);
       conveyor.setOverHead(-overHeadSpeed);
-    } else if (controls.getConveyorMotor() || controls.isIntakeEngaged()){
-      if(!conveyor.getSensor() || controls.shooterRPMTest() != 0){
+
+    } else if (controls.getConveyorMotor() || controls.isIntakeEngaged() || (controls.getFeedShooter() && shooter.isShooterReady())){  // if ballchain, intake, or shooter_feeding is on, run transfer
+
+      if(!conveyor.getSensor() || (controls.getFeedShooter() && shooter.isShooterReady())){
         conveyor.setConveyor(conveyorSpeed);
+
       }else{
         conveyor.setConveyor(0.0);
       }
+
       conveyor.setOverHead(overHeadSpeed);
+
     } else {
       conveyor.setConveyor(0.0);
       conveyor.setOverHead(0.0);
