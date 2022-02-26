@@ -26,7 +26,7 @@ public class Limelight extends SubsystemBase {
 
   public Limelight(Controls controls) {
     this.controls = controls;
-    setForceOff(true);
+    setForceOff(false);
 
     ntDispTab("Limelight")
     .add("Distance",this::getDistance)
@@ -75,6 +75,6 @@ public class Limelight extends SubsystemBase {
 
   @Override
   public void periodic() {
-    ntPipeline.setNumber(forceOff ? 2 : controls.getLimelightPipeline());
+    ntPipeline.setNumber(forceOff ? 0 : controls.getLimelightPipeline());
   }
 }

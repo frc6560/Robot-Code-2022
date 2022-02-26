@@ -88,7 +88,8 @@ public class Shooter extends SubsystemBase {
     ntShooterReady.setBoolean(false);
 
     ntDispTab("Shooter")
-      .add("Actual RPM", this::getShooterRpm);
+      .add("Actual RPM", this::getShooterRpm)
+      .add("Actual Turret Pos", this::getTurretPos);
   }
 
   @Override
@@ -109,9 +110,7 @@ public class Shooter extends SubsystemBase {
     shooterMotorR.set(ControlMode.Velocity, targetRPM);
     // shooterMotorL.set(ControlMode.PercentOutput, 0.5);
     
-
-    System.out.println("Turret angle " + getTurretPosDegrees());
-    if(Math.abs(targetTurretPos) < turretAcceptableDiff || Math.abs(getTurretPosDegrees()) > 85){
+    if(Math.abs(targetTurretPos) < turretAcceptableDiff){
       turretMotor.set(0.0);
     }else{
       double speed = Math.abs(targetTurretPos) > turretAcceptableDiff * 3  ?
@@ -120,9 +119,15 @@ public class Shooter extends SubsystemBase {
                     turretTurnSpeed / (3 * (3 * turretAcceptableDiff - Math.abs(targetTurretPos)) / (turretAcceptableDiff)): // basically a gradient down from 1 to 1/3
                     turretTurnSpeed / 3
     ;
+    speed *= Math.copySign(1, targetTurretPos);
 
-      turretMotor.set(speed * Math.copySign(1, targetTurretPos));
-      
+    // if(Math.abs(getTurretPosDegrees()) > 90){
+    //   speed = Math.copySign(1, speed) > 0 ?
+    //         Math.min(0, speed):
+    //         Math.max(0, speed);
+    //  }
+
+      turretMotor.set(speed);
     }
   }
 
@@ -147,7 +152,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getTurretPos(){
-    return turretMotor.getEncoder().getPosition();
+    return turretMotor.getEncoder().getPosition() - 90;
   }
 
   public double getTurretPosDegrees(){

@@ -108,7 +108,7 @@ public class ManualControls implements ManualDrive.Controls, ManualIntake.Contro
 
     @Override
     public int getLimelightPipeline(){
-        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_3) ? 1 : 0;
+        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_3) ? 2 : 0;
     }
 
     @Override

@@ -31,11 +31,14 @@ public class ManualShooter extends CommandBase {
   private Shooter shooter;
   private Controls controls;
   private Limelight limelight;
-  private final double maxShooterSpeed = 5000;
 
   private NetworkTable ntTable;
   private NetworkTableEntry ntTestRPM;
   private NetworkTableEntry ntTestHood;
+
+  private NetworkTableEntry ntAddCalibrateButton;
+  private boolean prevCalibButton = false;
+  private NetworkTableEntry ntUseCalibrationMap;
 
   private double targetHoodPos = 0.0;
 
@@ -56,6 +59,11 @@ public class ManualShooter extends CommandBase {
     ntTestRPM = ntTable.getEntry("Target RPM");
     ntTestRPM.setDouble(0.0);
 
+    ntAddCalibrateButton = ntTable.getEntry("Save point on map");
+    ntAddCalibrateButton.setBoolean(false);
+
+    ntUseCalibrationMap = ntTable.getEntry("Use calibration map?");
+    ntUseCalibrationMap.setBoolean(false);
   }
 
   // Called when the command is initially scheduled.
@@ -68,12 +76,13 @@ public class ManualShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    double dist = limelight.getDistance();
     if(controls.getAimShooter()){
-      targetHoodPos = ntTestHood.getDouble(0.0); 
+      targetHoodPos = getShooterHoodAngle(dist);
       // targetHoodPos += controls.shooterHoodTest()/100; // updating hood through  using climb joystick
       // targetHoodPos = Util.getLimited(targetHoodPos, 1);
 
-      shooter.setShooterRpm(getShooterRpm(limelight.getDistance()));
+      shooter.setShooterRpm(getShooterRpm(dist) * 3.454545457);
       
       if(targetHoodPos >= -1){
         shooter.setHoodPos(targetHoodPos);
@@ -86,33 +95,43 @@ public class ManualShooter extends CommandBase {
     }else{
       shooter.setShooterRpm(0);
     }
+
+    if(!prevCalibButton && ntAddCalibrateButton.getBoolean(false)){
+      ShooterCalibrations.SHOOT_CALIBRATION_MAP.add(dist, new ShootCalibrationMap.Trajectory(ntTestRPM.getDouble(0.0), ntTestHood.getDouble(0.0)));
+      System.out.println("added a point");
+    }
+    prevCalibButton = ntAddCalibrateButton.getBoolean(false);
   }
 
   public double getShooterRpm(double distance) {
-    ShootCalibrationMap.Trajectory traj;
-    try {
-      traj = Constants.ShooterCalibrations.SHOOT_CALIBRATION_MAP.get(distance);
-      
-    } catch (ShootCalibrationMap.OutOfBoundsException e) {
-      return 0.0;
-    }
+    if(ntUseCalibrationMap.getBoolean(false)){
+      ShootCalibrationMap.Trajectory traj;
+      try {
+        traj = Constants.ShooterCalibrations.SHOOT_CALIBRATION_MAP.get(distance);
+        
+      } catch (ShootCalibrationMap.OutOfBoundsException e) {
+        return 0.0;
+      }
 
-    return traj.shooterRpm;
-    // return ntTestRPM.getDouble(0.0) * 3.454545457;
+      return traj.shooterRpm;
+    }
+    return ntTestRPM.getDouble(0.0);
     // return distance; //TODO: add function
   }
 
-  public double getShooterAngle(double distance) {
-    ShootCalibrationMap.Trajectory traj;
-    try {
-      traj = Constants.ShooterCalibrations.SHOOT_CALIBRATION_MAP.get(distance);
-      
-    } catch (ShootCalibrationMap.OutOfBoundsException e) {
-      return -2;
-    }
+  public double getShooterHoodAngle(double distance) {
+    if(ntUseCalibrationMap.getBoolean(false)){
+      ShootCalibrationMap.Trajectory traj;
+      try {
+        traj = Constants.ShooterCalibrations.SHOOT_CALIBRATION_MAP.get(distance);
+        
+      } catch (ShootCalibrationMap.OutOfBoundsException e) {
+        return 0.0;
+      }
 
-    return traj.hoodPos;
-    // return distance; //TODO: add function
+      return traj.hoodPos;
+    }
+    return ntTestHood.getDouble(0.0); 
   }
 
 
