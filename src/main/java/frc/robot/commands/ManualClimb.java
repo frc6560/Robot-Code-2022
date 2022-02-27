@@ -21,6 +21,10 @@ public class ManualClimb extends CommandBase {
     double getClimbRotation();
     boolean getClimbPiston();
     double getClimbExtensionMotors();
+    
+    boolean isClimbOverrideEngaged();
+    double leftOverrideExtensionVelocity();
+    double rightOverrideExtensionVelocity();
   }
 
 
@@ -58,7 +62,15 @@ public class ManualClimb extends CommandBase {
   public void execute() {
     climb.runRotatorMotor(controls.getClimbRotation() * rotationSpeed.getDouble(0.0));
     climb.setPiston(controls.getClimbPiston());
-    climb.setTargetVelocity(controls.getClimbExtensionMotors() * extensionSpeed.getDouble(0.0));
+
+    if (controls.isClimbOverrideEngaged()) {
+      climb.setLeftVelocity(controls.rightOverrideExtensionVelocity() * extensionSpeed.getDouble(0.0));
+      climb.setRightVelocity(controls.leftOverrideExtensionVelocity() * extensionSpeed.getDouble(0.0));
+    }
+    else {
+      climb.setTargetVelocity(controls.getClimbExtensionMotors() * extensionSpeed.getDouble(0.0));
+    }
+
   }
 
   // Called once the command ends or is interrupted.

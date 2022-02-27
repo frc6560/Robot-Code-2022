@@ -13,6 +13,7 @@ import frc.robot.commands.ManualClimb;
 
 import frc.robot.utility.NumberStepper;
 import frc.robot.utility.PovNumberStepper;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
@@ -27,16 +28,16 @@ public class ManualControls implements ManualDrive.Controls, ManualIntake.Contro
     private final Joystick xbox;
     private final Joystick controlStation;
     
-    private final Joystick xbox2;
+    private final Joystick backupXbox;
 
     private final PovNumberStepper speed;
     private final PovNumberStepper turnSpeed;
 
 
-    public ManualControls(Joystick xbox, Joystick controlStation, Joystick xbox2) {
+    public ManualControls(Joystick xbox, Joystick controlStation, Joystick backupXbox) {
         this.xbox = xbox;
         this.controlStation = controlStation;
-        this.xbox2 = xbox2;
+        this.backupXbox = backupXbox;
 
         this.speed = new PovNumberStepper(
             new NumberStepper(0.5, 0.2, PhysicalConstants.MAX_SPEED, 0.1),
@@ -143,5 +144,20 @@ public class ManualControls implements ManualDrive.Controls, ManualIntake.Contro
     @Override
     public boolean getClimbPiston() {
         return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_4);
+    }
+
+    @Override
+    public boolean isClimbOverrideEngaged() {
+        return NetworkTableInstance.getDefault().getTable("Shooter").getEntry("Climb MANUAL OVERRIDE?").getBoolean(false);
+    }
+
+    @Override
+    public double leftOverrideExtensionVelocity() {
+        return backupXbox.getRawAxis(ControllerIds.XBOX_L_JOY_Y);
+    }
+
+    @Override
+    public double rightOverrideExtensionVelocity() {
+        return backupXbox.getRawAxis(ControllerIds.XBOX_R_JOY_Y);
     }
 }

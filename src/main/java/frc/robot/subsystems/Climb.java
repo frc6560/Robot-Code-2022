@@ -32,7 +32,8 @@ public class Climb extends SubsystemBase {
   private final SlewRateLimiter accelLimiter = new SlewRateLimiter(3);
 
   private static final double EPSILON = 5.08;
-  private static final double compConstant = 0.06;
+  private static final double BETA_P = 0.1;
+  private double rightComp = 1.0;
 
   private NetworkTable nTable;
   private NetworkTableEntry rightCompensationConstant;
@@ -76,11 +77,12 @@ public class Climb extends SubsystemBase {
     // setRightVelocity(targetVelocity + ((diff < 0) ? targetVelocity * -diff * compConstant : 0.0));
   
     setLeftVelocity(targetVelocity);
-    setRightVelocity(targetVelocity * rightCompensationConstant.getDouble(1.0));
-    // if (Math.abs(diff) > EPSILON) {
-    //   if (diff < 0) setRightPosition(getLeftPosition());
-    //   if (diff > 0) setLeftPosition(getRightPosition());
-    // }
+    setRightVelocity(targetVelocity * rightComp);
+    
+    if (Math.abs(diff) > EPSILON) {
+      if (diff < 0) rightComp -= BETA_P;
+      if (diff > 0) rightComp += BETA_P;
+    }
   }
 
   public void setTargetVelocity(double velocity) {

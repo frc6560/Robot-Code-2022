@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.utility.ShootCalibrationMap;
+import frc.robot.utility.ShootCalibrationMap.Trajectory;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -108,8 +109,12 @@ public final class Constants {
     public static ShootCalibrationMap SHOOT_CALIBRATION_MAP = new ShootCalibrationMap();
         
         static {
-            SHOOT_CALIBRATION_MAP.add(0.0, new ShootCalibrationMap.Trajectory(3000.0, -0.5));
-            SHOOT_CALIBRATION_MAP.add(100.0, new ShootCalibrationMap.Trajectory(4700.0, 1));
+            SHOOT_CALIBRATION_MAP.add(0, new Trajectory(3000.0, -0.5)); // 1.8 in
+            SHOOT_CALIBRATION_MAP.add(9.2, new Trajectory(3380.0, -0.5)); // 1.8 in
+            SHOOT_CALIBRATION_MAP.add(10.5, new Trajectory(3540.0, -0.5)); // 1.9 in
+            SHOOT_CALIBRATION_MAP.add(12.8, new Trajectory(3750.0, -0.5)); // 2.5 in
+            SHOOT_CALIBRATION_MAP.add(18, new Trajectory(4200.0, -0.5)); // 2.5 in
+            SHOOT_CALIBRATION_MAP.add(100.0, new Trajectory(4700.0, 1));
         }
     }
 }
