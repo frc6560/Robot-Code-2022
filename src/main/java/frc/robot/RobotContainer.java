@@ -14,6 +14,7 @@ import frc.robot.commands.ManualConveyor;
 import frc.robot.commands.ManualDrive;
 import frc.robot.commands.ManualIntake;
 import frc.robot.commands.ManualShooter;
+import frc.robot.commands.autonomous.AutonomousShooter;
 import frc.robot.commands.controls.manualdrive.ManualControls;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Conveyor;
@@ -23,6 +24,7 @@ import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utility.AutoUtil;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -102,6 +104,10 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     // driveTrain.resetOdometry(linCircle.getTrajectory().getInitialPose());
-    return linCircle.getCommand();
+    // return linCircle.getCommand();
+    return new SequentialCommandGroup(
+      linCircle.getCommand(),
+      new AutonomousShooter(shooter, conveyor, limelight)
+    );
   }
 }

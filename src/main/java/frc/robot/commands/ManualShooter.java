@@ -22,7 +22,6 @@ import frc.robot.subsystems.Limelight;
 public class ManualShooter extends CommandBase {
 
   public static interface Controls {
-    boolean isShooting();
     double shooterHoodTest();
     double shooterTurretTest();
     boolean getAimShooter();
@@ -48,7 +47,7 @@ public class ManualShooter extends CommandBase {
     this.controls = controls;
     this.limelight = limelight;
 
-    addRequirements(shooter);
+    addRequirements(shooter, limelight);
 
     
     this.ntTable = NetworkTableInstance.getDefault().getTable("Shooter");

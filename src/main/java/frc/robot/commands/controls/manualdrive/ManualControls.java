@@ -101,11 +101,6 @@ public class ManualControls implements ManualDrive.Controls, ManualIntake.Contro
         return controlStation.getRawButton(ControllerIds.DRIVER_STATION_BUTTON_2);
     }
 
-    @Override
-    public boolean isShooting() {
-        //TODO: set actual button
-        return xbox.getRawButton(2); // Button B, I believe (too lazy to check)
-    }
 
     @Override
     public int getLimelightPipeline(){
