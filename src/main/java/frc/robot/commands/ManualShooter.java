@@ -76,6 +76,9 @@ public class ManualShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    limelight.setForceOff(!controls.getAimShooter());
+
     double dist = limelight.getDistance();
     if(controls.getAimShooter()){
       targetHoodPos = getShooterHoodAngle(dist);

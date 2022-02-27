@@ -65,7 +65,10 @@ public class DriveTrain extends SubsystemBase {
   private final DifferentialDriveOdometry odometer;
 
 
-  private SlewRateLimiter accelLimiter = new SlewRateLimiter(PhysicalConstants.MAX_ACCELERATION);
+  private SlewRateLimiter leftLimiter = new SlewRateLimiter(PhysicalConstants.MAX_ACCELERATION);
+  private SlewRateLimiter rightLimiter = new SlewRateLimiter(PhysicalConstants.MAX_ACCELERATION);
+  private SlewRateLimiter forwardLimiter = new SlewRateLimiter(PhysicalConstants.MAX_ACCELERATION);
+  private SlewRateLimiter turnLimiter = new SlewRateLimiter(PhysicalConstants.MAX_ACCELERATION);
 
 
   public DriveTrain() {
@@ -180,25 +183,25 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void setLVelocity(double velocity) {
-    setLVelocity(accelLimiter.calculate(velocity), 0);
+    setLVelocity(velocity, 0);
     //setLVelocity(velocity, 0);
   }
 
   public void setRVelocity(double velocity) {
-    setRVelocity(accelLimiter.calculate(velocity), 0);
+    setRVelocity(velocity, 0);
     //setRVelocity(velocity, 0);
   }
 
   public void setLVelocity(double velocity, double acceleration) {
-    setLRPM(velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT, acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
+    setLRPM(leftLimiter.calculate(velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT), acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
   }
 
   public void setRVelocity(double velocity, double acceleration) {
-    setRRPM(velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT, acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
+    setRRPM(rightLimiter.calculate(velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT), acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
   }
 
   public void setVelocity(double forward, double turn) {
-    differentialDrive.arcadeDrive(accelLimiter.calculate(forward), turn);
+    differentialDrive.arcadeDrive(forwardLimiter.calculate(forward), turnLimiter.calculate(turn));
     //differentialDrive.arcadeDrive(forward, turn);
   }
 

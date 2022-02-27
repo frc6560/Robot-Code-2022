@@ -108,7 +108,7 @@ public class ManualControls implements ManualDrive.Controls, ManualIntake.Contro
 
     @Override
     public int getLimelightPipeline(){
-        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_3) ? 2 : 0;
+        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_3) ? 2 : 1;
     }
 
     @Override
@@ -132,12 +132,12 @@ public class ManualControls implements ManualDrive.Controls, ManualIntake.Contro
 
     @Override
     public double getClimbRotation() {
-        return controlStation.getRawAxis(ControllerIds.DRIVER_STATION_Y_AXIS);
+        return controlStation.getRawAxis(ControllerIds.DRIVER_STATION_X_AXIS);
     }
 
     @Override
     public double getClimbExtensionMotors() {
-        return controlStation.getRawAxis(ControllerIds.DRIVER_STATION_X_AXIS);
+        return controlStation.getRawAxis(ControllerIds.DRIVER_STATION_Y_AXIS);
     }
 
     @Override

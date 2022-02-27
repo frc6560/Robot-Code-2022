@@ -56,9 +56,9 @@ public class ManualConveyor extends CommandBase {
       conveyor.setConveyor(-conveyorSpeed);
       conveyor.setOverHead(-overHeadSpeed);
 
-    } else if (controls.getConveyorMotor() || controls.isIntakeEngaged() || (controls.getFeedShooter() && shooter.isShooterReady())){  // if ballchain, intake, or shooter_feeding is on, run transfer
+    } else if (controls.getConveyorMotor() || controls.isIntakeEngaged() || (controls.getFeedShooter() && shooter.getShooterRpm() > 200)){  // if ballchain, intake, or shooter_feeding is on, run transfer
 
-      if(!conveyor.getSensor() || (controls.getFeedShooter() && shooter.isShooterReady())){
+      if(!conveyor.getSensor() || (controls.getFeedShooter() && shooter.getShooterRpm() > 200)){
         conveyor.setConveyor(conveyorSpeed);
 
       }else{

@@ -10,6 +10,9 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -29,12 +32,20 @@ public class Climb extends SubsystemBase {
   private final SlewRateLimiter accelLimiter = new SlewRateLimiter(3);
 
   private static final double EPSILON = 5.08;
-  private static final double compConstant = 1.06;
+  private static final double compConstant = 0.06;
+
+  private NetworkTable nTable;
+  private NetworkTableEntry rightCompensationConstant;
 
   private double targetVelocity;
 
   public Climb() {
     setupAllMotors();
+    nTable = NetworkTableInstance.getDefault().getTable("Climb");
+
+    rightCompensationConstant = nTable.getEntry("Right Compensation Constant");
+    rightCompensationConstant.setDouble(0.0);
+
   }
 
   private void setupAllMotors() {
@@ -47,7 +58,7 @@ public class Climb extends SubsystemBase {
     motor.restoreFactoryDefaults();
     motor.setInverted(inverted);
     motor.getEncoder().setPosition(0);
-    motor.setClosedLoopRampRate(0.0);
+    motor.setClosedLoopRampRate(1.0);
     motor.setIdleMode(IdleMode.kBrake);
     
 
@@ -61,13 +72,15 @@ public class Climb extends SubsystemBase {
     // This method will be called once per scheduler run
     double diff = getLeftPosition() - getRightPosition();
     
-    if (diff > 0) setLeftVelocity(targetVelocity * diff * compConstant);
-    if (diff < 0) setRightVelocity(targetVelocity * -diff * compConstant);
+    // setLeftVelocity(targetVelocity + ((diff > 0) ? targetVelocity * diff * compConstant : 0.0));
+    // setRightVelocity(targetVelocity + ((diff < 0) ? targetVelocity * -diff * compConstant : 0.0));
   
-    if (Math.abs(diff) > EPSILON) {
-      if (diff < 0) setRightPosition(getLeftPosition());
-      if (diff > 0) setLeftPosition(getRightPosition());
-    }
+    setLeftVelocity(targetVelocity);
+    setRightVelocity(targetVelocity * rightCompensationConstant.getDouble(1.0));
+    // if (Math.abs(diff) > EPSILON) {
+    //   if (diff < 0) setRightPosition(getLeftPosition());
+    //   if (diff > 0) setLeftPosition(getRightPosition());
+    // }
   }
 
   public void setTargetVelocity(double velocity) {
@@ -76,19 +89,22 @@ public class Climb extends SubsystemBase {
   
 
   public void setRightVelocity(double velocity) {
+    rightExtensionMotor.set(velocity);
     rightExtensionMotor.getPIDController().setReference(velocity, ControlType.kVelocity); // rpm
   }
 
   public void setLeftVelocity(double velocity) {
+    leftExtensionMotor.set(velocity);
     leftExtensionMotor.getPIDController().setReference(velocity, ControlType.kVelocity); // rpm
   }
 
   public void runRotatorMotor(double output) {
-    // rotatorMotor.set(accelLimiter.calculate(output));
+    if (getRotatorPosition() < 0.0 && output < 0.0) output = 0;
+    rotatorMotor.set(accelLimiter.calculate(output));
   }
 
   public void setRotatorPosition(double pos) {
-    rotatorMotor.getEncoder().setPosition(pos);
+    rotatorMotor.getEncoder().setPosition(pos > 0.0 ? pos : 0.0);
   }
 
   public void initialize() {
@@ -138,4 +154,7 @@ public class Climb extends SubsystemBase {
     leftExtensionMotor.getPIDController().setReference(position, ControlType.kPosition);
   }
 
+  public double getRotatorPosition() {
+    return rotatorMotor.getEncoder().getPosition();
+  }
 }

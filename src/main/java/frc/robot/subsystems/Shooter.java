@@ -15,7 +15,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PWM;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Robot;
+import frc.robot.utility.Util;
 
 import static frc.robot.Constants.*;
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
@@ -63,14 +63,14 @@ public class Shooter extends SubsystemBase {
 
     //get PID
     shooterMotorL.config_kF(0, 0.047197957);
-    shooterMotorL.config_kP(0, 0.15);
-    shooterMotorL.config_kI(0, 0.0);
+    shooterMotorL.config_kP(0, 0.225);
+    shooterMotorL.config_kI(0, 0.00001);
     shooterMotorL.config_kD(0, 0.0);
 
     shooterMotorR.config_kF(0, 0.047197957);
-    shooterMotorR.config_kP(0, 0.15);
-    shooterMotorR.config_kI(0, 0.0);
-    shooterMotorR.config_kD(0, 0.0);  
+    shooterMotorR.config_kP(0, 0.225);
+    shooterMotorR.config_kI(0, 0.00001);
+    shooterMotorR.config_kD(0, 0.0);
 
     shooterMotorL.setInverted(false);
     shooterMotorR.setInverted(true);
@@ -100,12 +100,6 @@ public class Shooter extends SubsystemBase {
     hoodServoL.setSpeed(targetHoodPos);
     hoodServoR.setSpeed(targetHoodPos);
 
-    // hoodServoL.set
-    // hoodServoL.setPosition(targetHoodPos);
-    // hoodServoR.setPosition(targetHoodPos);
-    
-    // hoodServoL.set
-
     shooterMotorL.set(ControlMode.Velocity, targetRPM);
     shooterMotorR.set(ControlMode.Velocity, targetRPM);
     // shooterMotorL.set(ControlMode.PercentOutput, 0.5);
@@ -118,15 +112,9 @@ public class Shooter extends SubsystemBase {
                       Math.abs(targetTurretPos) > turretAcceptableDiff * 2 ?
                     turretTurnSpeed / (3 * (3 * turretAcceptableDiff - Math.abs(targetTurretPos)) / (turretAcceptableDiff)): // basically a gradient down from 1 to 1/3
                     turretTurnSpeed / 3
-    ;
-    speed *= Math.copySign(1, targetTurretPos);
+      ;
 
-    // if(Math.abs(getTurretPosDegrees()) > 90){
-    //   speed = Math.copySign(1, speed) > 0 ?
-    //         Math.min(0, speed):
-    //         Math.max(0, speed);
-    //  }
-
+      speed *= Math.copySign(1, targetTurretPos);
       turretMotor.set(speed);
     }
   }
@@ -137,6 +125,7 @@ public class Shooter extends SubsystemBase {
 
   public void setTurretPos(double pos){
     targetTurretPos = pos;
+    pos = Util.getLimited(pos, 90-Math.abs(getTurretPos()));
   }
 
   public void setShooterRpm(double rpm) {
