@@ -33,6 +33,8 @@ import static frc.robot.Constants.ConversionConstants.*;
 
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
+import javax.swing.plaf.synth.SynthStyle;
+
 public class DriveTrain extends SubsystemBase {
   /** Creates a new DriveTrain. */
 
@@ -88,8 +90,12 @@ public class DriveTrain extends SubsystemBase {
 
     odometer = new DifferentialDriveOdometry(gyro.getRotation2d());
 
-    simpleFFL = new SimpleMotorFeedforward(0.12826078, 0.00210809109, 0.0004);
-    simpleFFR = new SimpleMotorFeedforward(0.12032416, 0.00209926402, 0.0004);
+    double ks = 0.12826078;
+    double kv = 0.000210809109;
+    double ka = 0.0004;
+
+    simpleFFL = new SimpleMotorFeedforward(ks, kv, ka);
+    simpleFFR = new SimpleMotorFeedforward(ks, kv, ka);
 
 
     ntDispTab("Odometer")
@@ -158,11 +164,11 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public double getLPosition() {
-    return this.leftEncoder.getPosition() / (DRIVETRAIN_ROTS_PER_FOOT * ConversionConstants.FEET_PER_METER * 7.98);
+    return this.leftEncoder.getPosition() * PhysicalConstants.ROTATIONSTOMETERS;
   }
 
   public double getRPosition() {
-    return this.rightEncoder.getPosition() / (DRIVETRAIN_ROTS_PER_FOOT * ConversionConstants.FEET_PER_METER * 7.98);
+    return this.rightEncoder.getPosition() * PhysicalConstants.ROTATIONSTOMETERS;
   }
 
   public double getLRpm() {
@@ -220,8 +226,11 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void setLRPM(double rpm, double rpms) {
+    System.out.println(getLRpm());
+    System.out.println(rpm);
+    System.out.println("--------------------------");
     for (CANSparkMax motor : leftMotors) {
-      motor.getPIDController().setReference(rpm, ControlType.kVelocity, 0, simpleFFL.calculate(rpm, rpms), ArbFFUnits.kVoltage);
+      motor.getPIDController().setReference(rpm, ControlType.kVelocity, 0, simpleFFL.calculate(rpm), ArbFFUnits.kVoltage);
     }
   }
 
@@ -243,11 +252,15 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void setLVelocity(double velocity, double acceleration) {
-    setLRPM(9.0 * velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT, acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
+    // System.out.println(velocity / PhysicalConstants.RPMTOMETERSPERSEC);
+    // System.out.println(velocity);
+    // System.out.println(getLRpm());
+    // System.out.println("--------------------------");
+    setLRPM(velocity / PhysicalConstants.RPMTOMETERSPERSEC, acceleration / (PhysicalConstants.RPMTOMETERSPERSEC / 60.0));
   }
 
   public void setRVelocity(double velocity, double acceleration) {
-    setRRPM(9.0 * velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT, acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
+    setRRPM(velocity / PhysicalConstants.RPMTOMETERSPERSEC, acceleration / (PhysicalConstants.RPMTOMETERSPERSEC / 60.0));
   }
 
   public void setVelocity(double forward, double turn) {
@@ -256,29 +269,32 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void setTankVelocity(double left, double right) {
+    //meters per second
+    setLVelocity(left, 0);
+    setRVelocity(right, 0);
     
-  left = 10.0 * left / (DRIVETRAIN_ROTS_PER_FOOT / FEET_PER_METER);
+  // left = left / (DRIVETRAIN_ROTS_PER_FOOT / FEET_PER_METER);
 
-  right = 10.0 * right / (DRIVETRAIN_ROTS_PER_FOOT / FEET_PER_METER);
+  // right = right / (DRIVETRAIN_ROTS_PER_FOOT / FEET_PER_METER);
 
-    double leftVel = leftTankLimiter.calculate(simpleFFL.calculate(left));
-    double rightVel = rightTankLimiter.calculate(simpleFFR.calculate(right));
+  //   double leftVel = simpleFFL.calculate(left);
+  //   double rightVel = simpleFFR.calculate(right);
     
-    // System.out.println("Left: " + left + "  vel: " + leftVel);
-    // System.out.println("Right: " + right + " vel: " + rightVel);
-    // System.out.println("Actual Left RPM: " + getLRpm());
-    // System.out.println("Actual Right RPM: " + getRRpm());
+  //   // System.out.println("Left: " + left + "  vel: " + leftVel);
+  //   // System.out.println("Right: " + right + " vel: " + rightVel);
+  //   // System.out.println("Actual Left RPM: " + getLRpm());
+  //   // System.out.println("Actual Right RPM: " + getRRpm());
     
-    leftTarget.update(left);
-    rightTarget.update(right);
+  //   leftTarget.update(left);
+  //   rightTarget.update(right);
 
-    for (CANSparkMax motor : leftMotors) {
-      motor.set(leftVel);
-    }
+  //   for (CANSparkMax motor : leftMotors) {
+  //     motor.set(leftVel);
+  //   }
 
-    for (CANSparkMax motor : rightMotors) {
-      motor.set(rightVel);
-    }
+    // for (CANSparkMax motor : rightMotors) {
+    //   motor.set(rightVel);
+    // }
   }
 
   public DifferentialDrive getDifferentialDrive() {

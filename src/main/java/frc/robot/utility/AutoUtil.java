@@ -38,8 +38,7 @@ public class AutoUtil {
     }
 
     public LeoRamsete getCommand(){
-         pathToCommand(filePath);
-        return command;
+        return pathToCommand(filePath);
     }
 
 
@@ -47,31 +46,40 @@ public class AutoUtil {
         try {
             if(trajectory == null)
                 trajectory = TrajectoryUtil.fromPathweaverJson(Filesystem.getDeployDirectory().toPath().resolve(filePath));
-            Transform2d transform = driveTrain.getCurrentPose().minus(trajectory.getInitialPose());                
-            trajectory = trajectory.transformBy(transform);
-            // return new LeoRamsete(
-            //     trajectory,
-            //     driveTrain::getCurrentPose,
-            //     PhysicalConstants.RAMSETE_CONTROLLER,
-            //     PhysicalConstants.DIFFERENTIAL_DRIVE_KINEMATICS,
-            //     (x, y) -> {
-            //         //System.out.println("uwu");
-            //         driveTrain.setTankVelocity(x, y);
-            //     },
-            //     driveTrain);
-
+            Transform2d transform = driveTrain.getCurrentPose().minus(trajectory.getInitialPose());   
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!"); 
+            System.out.println();
+            System.out.println(transform);   
+  
+            // trajectory = trajectory.transformBy(transform);
+            // System.out.println(trajectory);
+            // System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!"); 
+            
             return new LeoRamsete(
-                trajectory, 
-                driveTrain::getCurrentPose, 
-                new RamseteController(PhysicalConstants.kRamseteB, PhysicalConstants.kRamseteZeta), 
-                new SimpleMotorFeedforward(0.18691, 2.7613, 0.43694),
-                new DifferentialDriveKinematics(PhysicalConstants.trackWidthMeters),
-                driveTrain::getVelocity, 
-                //new PIDController(12.756, 0, 0),
-                new PIDController(0.004, 0, 0),
-                new PIDController(0.004, 0, 0), 
-                driveTrain::setTankVolts, 
+                trajectory.transformBy(transform),
+                driveTrain::getCurrentPose,
+                // new RamseteController(0, 0),
+                new RamseteController(PhysicalConstants.kRamseteB, PhysicalConstants.kRamseteZeta),
+                new DifferentialDriveKinematics(PhysicalConstants.trackWidthMeters),                
+                (x, y) -> {
+                    //System.out.println("uwu");
+                    driveTrain.setTankVelocity(x, y);
+                },
                 driveTrain);
+
+            // return new LeoRamsete(
+            //     trajectory.transformBy(transform), 
+            //     driveTrain::getCurrentPose, 
+            //     new RamseteController(PhysicalConstants.kRamseteB, PhysicalConstants.kRamseteZeta),
+            //     // new SimpleMotorFeedforward(0, 0, 0),
+            //     new SimpleMotorFeedforward(0.08691, 2, 0.043694), //(0.18691, 2.7613, 0.43694)
+            //     new DifferentialDriveKinematics(PhysicalConstants.trackWidthMeters),
+            //     driveTrain::getVelocity, 
+            //     //new PIDController(12.756, 0, 0),
+            //     new PIDController(3, 0, 0),
+            //     new PIDController(3, 0, 0), 
+            //     driveTrain::setTankVolts, 
+            //     driveTrain);
 
 
         } catch (IOException ex) {

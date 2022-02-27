@@ -34,7 +34,7 @@ public class RobotContainer {
   //private AutoUtil path1 = new AutoUtil("paths/output/Test1.wpilib.json", driveTrain);
   //private AutoUtil path2 = new AutoUtil("paths/output/Test2.wpilib.json", driveTrain);
 
-  private AutoUtil linCircle = new AutoUtil("paths/output/Unnamed_0.wpilib.json", driveTrain);
+  private AutoUtil linCircle = new AutoUtil("paths/output/Unnamed_2.wpilib.json", driveTrain);
   private ManualDrive manualDrive;
 
   /**
@@ -65,7 +65,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    driveTrain.resetOdometry(linCircle.getTrajectory().getInitialPose());
+    // driveTrain.resetOdometry(linCircle.getTrajectory().getInitialPose());
     return linCircle.getCommand();
   }
 }
