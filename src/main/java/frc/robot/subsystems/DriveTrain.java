@@ -5,9 +5,13 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.utility.NetworkTable.NtValueDisplay;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -28,6 +32,8 @@ import static frc.robot.Constants.PhysicalConstants.*;
 import static frc.robot.Constants.ConversionConstants.*;
 
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
+
+import javax.swing.plaf.synth.SynthStyle;
 
 public class DriveTrain extends SubsystemBase {
   /** Creates a new DriveTrain. */
@@ -89,8 +95,8 @@ public class DriveTrain extends SubsystemBase {
       .add("r", this::getGyroAngleDegrees);
 
     ntDispTab("Drivetrain")
-      .add("Left Velocity", this::getLVelocity)
-      .add("Right Velocity", this::getRVelocity);
+      .add("Left Velocity", this::getLVelocityMeters)
+      .add("Right Velocity", this::getRVelocityMeters);
       //Add target velocity?
 
 
@@ -99,7 +105,12 @@ public class DriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    odometer.update(getGyroAngle(), getLPosition(), getRPosition());
+    if(gyro.isCalibrating()){
+      System.out.println("Still Calibarting!!");
+    }
+    
+    odometer.update(gyro.getRotation2d(), getLPosition(), getRPosition());
+    // System.out.println(getCurrentPose());
   }
 
   private void setupAllMotors() {
@@ -133,11 +144,11 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public double getLPosition() {
-    return this.leftEncoder.getPosition() / DRIVETRAIN_ROTS_PER_FOOT;
+    return this.leftEncoder.getPosition() * PhysicalConstants.ROTATIONSTOMETERS;
   }
 
   public double getRPosition() {
-    return this.rightEncoder.getPosition() / DRIVETRAIN_ROTS_PER_FOOT;
+    return this.rightEncoder.getPosition() * PhysicalConstants.ROTATIONSTOMETERS;
   }
 
   public double getLRpm() {
@@ -147,12 +158,27 @@ public class DriveTrain extends SubsystemBase {
     return rightEncoder.getVelocity();
   }
 
-  public double getLVelocity() {
+  public double getLVelocityFeet() {
     return getLRpm() / DRIVETRAIN_ROTS_PER_FOOT / SECONDS_PER_MINUTE;
   }
 
-  public double getRVelocity() {
+  public double getLVelocityMeters(){
+    //System.out.println(getLRpm());
+    return getLRpm() * PhysicalConstants.RPMTOMETERSPERSEC;
+  }
+
+  public double getRVelocityFeet() {
     return getRRpm() / DRIVETRAIN_ROTS_PER_FOOT / SECONDS_PER_MINUTE;
+  }
+
+  public double getRVelocityMeters(){
+    return getRRpm() * PhysicalConstants.RPMTOMETERSPERSEC;
+  }
+  
+  public DifferentialDriveWheelSpeeds getVelocity(){
+    System.out.println("Current speed:");
+    System.out.println(new DifferentialDriveWheelSpeeds(getLVelocityMeters(), getRVelocityMeters()));
+    return new DifferentialDriveWheelSpeeds(getLVelocityMeters(), getRVelocityMeters());
   }
 
   public double getLVolts() {
@@ -171,8 +197,11 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void setLRPM(double rpm, double rpms) {
+    System.out.println(getLRpm());
+    System.out.println(rpm);
+    System.out.println("--------------------------");
     for (CANSparkMax motor : leftMotors) {
-      motor.getPIDController().setReference(rpm, ControlType.kVelocity, 0, simpleFFL.calculate(rpm, rpms), ArbFFUnits.kVoltage);
+      motor.getPIDController().setReference(rpm, ControlType.kVelocity, 0, simpleFFL.calculate(rpm), ArbFFUnits.kVoltage);
     }
   }
 
@@ -193,11 +222,15 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void setLVelocity(double velocity, double acceleration) {
-    setLRPM(leftLimiter.calculate(velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT), acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
+    // System.out.println(velocity / PhysicalConstants.RPMTOMETERSPERSEC);
+    // System.out.println(velocity);
+    // System.out.println(getLRpm());
+    // System.out.println("--------------------------");
+    setLRPM(leftLimiter.calculate(velocity / PhysicalConstants.RPMTOMETERSPERSEC), acceleration / (PhysicalConstants.RPMTOMETERSPERSEC / 60.0));
   }
 
   public void setRVelocity(double velocity, double acceleration) {
-    setRRPM(rightLimiter.calculate(velocity * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT), acceleration * SECONDS_PER_MINUTE * DRIVETRAIN_ROTS_PER_FOOT);
+    setRRPM(rightLimiter.calculate(velocity / PhysicalConstants.RPMTOMETERSPERSEC), acceleration / (PhysicalConstants.RPMTOMETERSPERSEC / 60.0));
   }
 
   public void setVelocity(double forward, double turn) {
@@ -205,8 +238,41 @@ public class DriveTrain extends SubsystemBase {
     //differentialDrive.arcadeDrive(forward, turn);
   }
 
+  public void setTankVelocity(double left, double right) {
+    //meters per second
+    setLVelocity(left, 0);
+    setRVelocity(right, 0);
+    
+  // left = left / (DRIVETRAIN_ROTS_PER_FOOT / FEET_PER_METER);
+
+  // right = right / (DRIVETRAIN_ROTS_PER_FOOT / FEET_PER_METER);
+
+  //   double leftVel = simpleFFL.calculate(left);
+  //   double rightVel = simpleFFR.calculate(right);
+    
+  //   // System.out.println("Left: " + left + "  vel: " + leftVel);
+  //   // System.out.println("Right: " + right + " vel: " + rightVel);
+  //   // System.out.println("Actual Left RPM: " + getLRpm());
+  //   // System.out.println("Actual Right RPM: " + getRRpm());
+    
+  //   leftTarget.update(left);
+  //   rightTarget.update(right);
+
+  //   for (CANSparkMax motor : leftMotors) {
+  //     motor.set(leftVel);
+  //   }
+
+    // for (CANSparkMax motor : rightMotors) {
+    //   motor.set(rightVel);
+    // }
+  }
+
   public DifferentialDrive getDifferentialDrive() {
     return differentialDrive;
+  }
+  public Pose2d getCurrentPose() {
+    //System.out.println(odometer.getPoseMeters());
+    return odometer.getPoseMeters();
   }
 
 
