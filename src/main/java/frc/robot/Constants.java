@@ -5,7 +5,8 @@
 package frc.robot;
 
 import frc.robot.utility.ShootCalibrationMap;
-import frc.robot.utility.ShootCalibrationMap.Trajectory;
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -87,8 +88,14 @@ public final class Constants {
     }
 
     public static final class PhysicalConstants {
+        public static final RamseteController RAMSETE_CONTROLLER = new RamseteController(PhysicalConstants.kRamseteB, PhysicalConstants.kRamseteZeta);
+        public static final DifferentialDriveKinematics DIFFERENTIAL_DRIVE_KINEMATICS = new DifferentialDriveKinematics(PhysicalConstants.trackWidthMeters);
+        public static final double RPMTOMETERSPERSEC = (((0.5 * Math.PI) * 0.305) / 60.0) / 10.38; 
+        public static final double ROTATIONSTOMETERS = ((0.5 * Math.PI) * 0.305) / 10.38;
+        public static final double RPM_PER_FALCON_UNIT = 10.0 * 60.0 / 2048.0;
+        public static final double MAX_HOOD_ENCODER_DISTANCE = 3630.0;
         // TODO: change this constant;
-        public static final double DRIVETRAIN_ROTS_PER_FOOT = 6;
+        public static final double DRIVETRAIN_ROTS_PER_FOOT = 1.0 / ((6.0 / 12.0) * Math.PI);
 
         //TODO: change these constants
         public static final double MAX_SPEED = 1;
@@ -96,12 +103,17 @@ public final class Constants {
 
         public static final double MAX_ACCELERATION = 3;
 
-        public static final double RPM_PER_FALCON_UNIT = 10.0 * 60.0 / 2048.0;
-        public static final double MAX_HOOD_ENCODER_DISTANCE = 3630;
+        public static final double trackWidthMeters = 0.70104;
+
+        //Autonomous
+        public static final double kRamseteB = 2; //2
+        public static final double kRamseteZeta = 0.7; //0.7
     }
 
     public static final class ConversionConstants {
         public static final double SECONDS_PER_MINUTE = 60.0;
+        public static final double FEET_PER_METER = 3.28084;
+        public static final Double METERS_TO_FEET = 1.0/FEET_PER_METER;
     }
 
     public static final class ShooterCalibrations {
@@ -109,12 +121,8 @@ public final class Constants {
     public static ShootCalibrationMap SHOOT_CALIBRATION_MAP = new ShootCalibrationMap();
         
         static {
-            SHOOT_CALIBRATION_MAP.add(0, new Trajectory(3000.0, -0.5)); // 1.8 in
-            SHOOT_CALIBRATION_MAP.add(9.2, new Trajectory(3380.0, -0.5)); // 1.8 in
-            SHOOT_CALIBRATION_MAP.add(10.5, new Trajectory(3540.0, -0.5)); // 1.9 in
-            SHOOT_CALIBRATION_MAP.add(12.8, new Trajectory(3750.0, -0.5)); // 2.5 in
-            SHOOT_CALIBRATION_MAP.add(18, new Trajectory(4200.0, -0.5)); // 2.5 in
-            SHOOT_CALIBRATION_MAP.add(100.0, new Trajectory(4700.0, 1));
+            SHOOT_CALIBRATION_MAP.add(0.0, new ShootCalibrationMap.Trajectory(3000.0, -0.5));
+            SHOOT_CALIBRATION_MAP.add(100.0, new ShootCalibrationMap.Trajectory(4700.0, 1));
         }
     }
 }
