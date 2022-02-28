@@ -115,6 +115,10 @@ public class Shooter extends SubsystemBase {
       ;
 
       speed *= Math.copySign(1, targetTurretPos);
+
+      if((getTurretPosDegrees() > 85 && targetTurretPos > 0) || (getTurretPosDegrees() < 85 && targetTurretPos < 0)) 
+        targetTurretPos = 0;
+
       turretMotor.set(speed);
     }
   }

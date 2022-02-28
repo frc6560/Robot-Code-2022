@@ -81,8 +81,6 @@ public class ManualShooter extends CommandBase {
     double dist = limelight.getDistance();
     if(controls.getAimShooter()){
       targetHoodPos = getShooterHoodAngle(dist);
-      // targetHoodPos += controls.shooterHoodTest()/100; // updating hood through  using climb joystick
-      // targetHoodPos = Util.getLimited(targetHoodPos, 1);
 
       shooter.setShooterRpm(getShooterRpm(dist) * 3.454545457);
       
