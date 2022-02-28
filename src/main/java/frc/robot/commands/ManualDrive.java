@@ -42,8 +42,6 @@ public class ManualDrive extends CommandBase {
       .add("Y Joystick", () -> controls.getY())
       .add("Speed", () -> controls.getSpeed())
       .add("Turn Speed", () -> controls.getTurnSpeed());
-
-    
   }
 
   

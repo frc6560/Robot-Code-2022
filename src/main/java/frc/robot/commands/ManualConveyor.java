@@ -9,6 +9,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.RobotIds;
+import frc.robot.commands.autonomous.AutonomousController;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Shooter;
 
@@ -41,6 +42,10 @@ public class ManualConveyor extends CommandBase {
     this.shooter = shooter; // this is to be able to read wether or not the shooter is ready to shoot.
 
     ntTable = NetworkTableInstance.getDefault().getTable("Transfer");
+  }
+
+  public ManualConveyor(Conveyor conveyor, Shooter shooter){ // Autonomouse
+    this(conveyor, new AutonomousController(false,"conveyor"), shooter);
   }
 
   // Called when the command is initially scheduled.
