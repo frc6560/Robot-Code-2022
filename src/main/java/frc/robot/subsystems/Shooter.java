@@ -128,8 +128,8 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setTurretPos(double pos){
+    pos = Util.getLimited(pos, (90-Math.abs(getTurretPos())));
     targetTurretPos = pos;
-    pos = Util.getLimited(pos, 90-Math.abs(getTurretPos()));
   }
 
   public void setShooterRpm(double rpm) {
