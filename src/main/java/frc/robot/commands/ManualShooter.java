@@ -16,6 +16,7 @@ import frc.robot.utility.ShootCalibrationMap;
 import frc.robot.utility.Util;
 import frc.robot.Constants;
 import frc.robot.Constants.ShooterCalibrations;
+import frc.robot.commands.autonomous.AutonomousController;
 import frc.robot.commands.controls.manualdrive.ManualControls;
 import frc.robot.subsystems.Limelight;
 
@@ -63,6 +64,10 @@ public class ManualShooter extends CommandBase {
 
     ntUseCalibrationMap = ntTable.getEntry("Use calibration map?");
     ntUseCalibrationMap.setBoolean(false);
+  }
+
+  public ManualShooter(Shooter shooter, Limelight limelight, boolean shootingFar){ // Autonomouse
+    this(shooter, new AutonomousController(shootingFar, "Shooter", "conveyor", "Intake"), limelight);
   }
 
   // Called when the command is initially scheduled.

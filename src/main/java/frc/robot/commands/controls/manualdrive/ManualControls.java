@@ -143,7 +143,7 @@ public class ManualControls implements ManualDrive.Controls, ManualIntake.Contro
 
     @Override
     public boolean isClimbOverrideEngaged() {
-        return NetworkTableInstance.getDefault().getTable("Shooter").getEntry("Climb MANUAL OVERRIDE?").getBoolean(false);
+        return NetworkTableInstance.getDefault().getTable("Climb").getEntry("Climb MANUAL OVERRIDE?").getBoolean(false);
     }
 
     @Override
