@@ -4,36 +4,13 @@
 
 package frc.robot.commands.autonomous;
 
-import frc.robot.commands.ManualDrive;
 import frc.robot.commands.ManualIntake;
 import frc.robot.commands.ManualShooter;
-import frc.robot.subsystems.Climb;
-import frc.robot.subsystems.Conveyor;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.Shooter;
 import frc.robot.commands.ManualConveyor;
-import frc.robot.commands.ManualClimb;
-
-import frc.robot.utility.NumberStepper;
-import frc.robot.utility.PovNumberStepper;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Arrays;
 
 import java.util.HashMap;
 
-import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
-
-
-import static frc.robot.Constants.*;
 
 
 /** Add your docs here. */
