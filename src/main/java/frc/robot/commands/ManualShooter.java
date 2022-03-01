@@ -94,7 +94,11 @@ public class ManualShooter extends CommandBase {
       }
 
       // shooter.setTurretPos(shooter.getTurretPos() + controls.shooterTurretTest()); // manual control of turret using climb joystick (button board);
-      shooter.setTurretPos(limelight.getHorizontalAngle()); // limelight controlled turret pos;
+      double turrTarget = limelight.getHorizontalAngle();
+      if((shooter.getTurretPos() > 85 && turrTarget > 0) || (shooter.getTurretPos() < -85 && turrTarget < 0))
+        turrTarget = 0;
+        
+      shooter.setTurretPos(turrTarget); // limelight controlled turret pos;
 
       // ntTestHood.setDouble(targetHoodPos);
     }else{

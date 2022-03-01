@@ -89,7 +89,7 @@ public class Shooter extends SubsystemBase {
 
     ntDispTab("Shooter")
       .add("Actual RPM", this::getShooterRpm)
-      .add("Actual Turret Pos", this::getTurretPos);
+      .add("Actual Turret Pos Deg", this::getTurretPosDegrees);
   }
 
   @Override
@@ -116,9 +116,6 @@ public class Shooter extends SubsystemBase {
 
       speed *= Math.copySign(1, targetTurretPos);
 
-      if((getTurretPosDegrees() > 85 && targetTurretPos > 0) || (getTurretPosDegrees() < 85 && targetTurretPos < 0)) 
-        targetTurretPos = 0;
-
       turretMotor.set(speed);
     }
   }
@@ -128,7 +125,6 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setTurretPos(double pos){
-    pos = Util.getLimited(pos, (90-Math.abs(getTurretPos())));
     targetTurretPos = pos;
   }
 
@@ -145,11 +141,11 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getTurretPos(){
-    return turretMotor.getEncoder().getPosition() - 90;
+    return turretMotor.getEncoder().getPosition();
   }
 
   public double getTurretPosDegrees(){
-    return getTurretPos() / 45 / (5.33333 * 1.028571428571429) * 360;
+    return getTurretPos() / 45 / (5.33333 * 1.028571428571429) * 360 + 90;
   }
 
   public boolean isShooterReady(){
