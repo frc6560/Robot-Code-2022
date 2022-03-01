@@ -9,12 +9,12 @@ import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
 
 
-public class AtonomousIntake extends CommandBase {
+public class AutonomousIntake extends CommandBase {
   /** Creates a new AtonomousIntake. */
 
   private Intake intake;
   private Conveyor conveyor;
-  public AtonomousIntake(Intake intake, Conveyor conveyor) {
+  public AutonomousIntake(Intake intake, Conveyor conveyor) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = intake;
     this.conveyor = conveyor;
