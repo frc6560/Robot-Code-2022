@@ -28,13 +28,11 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.Constants.PhysicalConstants;
 import frc.robot.commands.LeoRamsete;
-import frc.robot.subsystems.DriveTrainLeoGood;
-import frc.robot.subsystems.DriveTrain_Markbad;
-
+import frc.robot.subsystems.DriveTrain;
 /** Add your docs here. */
 public class AutoUtil {
     private Trajectory trajectory;
-    private DriveTrainLeoGood driveTrain;
+    private DriveTrain driveTrain;
     DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
             new SimpleMotorFeedforward(PhysicalConstants.KSVOLTS,
                     PhysicalConstants.KVVOLTSECONDSPERMETER,
@@ -55,7 +53,7 @@ public class AutoUtil {
         NetworkTableEntry rightReference;
         NetworkTableEntry rightMeasurement;
 
-    public AutoUtil(String filePath, DriveTrainLeoGood driveTrain) {
+    public AutoUtil(String filePath, DriveTrain driveTrain) {
         this.driveTrain = driveTrain;
         // this.command = pathToCommand(filePath);
 

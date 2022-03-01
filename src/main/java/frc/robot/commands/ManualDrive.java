@@ -5,8 +5,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrainLeoGood;
-import frc.robot.subsystems.DriveTrain_Markbad;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.DriveTrain_Old;
 
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
@@ -26,11 +26,11 @@ public class ManualDrive extends CommandBase {
   }
   
 
-  private final DriveTrainLeoGood driveTrain;
+  private final DriveTrain driveTrain;
 
   private final Controls controls;
 
-  public ManualDrive(DriveTrainLeoGood driveTrain, Controls controls) {
+  public ManualDrive(DriveTrain driveTrain, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrain);
     this.driveTrain = driveTrain;
