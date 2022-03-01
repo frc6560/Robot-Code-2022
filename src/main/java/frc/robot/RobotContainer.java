@@ -14,6 +14,7 @@ import frc.robot.commands.ManualConveyor;
 import frc.robot.commands.ManualDrive;
 import frc.robot.commands.ManualIntake;
 import frc.robot.commands.ManualShooter;
+import frc.robot.commands.autonomous.AutonomousIntake;
 import frc.robot.commands.autonomous.AutonomousShooter;
 import frc.robot.commands.controls.manualdrive.ManualControls;
 import frc.robot.subsystems.Climb;
@@ -60,7 +61,7 @@ public class RobotContainer {
   //private AutoUtil path1 = new AutoUtil("paths/output/Test1.wpilib.json", driveTrain);
   //private AutoUtil path2 = new AutoUtil("paths/output/Test2.wpilib.json", driveTrain);
 
-  private AutoUtil linCircle = new AutoUtil("paths/output/Unnamed_2.wpilib.json", driveTrain);
+  private AutoUtil linCircle = new AutoUtil("paths/output/Unnamed_0.wpilib.json", driveTrain);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -106,8 +107,8 @@ public class RobotContainer {
     // driveTrain.resetOdometry(linCircle.getTrajectory().getInitialPose());
     // return linCircle.getCommand();
     return new SequentialCommandGroup(
-      linCircle.getCommand(),
-      new AutonomousShooter(shooter, conveyor, limelight)
+      linCircle.getCommand().raceWith((new AutonomousIntake(intake, conveyor))),
+      new AutonomousShooter(shooter, conveyor, limelight).withTimeout(5)
     );
   }
 }
