@@ -6,7 +6,8 @@ package frc.robot.commands.autonomous.paths;
 
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.DriveTrainLeoGood;
+// import frc.robot.subsystems.DriveTrain;
 import frc.robot.utility.AutoUtil;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -17,7 +18,7 @@ public class TestAutoPath extends SequentialCommandGroup {
   AutoUtil path1;
   AutoUtil path2;
   
-  public TestAutoPath(DriveTrain driveTrain) {
+  public TestAutoPath(DriveTrainLeoGood driveTrain) {
     path1 = new AutoUtil("paths/output/straight.wpilib.json", driveTrain);
     path2 = new AutoUtil("paths/output/right.wpilib.json", driveTrain);
     

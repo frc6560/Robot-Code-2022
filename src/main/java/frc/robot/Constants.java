@@ -88,10 +88,24 @@ public final class Constants {
     }
 
     public static final class PhysicalConstants {
+        public static final double KSVOLTS = 0.18085;
+        public static final double KVVOLTSECONDSPERMETER = 2.7552;
+        public static final double KAVOLTSECONDSQUARDPERMETER = 0.73896;
+        public static final double KP = 2.4691;
+
+        public static final double MAXSPEEDMETERS = 1;
+        public static final double MAXACCELERATIONMETERS = 1;
+
+
+         //Autonomous
+        public static final double kRamseteB = 2; //2
+        public static final double kRamseteZeta = 0.7; //0.7
+
+
         public static final RamseteController RAMSETE_CONTROLLER = new RamseteController(PhysicalConstants.kRamseteB, PhysicalConstants.kRamseteZeta);
         public static final DifferentialDriveKinematics DIFFERENTIAL_DRIVE_KINEMATICS = new DifferentialDriveKinematics(PhysicalConstants.trackWidthMeters);
-        public static final double RPMTOMETERSPERSEC = (((0.5 * Math.PI) * 0.305) / 60.0) / 10.38; 
-        public static final double ROTATIONSTOMETERS = ((0.5 * Math.PI) * 0.305) / 10.38;
+        public static final double ROTATIONSTOMETERS = (((0.5 * Math.PI) * 0.3048) / 10.384615384615384615384615384615) * 1.293518518518519;
+        public static final double RPMTOMETERSPERSEC = ROTATIONSTOMETERS / 60.0; 
         public static final double RPM_PER_FALCON_UNIT = 10.0 * 60.0 / 2048.0;
         public static final double MAX_HOOD_ENCODER_DISTANCE = 3630.0;
         // TODO: change this constant;
@@ -101,13 +115,11 @@ public final class Constants {
         public static final double MAX_SPEED = 1;
         public static final double MAX_TURN_SPEED = 1;
 
-        public static final double MAX_ACCELERATION = 3;
+        public static final double MAX_ACCELERATION = 13;
 
         public static final double trackWidthMeters = 0.70104;
 
-        //Autonomous
-        public static final double kRamseteB = 2; //2
-        public static final double kRamseteZeta = 0.7; //0.7
+       
     }
 
     public static final class ConversionConstants {
