@@ -58,6 +58,9 @@ public class DriveTrainLeoGood extends SubsystemBase {
   //check
   private final AHRS gyro = new AHRS(SerialPort.Port.kMXP, SerialDataType.kProcessedData, (byte) 100);
 
+  private final SlewRateLimiter forwardLimiter = new SlewRateLimiter(PhysicalConstants.MAX_ACCELERATION);
+  private final SlewRateLimiter turnLimiter = new SlewRateLimiter(PhysicalConstants.MAX_ACCELERATION);
+
 
   /** Creates a new DriveTrainLeoGood. */
   public DriveTrainLeoGood() {
@@ -152,7 +155,7 @@ public class DriveTrainLeoGood extends SubsystemBase {
   }
 
   public void setVelocity(double forward, double turn) {
-    m_drive.arcadeDrive(forward, turn);
+    m_drive.arcadeDrive(forwardLimiter.calculate(forward), turnLimiter.calculate(turn));
     //differentialDrive.arcadeDrive(forward, turn);
   }
   
