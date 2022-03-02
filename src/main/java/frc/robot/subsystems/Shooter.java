@@ -42,6 +42,7 @@ public class Shooter extends SubsystemBase {
   private NetworkTable ntTable;
   private NetworkTableEntry ntShooterReady;
 
+  private int ballShotCount = 0;
 
   /** Creates a new Shooter. */
   public Shooter() {
@@ -134,6 +135,14 @@ public class Shooter extends SubsystemBase {
 
   public void setShooterRpm(double rpm) {
     targetRPM = rpm;
+  }
+
+  public void increaseBallCount(){
+    this.ballShotCount ++;
+  }
+
+  public int getBallShotCount(){
+    return this.ballShotCount;
   }
 
   public double getHoodPos() {

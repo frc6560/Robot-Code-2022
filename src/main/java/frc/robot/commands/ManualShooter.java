@@ -40,6 +40,8 @@ public class ManualShooter extends CommandBase {
   private NetworkTableEntry ntUseCalibrationMap;
 
   private double targetHoodPos = 0.0;
+  
+  private int targetBallCount = -1;
 
   public ManualShooter(Shooter shooter, Controls controls, Limelight limelight) {
     // Use addRequirements() here to declare subsystem dependencies.
