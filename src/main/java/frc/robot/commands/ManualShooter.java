@@ -79,6 +79,7 @@ public class ManualShooter extends CommandBase {
   public void initialize() {
     shooter.setHoodPos(0.0);
     shooter.setShooterRpm(0.0);
+    shooter.setTurretPos(-shooter.getTurretPosDegrees());
     shooter.resetBallCount();
   }
 
@@ -109,7 +110,6 @@ public class ManualShooter extends CommandBase {
 
       // ntTestHood.setDouble(targetHoodPos);
     }else{
-      shooter.setTurretPos(-shooter.getTurretPosDegrees());
       shooter.setShooterRpm(0);
     }
 
