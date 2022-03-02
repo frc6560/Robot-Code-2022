@@ -20,7 +20,7 @@ public class Intake extends SubsystemBase {
   private final CANSparkMax intakeMotor = new CANSparkMax(RobotIds.INTAKE_MOTOR, MotorType.kBrushless);
   private final Solenoid intakePiston = new Solenoid(PneumaticsModuleType.CTREPCM, RobotIds.INTAKE_SOLENOID);
 
-  private final int minFramesDown = 35;
+  private final int minFramesDown = 20;
 
   private double targetIntakeMotorOutput = 0.5;
 
@@ -40,7 +40,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void setIntakeMotorOutput(double output) {
-    targetIntakeMotorOutput = output;
+    targetIntakeMotorOutput = output * (reversed ? -1: 1);
   }
 
   public void setPiston(boolean out) {

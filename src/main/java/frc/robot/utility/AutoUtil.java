@@ -85,71 +85,71 @@ public class AutoUtil {
 
     }
 
-    public LeoRamsete getCommand() {
+//     public LeoRamsete getCommand() {
 
-        return pathToCommand();
-    }
+//         return pathToCommand();
+//     }
 
-    private LeoRamsete pathToCommand() {
-        Transform2d transform = driveTrain.getPose().minus(exampleTrajectory.getInitialPose());
+//     private LeoRamsete pathToCommand() {
+//         Transform2d transform = driveTrain.getPose().minus(exampleTrajectory.getInitialPose());
 
-        Trajectory newTrajectory = exampleTrajectory.transformBy(transform);
+//         Trajectory newTrajectory = exampleTrajectory.transformBy(transform);
 
-        // System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!");
-        // System.out.println();
-        // System.out.println(transform);
+//         // System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!");
+//         // System.out.println();
+//         // System.out.println(transform);
 
-        // trajectory = trajectory.transformBy(transform);
-        // System.out.println(trajectory);
-        // System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!");
+//         // trajectory = trajectory.transformBy(transform);
+//         // System.out.println(trajectory);
+//         // System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!");
 
-        // return new LeoRamsete(
-        // trajectory.transformBy(transform),
-        // driveTrain::getCurrentPose,
-        // // new RamseteController(0, 0),
-        // new RamseteController(PhysicalConstants.kRamseteB,
-        // PhysicalConstants.kRamseteZeta),
-        // new DifferentialDriveKinematics(PhysicalConstants.trackWidthMeters),
-        // (x, y) -> {
-        // //System.out.println("uwu");
-        // driveTrain.setTankVelocity(x, y);
-        // },
-        // driveTrain);
+//         // return new LeoRamsete(
+//         // trajectory.transformBy(transform),
+//         // driveTrain::getCurrentPose,
+//         // // new RamseteController(0, 0),
+//         // new RamseteController(PhysicalConstants.kRamseteB,
+//         // PhysicalConstants.kRamseteZeta),
+//         // new DifferentialDriveKinematics(PhysicalConstants.trackWidthMeters),
+//         // (x, y) -> {
+//         // //System.out.println("uwu");
+//         // driveTrain.setTankVelocity(x, y);
+//         // },
+//         // driveTrain);
 
-        // return null;
+//         // return null;
         
 
-        PIDController leftController = new PIDController(PhysicalConstants.KP, 0, 0);
-        PIDController rightController = new PIDController(PhysicalConstants.KP, 0, 0);
+//         PIDController leftController = new PIDController(PhysicalConstants.KP, 0, 0);
+//         PIDController rightController = new PIDController(PhysicalConstants.KP, 0, 0);
 
 
-        return new LeoRamsete(
-                newTrajectory,
-                driveTrain::getPose,
-                new RamseteController(
-                        PhysicalConstants.kRamseteB,
-                        PhysicalConstants.kRamseteZeta),
-                new SimpleMotorFeedforward(
-                        PhysicalConstants.KSVOLTS,
-                        PhysicalConstants.KVVOLTSECONDSPERMETER,
-                        PhysicalConstants.KAVOLTSECONDSQUARDPERMETER),
-                PhysicalConstants.DIFFERENTIAL_DRIVE_KINEMATICS,
-                driveTrain::getWheelSpeeds,
-                // new PIDController(12.756, 0, 0),
-                leftController,
-                rightController,
-                (x, y) -> {
-                    System.out.println(x + " " + y);
-                    driveTrain.tankDriveVolts(x, y);
+//         return new LeoRamsete(
+//                 newTrajectory,
+//                 driveTrain::getPose,
+//                 new RamseteController(
+//                         PhysicalConstants.kRamseteB,
+//                         PhysicalConstants.kRamseteZeta),
+//                 new SimpleMotorFeedforward(
+//                         PhysicalConstants.KSVOLTS,
+//                         PhysicalConstants.KVVOLTSECONDSPERMETER,
+//                         PhysicalConstants.KAVOLTSECONDSQUARDPERMETER),
+//                 PhysicalConstants.DIFFERENTIAL_DRIVE_KINEMATICS,
+//                 driveTrain::getWheelSpeeds,
+//                 // new PIDController(12.756, 0, 0),
+//                 leftController,
+//                 rightController,
+//                 (x, y) -> {
+//                     System.out.println(x + " " + y);
+//                     driveTrain.tankDriveVolts(x, y);
 
-                    leftMeasurement.setDouble(driveTrain.getWheelSpeeds().leftMetersPerSecond);
-                    leftReference.setDouble(leftController.getSetpoint());
+//                     leftMeasurement.setDouble(driveTrain.getWheelSpeeds().leftMetersPerSecond);
+//                     leftReference.setDouble(leftController.getSetpoint());
             
-                    rightMeasurement.setDouble(driveTrain.getWheelSpeeds().rightMetersPerSecond);
-                    rightReference.setDouble(rightController.getSetpoint());
-                },
-                driveTrain);
+//                     rightMeasurement.setDouble(driveTrain.getWheelSpeeds().rightMetersPerSecond);
+//                     rightReference.setDouble(rightController.getSetpoint());
+//                 },
+//                 driveTrain);
 
-    }
+//     }
 
 }

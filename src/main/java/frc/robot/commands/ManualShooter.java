@@ -43,6 +43,7 @@ public class ManualShooter extends CommandBase {
   private double targetHoodPos = 0.0;
   
   private int targetBallCount = -1;
+  private double doneShootingFrames = 0;
 
   public ManualShooter(Shooter shooter, Controls controls, Limelight limelight) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -65,7 +66,7 @@ public class ManualShooter extends CommandBase {
     ntAddCalibrateButton.setBoolean(false);
 
     ntUseCalibrationMap = ntTable.getEntry("Use calibration map?");
-    ntUseCalibrationMap.setBoolean(false);
+    ntUseCalibrationMap.setBoolean(true);
   }
 
   public ManualShooter(Shooter shooter, Limelight limelight, boolean shootingFar, int ballCount){ // Autonomouse
@@ -78,6 +79,7 @@ public class ManualShooter extends CommandBase {
   public void initialize() {
     shooter.setHoodPos(0.0);
     shooter.setShooterRpm(0.0);
+    shooter.resetBallCount();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -97,7 +99,9 @@ public class ManualShooter extends CommandBase {
       }
 
       // shooter.setTurretPos(shooter.getTurretPos() + controls.shooterTurretTest()); // manual control of turret using climb joystick (button board);
-      double turrTarget = limelight.getHorizontalAngle();
+      double turrTarget;
+      if(limelight.hasTarget()) turrTarget = limelight.getHorizontalAngle();
+      else turrTarget = -shooter.getTurretPosDegrees();
       if((shooter.getTurretPos() > 85 && turrTarget > 0) || (shooter.getTurretPos() < -85 && turrTarget < 0))
         turrTarget = 0;
         
@@ -105,8 +109,11 @@ public class ManualShooter extends CommandBase {
 
       // ntTestHood.setDouble(targetHoodPos);
     }else{
+      shooter.setTurretPos(-shooter.getTurretPosDegrees());
       shooter.setShooterRpm(0);
     }
+
+    if(targetBallCount != -1 && shooter.getBallShotCount() >= targetBallCount) doneShootingFrames++;
 
     if(!prevCalibButton && ntAddCalibrateButton.getBoolean(false)){
       ShooterCalibrations.SHOOT_CALIBRATION_MAP.add(dist, new ShootCalibrationMap.Trajectory(ntTestRPM.getDouble(0.0), ntTestHood.getDouble(0.0)));
@@ -146,6 +153,10 @@ public class ManualShooter extends CommandBase {
     return ntTestHood.getDouble(0.0); 
   }
 
+  public boolean doneShooting(){
+    return doneShootingFrames > 20;
+  }
+
 
   // Called once the command ends or is interrupted.
   @Override
@@ -156,6 +167,6 @@ public class ManualShooter extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return targetBallCount != -1 && shooter.getBallShotCount() > targetBallCount;
+    return doneShooting();
   }
 }

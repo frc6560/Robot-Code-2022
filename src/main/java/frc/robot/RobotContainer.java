@@ -18,6 +18,7 @@ import frc.robot.commands.ManualDrive;
 import frc.robot.commands.ManualIntake;
 import frc.robot.commands.ManualShooter;
 import frc.robot.commands.autonomous.AutonomousController;
+import frc.robot.commands.autonomous.InplaceTurn;
 import frc.robot.commands.controls.manualdrive.ManualControls;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Conveyor;
@@ -26,7 +27,10 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utility.AutoUtil;
+import frc.robot.utility.AutoWrapper;
+import frc.robot.utility.AutoWrapperPathWeaver;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /**
@@ -63,7 +67,14 @@ public class RobotContainer {
   //private AutoUtil path1 = new AutoUtil("paths/output/Test1.wpilib.json", driveTrain);
   //private AutoUtil path2 = new AutoUtil("paths/output/Test2.wpilib.json", driveTrain);
 
-  private AutoUtil linCircle = new AutoUtil("paths/output/Unnamed_2.wpilib.json", driveTrain);
+  // private AutoUtil linCircle = new AutoUtil("paths/output/Unnamed_2.wpilib.json", driveTrain);
+  private AutoWrapper Stright = new AutoWrapper("Threeball_1 Work Copy Copy", driveTrain);
+
+  private AutoWrapper threeBall1 = new AutoWrapper("Threeball_1", driveTrain);
+  private AutoWrapper threeBall2 = new AutoWrapper("Threeball_2", driveTrain);
+  private AutoWrapper threeBall3 = new AutoWrapper("Threeball_3", driveTrain);
+
+  private AutoWrapperPathWeaver stirght = new AutoWrapperPathWeaver("paths/output/Unnamed.wpilib.json", driveTrain);
 
   private ManualControls controls;
   private AutonomousController autonomousController;
@@ -112,8 +123,23 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     // driveTrain.resetOdometry(linCircle.getTrajectory().getInitialPose());
+    // return new SequentialCommandGroup(
+    //   linCircle.getCommand().raceWith(new ManualIntake(intake)).raceWith(new ManualConveyor(conveyor, shooter)),
+    //   (new ManualShooter(shooter, limelight, true)).withTimeout(5)
+    // );
     
-    return null;
-    
+    // return 
+    //   threeBall1.getCommand().raceWith(new ManualIntake(intake)).raceWith(new ManualConveyor(conveyor, shooter, false)).withTimeout(2.5).andThen(
+    //     (new ManualShooter(shooter, limelight, true, 2).raceWith(new ManualConveyor(conveyor, shooter, true)))
+    //   );
+
+    // return stirght.getCommand();
+
+    //     new InplaceTurn(driveTrain, 178)).andThen(
+    //     threeBall3.getCommand());
+    // .raceWith(new ManualIntake(intake)).raceWith(new ManualConveyor(conveyor, shooter));
+    // return 
+
+    return new InplaceTurn(driveTrain, 180);
   }
 }

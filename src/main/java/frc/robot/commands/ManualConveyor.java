@@ -46,8 +46,9 @@ public class ManualConveyor extends CommandBase {
     ntTable = NetworkTableInstance.getDefault().getTable("Transfer");
   }
 
-  public ManualConveyor(Conveyor conveyor, Shooter shooter){ // Autonomouse
-    this(conveyor, new AutonomousController(false,"conveyor"), shooter);
+  public ManualConveyor(Conveyor conveyor, Shooter shooter, Boolean shoot){ // Autonomouse
+    this(conveyor, new AutonomousController(false,"conveyor", (shoot ? "shooter" : "")), shooter);
+
   }
 
   // Called when the command is initially scheduled.
@@ -64,9 +65,9 @@ public class ManualConveyor extends CommandBase {
       conveyor.setConveyor(-conveyorSpeed);
       conveyor.setOverHead(-overHeadSpeed);
 
-    } else if (controls.getConveyorMotor() || controls.isIntakeEngaged() || (controls.getFeedShooter() && shooter.getShooterRpm() > 200)){  // if ballchain, intake, or shooter_feeding is on, run transfer
+    } else if (controls.getConveyorMotor() || controls.isIntakeEngaged() || (controls.getFeedShooter() && shooter.isShooterReady())){  // if ballchain, intake, or shooter_feeding is on, run transfer
 
-      if(!conveyor.getSensor() || (controls.getFeedShooter() && shooter.getShooterRpm() > 200)){
+      if(!conveyor.getSensor() || (controls.getFeedShooter() && shooter.isShooterReady())){
         conveyor.setConveyor(conveyorSpeed);
 
       }else{

@@ -158,5 +158,9 @@ public class DriveTrain extends SubsystemBase {
     m_drive.arcadeDrive(forwardLimiter.calculate(forward), turnLimiter.calculate(turn));
     //differentialDrive.arcadeDrive(forward, turn);
   }
+
+  public double getAngleContinuous(){
+    return gyro.getRotation2d().getDegrees() * 1.040763226366002;
+  }
   
 }

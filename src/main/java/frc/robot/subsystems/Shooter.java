@@ -23,7 +23,7 @@ import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 public class Shooter extends SubsystemBase {
   private final double RPMAcceptableDiff = 100;
   private final double turretAcceptableDiff = 3;
-  private final double hoodAcceptableDiff = 1;
+  private final double hoodAcceptableDiff = 10;
 
   private final double turretTurnSpeed = 0.35;
 
@@ -76,6 +76,7 @@ public class Shooter extends SubsystemBase {
     shooterMotorL.setInverted(false);
     shooterMotorR.setInverted(true);
 
+
     // Hood setup
     hoodServoL = new PWM(RobotIds.SHOOTER_HOOD_ACTUATOR_LEFT);
     hoodServoR = new PWM(RobotIds.SHOOTER_HOOD_ACTUATOR_RIGHT);
@@ -90,7 +91,16 @@ public class Shooter extends SubsystemBase {
 
     ntDispTab("Shooter")
       .add("Actual RPM", this::getShooterRpm)
-      .add("Actual Turret Pos Deg", this::getTurretPosDegrees);
+      .add("Target RPM", ()->targetRPM)
+
+      .add("Target Turret", () -> targetTurretPos)
+      .add("Actual Turret", this::getTurretPosDegrees)
+
+      .add("Target Hood", () -> targetHoodPos)
+      .add("Actual Hood", this::getHoodPos)
+
+      .add("Num Balls Shot", this::getBallShotCount)
+    ;
   }
 
   @Override
@@ -137,6 +147,10 @@ public class Shooter extends SubsystemBase {
     this.ballShotCount ++;
   }
 
+  public void resetBallCount(){
+    ballShotCount = 0;
+  }
+
   public int getBallShotCount(){
     return this.ballShotCount;
   }
@@ -160,8 +174,8 @@ public class Shooter extends SubsystemBase {
   public boolean isShooterReady(){
     return 
       Math.abs(getShooterRpm()) > 200 &&
-      Math.abs(getShooterRpm() - targetRPM) < RPMAcceptableDiff &&
-      Math.abs(getTurretPos() - targetTurretPos) < turretAcceptableDiff &&
+      Math.abs(getShooterRpm() * 3.454545457 - targetRPM) < RPMAcceptableDiff &&
+      Math.abs(targetTurretPos) < turretAcceptableDiff &&
       Math.abs(getHoodPos() - targetHoodPos) < hoodAcceptableDiff;
   }
 }

@@ -17,6 +17,8 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.utility.AutoWrapper;
 
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
@@ -38,7 +40,8 @@ import java.util.function.Supplier;
 public class LeoRamsete extends CommandBase {
   private final Timer m_timer = new Timer();
   private final boolean m_usePID;
-  private final Trajectory m_trajectory;
+  private Trajectory m_trajectory;
+  private AutoWrapper autoWrapper;
   private final Supplier<Pose2d> m_pose;
   private final RamseteController m_follower;
   private final SimpleMotorFeedforward m_feedforward;
@@ -73,7 +76,6 @@ public class LeoRamsete extends CommandBase {
    * @param requirements The subsystems to require.
    */
   public LeoRamsete(
-      Trajectory trajectory,
       Supplier<Pose2d> pose,
       RamseteController controller,
       SimpleMotorFeedforward feedforward,
@@ -82,8 +84,8 @@ public class LeoRamsete extends CommandBase {
       PIDController leftController,
       PIDController rightController,
       BiConsumer<Double, Double> outputVolts,
+      AutoWrapper autoWrapper,
       Subsystem... requirements) {
-    m_trajectory = requireNonNullParam(trajectory, "trajectory", "RamseteCommand");
     m_pose = requireNonNullParam(pose, "pose", "RamseteCommand");
     m_follower = requireNonNullParam(controller, "controller", "RamseteCommand");
     m_feedforward = feedforward;
@@ -92,7 +94,7 @@ public class LeoRamsete extends CommandBase {
     m_leftController = requireNonNullParam(leftController, "leftController", "RamseteCommand");
     m_rightController = requireNonNullParam(rightController, "rightController", "RamseteCommand");
     m_output = requireNonNullParam(outputVolts, "outputVolts", "RamseteCommand");
-
+    this.autoWrapper = autoWrapper;
     m_usePID = true;
 
     addRequirements(requirements);
@@ -137,6 +139,7 @@ public class LeoRamsete extends CommandBase {
 
   @Override
   public void initialize() {
+    m_trajectory = autoWrapper.getTrajectory();
     m_prevTime = -1;
     var initialState = m_trajectory.sample(0);
     m_prevSpeeds =

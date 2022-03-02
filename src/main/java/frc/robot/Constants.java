@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.utility.AutoWrapper;
 import frc.robot.utility.ShootCalibrationMap;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
@@ -145,4 +146,5 @@ public final class Constants {
             SHOOT_CALIBRATION_MAP.add(100.0, new ShootCalibrationMap.Trajectory(4700.0, 1));
         }
     }
+    
 }
