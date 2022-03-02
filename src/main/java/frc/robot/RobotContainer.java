@@ -120,26 +120,36 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    // driveTrain.resetOdometry(linCircle.getTrajectory().getInitialPose());
-    // return new SequentialCommandGroup(
-    //   linCircle.getCommand().raceWith(new ManualIntake(intake)).raceWith(new ManualConveyor(conveyor, shooter)),
-    //   (new ManualShooter(shooter, limelight, true)).withTimeout(5)
-    // );
-    
+  public Command getAutonomousCommand() {    
     // return 
     //   threeBall1.getCommand().raceWith(new ManualIntake(intake)).raceWith(new ManualConveyor(conveyor, shooter, false)).withTimeout(2.5).andThen(
     //     (new ManualShooter(shooter, limelight, true, 2).raceWith(new ManualConveyor(conveyor, shooter, true)))
     //   );
 
-    // return stirght.getCommand();
+    return (threeBall1.getCommand()
+                .raceWith(new ManualIntake(intake))
+                .raceWith(new ManualConveyor(conveyor, shooter, false))
+           )
 
-    //     new InplaceTurn(driveTrain, 178)).andThen(
-    //     threeBall3.getCommand());
+        .andThen((new ManualShooter(shooter, limelight, false, 2))
+                  .raceWith(new ManualConveyor(conveyor, shooter, true))
+                )
+
+        .andThen(new InplaceTurn(driveTrain, 134))
+
+        .andThen(threeBall3.getCommand()
+                .raceWith((new ManualIntake(intake))
+                .raceWith(new ManualConveyor(conveyor, shooter, false)))
+                )
+
+        .andThen((new ManualShooter(shooter, limelight, false, 1)
+                  .raceWith(new ManualConveyor(conveyor, shooter, true)))
+                );
+      //  new InplaceTurn(driveTrain, 178)).andThen(
+      //   threeBall3.getCommand());
     // .raceWith(new ManualIntake(intake)).raceWith(new ManualConveyor(conveyor, shooter));
     // return 
 
-    return new InplaceTurn(driveTrain, 180);
+    // return new InplaceTurn(driveTrain, 178);
   }
 }

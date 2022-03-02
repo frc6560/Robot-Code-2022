@@ -154,7 +154,7 @@ public class ManualShooter extends CommandBase {
   }
 
   public boolean doneShooting(){
-    return doneShootingFrames > 20;
+    return doneShootingFrames > 30;
   }
 
 
