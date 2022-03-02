@@ -5,7 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
+import frc.robot.commands.autonomous.AutonomousController;
 import frc.robot.subsystems.Intake;
 
 public class ManualIntake extends CommandBase {
@@ -25,6 +25,10 @@ public class ManualIntake extends CommandBase {
     addRequirements(intake);
     this.intake = intake;
     this.controls = controls;
+  }
+
+  public ManualIntake(Intake intake){ // Autonomouse
+    this(intake, new AutonomousController(false, "Intake"));
   }
 
   // Called when the command is initially scheduled.

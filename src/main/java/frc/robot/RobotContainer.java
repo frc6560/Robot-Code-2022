@@ -4,17 +4,20 @@
 
 package frc.robot;
 
+import com.fasterxml.jackson.databind.util.Converter;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ManualClimb;
 import frc.robot.commands.ManualConveyor;
 import frc.robot.commands.ManualDrive;
 import frc.robot.commands.ManualIntake;
 import frc.robot.commands.ManualShooter;
-import frc.robot.commands.autonomous.AutonomousShooter;
+import frc.robot.commands.autonomous.AutonomousController;
 import frc.robot.commands.controls.manualdrive.ManualControls;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Conveyor;
@@ -62,16 +65,21 @@ public class RobotContainer {
 
   private AutoUtil linCircle = new AutoUtil("paths/output/Unnamed_2.wpilib.json", driveTrain);
 
+  private ManualControls controls;
+  private AutonomousController autonomousController;
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    ManualControls controls = new ManualControls(xbox, controlStation, xbox2);
+    controls = new ManualControls(xbox, controlStation, xbox2);
+
 
     manualDrive = new ManualDrive(driveTrain, controls);
     driveTrain.setDefaultCommand(manualDrive);
+    
 
     limelight = new Limelight(controls);
 
@@ -104,7 +112,12 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     // driveTrain.resetOdometry(linCircle.getTrajectory().getInitialPose());
-    // return linCircle.getCommand();
-    return null;
+    return new SequentialCommandGroup(
+      linCircle.getCommand().raceWith(new ManualIntake(intake)).raceWith(new ManualConveyor(conveyor, shooter)),
+      (new ManualShooter(shooter, limelight, true)).withTimeout(5)
+    );
+    
+    // return null;
+    
   }
 }

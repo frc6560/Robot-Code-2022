@@ -16,6 +16,7 @@ import frc.robot.utility.ShootCalibrationMap;
 import frc.robot.utility.Util;
 import frc.robot.Constants;
 import frc.robot.Constants.ShooterCalibrations;
+import frc.robot.commands.autonomous.AutonomousController;
 import frc.robot.commands.controls.manualdrive.ManualControls;
 import frc.robot.subsystems.Limelight;
 
@@ -67,6 +68,10 @@ public class ManualShooter extends CommandBase {
     ntUseCalibrationMap.setBoolean(false);
   }
 
+  public ManualShooter(Shooter shooter, Limelight limelight, boolean shootingFar){ // Autonomouse
+    this(shooter, new AutonomousController(shootingFar, "Shooter", "conveyor", "Intake"), limelight);
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
@@ -91,7 +96,11 @@ public class ManualShooter extends CommandBase {
       }
 
       // shooter.setTurretPos(shooter.getTurretPos() + controls.shooterTurretTest()); // manual control of turret using climb joystick (button board);
-      shooter.setTurretPos(limelight.getHorizontalAngle()); // limelight controlled turret pos;
+      double turrTarget = limelight.getHorizontalAngle();
+      if((shooter.getTurretPos() > 85 && turrTarget > 0) || (shooter.getTurretPos() < -85 && turrTarget < 0))
+        turrTarget = 0;
+        
+      shooter.setTurretPos(turrTarget); // limelight controlled turret pos;
 
       // ntTestHood.setDouble(targetHoodPos);
     }else{

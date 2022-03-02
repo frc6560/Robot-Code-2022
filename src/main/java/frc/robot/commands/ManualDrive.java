@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.DriveTrain_Old;
 
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
@@ -42,8 +43,6 @@ public class ManualDrive extends CommandBase {
       .add("Y Joystick", () -> controls.getY())
       .add("Speed", () -> controls.getSpeed())
       .add("Turn Speed", () -> controls.getTurnSpeed());
-
-    
   }
 
   
