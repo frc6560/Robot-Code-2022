@@ -29,6 +29,8 @@ public class ManualConveyor extends CommandBase {
 
   private final double conveyorSpeed = 0.45;
   private final double overHeadSpeed = 0.7;
+
+  private boolean conveyorTopSensorLast = false;
   
 
   /** Creates a new ConveyorCommand2. */
@@ -52,6 +54,7 @@ public class ManualConveyor extends CommandBase {
   @Override
   public void initialize() {
     conveyor.setConveyor(0);
+    conveyorTopSensorLast = conveyor.getSensor();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -72,10 +75,16 @@ public class ManualConveyor extends CommandBase {
 
       conveyor.setOverHead(overHeadSpeed);
 
+      if(conveyorTopSensorLast && !conveyor.getSensor()){
+        shooter.increaseBallCount();
+      }
+
     } else {
       conveyor.setConveyor(0.0);
       conveyor.setOverHead(0.0);
     }
+
+    conveyorTopSensorLast = conveyor.getSensor();
   }
 
   // Called once the command ends or is interrupted.

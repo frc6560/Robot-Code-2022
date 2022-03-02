@@ -112,12 +112,8 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     // driveTrain.resetOdometry(linCircle.getTrajectory().getInitialPose());
-    return new SequentialCommandGroup(
-      linCircle.getCommand().raceWith(new ManualIntake(intake)).raceWith(new ManualConveyor(conveyor, shooter)),
-      (new ManualShooter(shooter, limelight, true)).withTimeout(5)
-    );
     
-    // return null;
+    return null;
     
   }
 }

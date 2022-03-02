@@ -68,8 +68,9 @@ public class ManualShooter extends CommandBase {
     ntUseCalibrationMap.setBoolean(false);
   }
 
-  public ManualShooter(Shooter shooter, Limelight limelight, boolean shootingFar){ // Autonomouse
+  public ManualShooter(Shooter shooter, Limelight limelight, boolean shootingFar, int ballCount){ // Autonomouse
     this(shooter, new AutonomousController(shootingFar, "Shooter", "conveyor", "Intake"), limelight);
+    this.targetBallCount = ballCount;
   }
 
   // Called when the command is initially scheduled.
@@ -155,6 +156,6 @@ public class ManualShooter extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return targetBallCount != -1 && shooter.getBallShotCount() > targetBallCount;
   }
 }
