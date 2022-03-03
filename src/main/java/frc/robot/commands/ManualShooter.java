@@ -79,7 +79,7 @@ public class ManualShooter extends CommandBase {
   public void initialize() {
     shooter.setHoodPos(0.0);
     shooter.setShooterRpm(0.0);
-    // shooter.setTurretPos(-shooter.getTurretPosDegrees());
+    shooter.setTurretPos(-shooter.getTurretPosDegrees());
     shooter.resetBallCount();
   }
 
@@ -99,13 +99,13 @@ public class ManualShooter extends CommandBase {
         shooter.setHoodPos(targetHoodPos);
       }
 
-      // shooter.setTurretPos(shooter.getTurretPos() + controls.shooterTurretTest()); // manual control of turret using climb joystick (button board);
+      // shooter.setTurretPosDiff(shooter.getTurretPos() + controls.shooterTurretTest()); // manual control of turret using climb joystick (button board);
       double turrTarget = 0;
       if(limelight.hasTarget()) turrTarget = limelight.getHorizontalAngle();
       if((shooter.getTurretPos() > 85 && turrTarget > 0) || (shooter.getTurretPos() < -85 && turrTarget < 0))
         turrTarget = 0;
         
-      shooter.setTurretPos(turrTarget); // limelight controlled turret pos;
+      shooter.setTurretPosDiff(turrTarget); // limelight controlled turret pos;
 
       // ntTestHood.setDouble(targetHoodPos);
     }else{
