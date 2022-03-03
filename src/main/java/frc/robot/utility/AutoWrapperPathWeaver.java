@@ -24,7 +24,7 @@ import frc.robot.commands.LeoRamsete;
 import frc.robot.subsystems.DriveTrain;
 
 /** Add your docs here. */
-public class AutoWrapperPathWeaver {
+public class AutoWrapperPathWeaver implements AutoWrapperInterface {
     private Trajectory trajectory;
     private DriveTrain driveTrain;
 
@@ -41,47 +41,46 @@ public class AutoWrapperPathWeaver {
             DriverStation.reportError("Unable to open trajectory: " + pathName, ex.getStackTrace());
         }
         this.driveTrain = driveTrain;
-
-        table = NetworkTableInstance.getDefault().getTable("troubleshooting");
-        leftReference = table.getEntry("left_reference");
-        leftMeasurement = table.getEntry("left_measurement");
-        rightReference = table.getEntry("right_reference");
-        rightMeasurement = table.getEntry("right_measurement");
     }
 
-    // public LeoRamsete getCommand() {
-    //     Transform2d transform = driveTrain.getPose().minus(trajectory.getInitialPose());
+    public LeoRamsete getCommand() {
 
-    //     Trajectory newTrajectory = trajectory.transformBy(transform);
+        PIDController leftController = new PIDController(PhysicalConstants.KP, 0, 0);
+        PIDController rightController = new PIDController(PhysicalConstants.KP, 0, 0);
 
-    //     PIDController leftController = new PIDController(PhysicalConstants.KP, 0, 0);
-    //     PIDController rightController = new PIDController(PhysicalConstants.KP, 0, 0);
+        return new LeoRamsete(
+                driveTrain::getPose,
+                new RamseteController(
+                        PhysicalConstants.kRamseteB,
+                        PhysicalConstants.kRamseteZeta),
+                new SimpleMotorFeedforward(
+                        PhysicalConstants.KSVOLTS,
+                        PhysicalConstants.KVVOLTSECONDSPERMETER,
+                        PhysicalConstants.KAVOLTSECONDSQUARDPERMETER),
+                PhysicalConstants.DIFFERENTIAL_DRIVE_KINEMATICS,
+                driveTrain::getWheelSpeeds,
+                leftController,
+                rightController,
+                (x, y) -> {
+                    driveTrain.tankDriveVolts(x, y);
 
-    //     return new LeoRamsete(
-    //             newTrajectory,
-    //             driveTrain::getPose,
-    //             new RamseteController(
-    //                     PhysicalConstants.kRamseteB,
-    //                     PhysicalConstants.kRamseteZeta),
-    //             new SimpleMotorFeedforward(
-    //                     PhysicalConstants.KSVOLTS,
-    //                     PhysicalConstants.KVVOLTSECONDSPERMETER,
-    //                     PhysicalConstants.KAVOLTSECONDSQUARDPERMETER),
-    //             PhysicalConstants.DIFFERENTIAL_DRIVE_KINEMATICS,
-    //             driveTrain::getWheelSpeeds,
-    //             leftController,
-    //             rightController,
-    //             (x, y) -> {
-    //                 driveTrain.tankDriveVolts(x, y);
+                    System.out.println(x + " " + y);
+                    leftMeasurement.setDouble(driveTrain.getWheelSpeeds().leftMetersPerSecond);
+                    leftReference.setDouble(leftController.getSetpoint());
 
-    //                 System.out.println(x + " " + y);
-    //                 leftMeasurement.setDouble(driveTrain.getWheelSpeeds().leftMetersPerSecond);
-    //                 leftReference.setDouble(leftController.getSetpoint());
+                    rightMeasurement.setDouble(driveTrain.getWheelSpeeds().rightMetersPerSecond);
+                    rightReference.setDouble(rightController.getSetpoint());
+                },
+                this,
+                driveTrain);
+    }
 
-    //                 rightMeasurement.setDouble(driveTrain.getWheelSpeeds().rightMetersPerSecond);
-    //                 rightReference.setDouble(rightController.getSetpoint());
-    //             },
-    //             driveTrain);
-    // }
+    @Override
+    public Trajectory getTrajectory() {
+        Transform2d transform = driveTrain.getPose().minus(trajectory.getInitialPose());
+
+        Trajectory newTrajectory = trajectory.transformBy(transform);
+        return newTrajectory;
+    }
 
 }

@@ -19,6 +19,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.utility.AutoWrapper;
+import frc.robot.utility.AutoWrapperInterface;
+import frc.robot.utility.AutoWrapperPathWeaver;
+import frc.robot.utility.StraightRamseteGen;
 
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
@@ -41,7 +44,7 @@ public class LeoRamsete extends CommandBase {
   private final Timer m_timer = new Timer();
   private final boolean m_usePID;
   private Trajectory m_trajectory;
-  private AutoWrapper autoWrapper;
+  private AutoWrapperInterface autoWrapper;
   private final Supplier<Pose2d> m_pose;
   private final RamseteController m_follower;
   private final SimpleMotorFeedforward m_feedforward;
@@ -73,7 +76,7 @@ public class LeoRamsete extends CommandBase {
    * @param rightController The PIDController for the right side of the robot drive.
    * @param outputVolts A function that consumes the computed left and right outputs (in volts) for
    *     the robot drive.
-   * @param requirements The subsystems to require.
+   * @param driveTrain The subsystems to require.
    */
   public LeoRamsete(
       Supplier<Pose2d> pose,
@@ -84,8 +87,8 @@ public class LeoRamsete extends CommandBase {
       PIDController leftController,
       PIDController rightController,
       BiConsumer<Double, Double> outputVolts,
-      AutoWrapper autoWrapper,
-      Subsystem... requirements) {
+      AutoWrapperInterface autoWrapper,
+      DriveTrain driveTrain) {
     m_pose = requireNonNullParam(pose, "pose", "RamseteCommand");
     m_follower = requireNonNullParam(controller, "controller", "RamseteCommand");
     m_feedforward = feedforward;
@@ -97,7 +100,7 @@ public class LeoRamsete extends CommandBase {
     this.autoWrapper = autoWrapper;
     m_usePID = true;
 
-    addRequirements(requirements);
+    addRequirements(driveTrain);
   }
 
   /**

@@ -91,7 +91,7 @@ public class Shooter extends SubsystemBase {
 
     ntDispTab("Shooter")
       .add("Actual RPM", this::getShooterRpm)
-      .add("Target RPM", ()->targetRPM)
+      .add("Target RPM", ()->(targetRPM/3.454545457))
 
       .add("Target Turret", () -> targetTurretPos)
       .add("Actual Turret", this::getTurretPosDegrees)
@@ -114,18 +114,20 @@ public class Shooter extends SubsystemBase {
     shooterMotorL.set(ControlMode.Velocity, targetRPM);
     shooterMotorR.set(ControlMode.Velocity, targetRPM);
     // shooterMotorL.set(ControlMode.PercentOutput, 0.5);
+
+    double turretPosDiff = targetTurretPos - this.getTurretPosDegrees();
     
-    if(Math.abs(targetTurretPos) < turretAcceptableDiff){
+    if(Math.abs(turretPosDiff) < turretAcceptableDiff){
       turretMotor.set(0.0);
     }else{
-      double speed = Math.abs(targetTurretPos) > turretAcceptableDiff * 3  ?
+      double speed = Math.abs(turretPosDiff) > turretAcceptableDiff * 3  ?
                     turretTurnSpeed :
-                      Math.abs(targetTurretPos) > turretAcceptableDiff * 2 ?
-                    turretTurnSpeed / (3 * (3 * turretAcceptableDiff - Math.abs(targetTurretPos)) / (turretAcceptableDiff)): // basically a gradient down from 1 to 1/3
+                      Math.abs(turretPosDiff) > turretAcceptableDiff * 2 ?
+                    turretTurnSpeed / (3 * (3 * turretAcceptableDiff - Math.abs(turretPosDiff)) / (turretAcceptableDiff)): // basically a gradient down from 1 to 1/3
                     turretTurnSpeed / 3
       ;
 
-      speed *= Math.copySign(1, targetTurretPos);
+      speed *= Math.copySign(1, turretPosDiff);
 
       turretMotor.set(speed);
     }
@@ -139,11 +141,16 @@ public class Shooter extends SubsystemBase {
     targetTurretPos = pos;
   }
 
+  public void setTurretDeltaPos(double delta){
+    setTurretPos(this.getTurretPosDegrees() + delta);
+  }
+
   public void setShooterRpm(double rpm) {
     targetRPM = rpm;
   }
 
   public void increaseBallCount(){
+    System.out.println("Shot a ball");
     this.ballShotCount ++;
   }
 
@@ -172,9 +179,10 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean isShooterReady(){
+    System.out.println("1:  " + (Math.abs(getShooterRpm()) > 200) + "    2:  " + (Math.abs(getShooterRpm() - targetRPM/3.454545457) < RPMAcceptableDiff) + "   3:   " + (Math.abs(targetTurretPos) < turretAcceptableDiff) + "   4:  " + (Math.abs(getHoodPos() - targetHoodPos) < hoodAcceptableDiff));
     return 
       Math.abs(getShooterRpm()) > 200 &&
-      Math.abs(getShooterRpm() * 3.454545457 - targetRPM) < RPMAcceptableDiff &&
+      Math.abs(getShooterRpm() - targetRPM/3.454545457) < RPMAcceptableDiff &&
       Math.abs(targetTurretPos) < turretAcceptableDiff &&
       Math.abs(getHoodPos() - targetHoodPos) < hoodAcceptableDiff;
   }

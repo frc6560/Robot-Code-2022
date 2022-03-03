@@ -82,7 +82,7 @@ public final class Constants {
         public static final int INTAKE_OVERHEAD_MOTOR = 3;
         public static final int INTAKE_SOLENOID = 0;
 
-        public static final int CLIMB_PISTON = 1;
+        public static final int CLIMB_PISTON = 3;
         public static final int CLIMB_ROTATOR_MOTOR = 17;
         public static final int CLIMB_LEFT_EXTENSION_MOTOR = 5;
         public static final int CLIMB_RIGHT_EXTENSION_MOTOR = 14;

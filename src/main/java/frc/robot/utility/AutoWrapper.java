@@ -22,7 +22,7 @@ import frc.robot.commands.LeoRamsete;
 import frc.robot.subsystems.DriveTrain;
 
 /** Add your docs here. */
-public class AutoWrapper {
+public class AutoWrapper implements AutoWrapperInterface{
     private Trajectory trajectory;
     private DriveTrain driveTrain;
 
@@ -47,6 +47,7 @@ public class AutoWrapper {
         rightMeasurement = table.getEntry("right_measurement");
     }
     
+    @Override
     public Trajectory getTrajectory(){
         Transform2d transform = driveTrain.getPose().minus(trajectory.getInitialPose());
 
@@ -54,6 +55,7 @@ public class AutoWrapper {
         return newTrajectory;
     }
 
+    @Override
     public LeoRamsete getCommand() {
         
 

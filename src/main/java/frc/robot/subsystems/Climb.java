@@ -35,8 +35,8 @@ public class Climb extends SubsystemBase {
   private static final double BETA_P = 0.1;
   private double rightComp = 1.0;
 
-  private final double minPos = 0;
-  private final double maxPos = 1000;
+  private final double minPos = -99999999;
+  private final double maxPos = 99999999;
 
   private NetworkTable nTable;
   private NetworkTableEntry rightCompensationConstant;
@@ -79,11 +79,11 @@ public class Climb extends SubsystemBase {
     // setLeftVelocity(targetVelocity + ((diff > 0) ? targetVelocity * diff * compConstant : 0.0));
     // setRightVelocity(targetVelocity + ((diff < 0) ? targetVelocity * -diff * compConstant : 0.0));
   
-    if(getRightPosition() < minPos || getLeftPosition() < minPos){
-      targetVelocity = Math.max(0, targetVelocity);
-    } else if(getRightPosition() > maxPos || getLeftPosition() > maxPos){
-      targetVelocity = Math.min(0, targetVelocity);
-    }
+    // if(getRightPosition() > minPos || getLeftPosition() > minPos){
+    //   targetVelocity = Math.max(0, targetVelocity);
+    // } else if(getRightPosition() < maxPos || getLeftPosition() < maxPos){
+    //   targetVelocity = Math.min(0, targetVelocity);
+    // }
 
     setLeftVelocity(targetVelocity);
     setRightVelocity(targetVelocity * rightComp);
