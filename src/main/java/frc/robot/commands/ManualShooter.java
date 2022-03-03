@@ -161,6 +161,7 @@ public class ManualShooter extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     shooter.setShooterRpm(0.0);
+    shooter.setTurretPos(0);
   }
 
   // Returns true when the command should end.
