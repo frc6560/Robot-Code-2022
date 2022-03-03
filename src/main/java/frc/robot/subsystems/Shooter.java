@@ -114,20 +114,18 @@ public class Shooter extends SubsystemBase {
     shooterMotorL.set(ControlMode.Velocity, targetRPM);
     shooterMotorR.set(ControlMode.Velocity, targetRPM);
     // shooterMotorL.set(ControlMode.PercentOutput, 0.5);
-
-    double turretAngleToTurn = getTurretPosDegrees() - targetTurretPos;
     
-    if(Math.abs(turretAngleToTurn) < turretAcceptableDiff){
+    if(Math.abs(targetTurretPos) < turretAcceptableDiff){
       turretMotor.set(0.0);
     }else{
-      double speed = Math.abs(turretAngleToTurn) > turretAcceptableDiff * 3  ?
+      double speed = Math.abs(targetTurretPos) > turretAcceptableDiff * 3  ?
                     turretTurnSpeed :
-                      Math.abs(turretAngleToTurn) > turretAcceptableDiff * 2 ?
-                    turretTurnSpeed / (3 * (3 * turretAcceptableDiff - Math.abs(turretAngleToTurn)) / (turretAcceptableDiff)): // basically a gradient down from 1 to 1/3
+                      Math.abs(targetTurretPos) > turretAcceptableDiff * 2 ?
+                    turretTurnSpeed / (3 * (3 * turretAcceptableDiff - Math.abs(targetTurretPos)) / (turretAcceptableDiff)): // basically a gradient down from 1 to 1/3
                     turretTurnSpeed / 3
       ;
 
-      speed *= Math.copySign(1, turretAngleToTurn);
+      speed *= Math.copySign(1, targetTurretPos);
 
       turretMotor.set(speed);
     }
@@ -139,10 +137,6 @@ public class Shooter extends SubsystemBase {
 
   public void setTurretPos(double pos){
     targetTurretPos = pos;
-  }
-
-  public void setTurretPosDiff(double degrees){
-    setTurretPos(getTurretPosDegrees() + degrees);
   }
 
   public void setShooterRpm(double rpm) {
