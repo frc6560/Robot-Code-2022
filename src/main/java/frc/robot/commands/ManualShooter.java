@@ -26,6 +26,7 @@ public class ManualShooter extends CommandBase {
     double shooterHoodTest();
     double shooterTurretTest();
     boolean getAimShooter();
+    boolean overrideTurretCenter();
   }
 
   private Shooter shooter;
@@ -80,6 +81,7 @@ public class ManualShooter extends CommandBase {
     shooter.setHoodPos(0.0);
     shooter.setShooterRpm(0.0);
     shooter.resetBallCount();
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -103,8 +105,9 @@ public class ManualShooter extends CommandBase {
       
       if((shooter.getTurretPosDegrees() > 85 && turrTarget > 0) || (shooter.getTurretPosDegrees() < -85 && turrTarget < 0))
         turrTarget = 0;
-        
-      shooter.setTurretDeltaPos(turrTarget); // limelight controlled turret pos;
+      
+      if(controls.overrideTurretCenter()) shooter.setTurretPos(0);
+      else shooter.setTurretDeltaPos(turrTarget); // limelight controlled turret pos;
 
       // ntTestHood.setDouble(targetHoodPos);
     }else{

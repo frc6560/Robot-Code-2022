@@ -127,23 +127,23 @@ public class ManualControls implements ManualDrive.Controls, ManualIntake.Contro
     }
 
     @Override
+    public boolean overrideTurretCenter(){
+        return xbox.getRawAxis(ControllerIds.XBOX_L_TRIGGER) > 0.1;
+    }
+
+    @Override
     public double getClimbRotation() {
         return controlStation.getRawAxis(ControllerIds.DRIVER_STATION_X_AXIS);
     }
 
     @Override
     public double getClimbExtensionMotors() {
-        return controlStation.getRawAxis(ControllerIds.DRIVER_STATION_Y_AXIS);
+        return -controlStation.getRawAxis(ControllerIds.DRIVER_STATION_Y_AXIS);
     }
 
     @Override
     public boolean getClimbPiston() {
         return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_4);
-    }
-
-    @Override
-    public boolean isClimbOverrideEngaged() {
-        return NetworkTableInstance.getDefault().getTable("Climb").getEntry("Climb MANUAL OVERRIDE?").getBoolean(false);
     }
 
     @Override

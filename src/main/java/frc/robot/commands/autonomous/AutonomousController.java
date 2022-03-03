@@ -72,6 +72,11 @@ public class AutonomousController implements ManualIntake.Controls, ManualShoote
         return subsystemMap.get("shooter");
     }
 
+    @Override
+    public boolean overrideTurretCenter(){
+      return false;
+    }
+
 
     @Override
     public double shooterHoodTest() {

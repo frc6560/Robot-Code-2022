@@ -112,6 +112,8 @@ public final class Constants {
         // TODO: change this constant;
         public static final double DRIVETRAIN_ROTS_PER_FOOT = 1.0 / ((6.0 / 12.0) * Math.PI);
 
+        public static final double CLIMB_EXTENSION_INCHES_PER_ROTATION = (1.0 / 25) * 25 / 25.4; // 1 rotation / 25 rot per bigRot * 25 mm per bigRot / 25.4 mm per inch
+
         //TODO: change these constants
         public static final double MAX_SPEED = 1;
         public static final double MAX_TURN_SPEED = 1;
@@ -136,7 +138,7 @@ public final class Constants {
         static {
             SHOOT_CALIBRATION_MAP.add(0.0, new ShootCalibrationMap.Trajectory(3000.0, -1));
             SHOOT_CALIBRATION_MAP.add(7.0, new ShootCalibrationMap.Trajectory(3440.0, -0.5714));
-            SHOOT_CALIBRATION_MAP.add(9.2, new ShootCalibrationMap.Trajectory(3380.0, -0.1143));
+            SHOOT_CALIBRATION_MAP.add(9.2, new ShootCalibrationMap.Trajectory(3420.0, -0.1143));
             SHOOT_CALIBRATION_MAP.add(10.5, new ShootCalibrationMap.Trajectory(3540, -0.0571));
             SHOOT_CALIBRATION_MAP.add(11.5, new ShootCalibrationMap.Trajectory(3680.0, 0.1429));
             SHOOT_CALIBRATION_MAP.add(12.8, new ShootCalibrationMap.Trajectory(3750.0, 0.2857));

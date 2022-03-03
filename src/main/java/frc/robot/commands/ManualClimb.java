@@ -22,7 +22,6 @@ public class ManualClimb extends CommandBase {
     boolean getClimbPiston();
     double getClimbExtensionMotors();
     
-    boolean isClimbOverrideEngaged();
     double leftOverrideExtensionVelocity();
     double rightOverrideExtensionVelocity();
   }
@@ -45,10 +44,10 @@ public class ManualClimb extends CommandBase {
     nTable = NetworkTableInstance.getDefault().getTable("Climb");
 
     extensionSpeed = nTable.getEntry("Extension Speed");
-    extensionSpeed.setDouble(0.0);
+    extensionSpeed.setDouble(0.3);
 
     rotationSpeed = nTable.getEntry("Rotation Speed");
-    rotationSpeed.setDouble(0.0);
+    rotationSpeed.setDouble(0.3);
   }
 
   // Called when the command is initially scheduled.
@@ -61,16 +60,9 @@ public class ManualClimb extends CommandBase {
   @Override
   public void execute() {
     climb.runRotatorMotor(controls.getClimbRotation() * rotationSpeed.getDouble(0.0));
+
+    climb.setExtensionMotor(controls.getClimbExtensionMotors() * extensionSpeed.getDouble(0.0));
     climb.setPiston(controls.getClimbPiston());
-
-    if (controls.isClimbOverrideEngaged()) {
-      climb.setLeftVelocity(controls.rightOverrideExtensionVelocity() * extensionSpeed.getDouble(0.0));
-      climb.setRightVelocity(controls.leftOverrideExtensionVelocity() * extensionSpeed.getDouble(0.0));
-    }
-    else {
-      climb.setTargetVelocity(controls.getClimbExtensionMotors() * extensionSpeed.getDouble(0.0));
-    }
-
   }
 
   // Called once the command ends or is interrupted.

@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.Constants.*;
+import frc.robot.utility.NetworkTable.NtValueDisplay;
 
 
 public class Climb extends SubsystemBase {
@@ -32,16 +33,20 @@ public class Climb extends SubsystemBase {
   private final SlewRateLimiter accelLimiter = new SlewRateLimiter(3);
 
   private static final double EPSILON = 5.08;
-  private static final double BETA_P = 0.1;
+  private static final double BETA_P = 0.001;
   private double rightComp = 1.0;
+  private double leftComp = 1.0;
 
   private final double minPos = -99999999;
   private final double maxPos = 99999999;
 
+  private double targetExtensionSpeed = 0;
+
   private NetworkTable nTable;
   private NetworkTableEntry rightCompensationConstant;
+  private NetworkTableEntry ntOverideSoftLimit;
 
-  private double targetVelocity;
+  private double extensionSpeed = 0.3;
 
   public Climb() {
     setupAllMotors();
@@ -49,6 +54,11 @@ public class Climb extends SubsystemBase {
 
     rightCompensationConstant = nTable.getEntry("Right Compensation Constant");
     rightCompensationConstant.setDouble(0.0);
+
+    ntOverideSoftLimit = nTable.getEntry("Climb Override");
+    ntOverideSoftLimit.setBoolean(false);
+
+    NtValueDisplay.ntDispTab("Climb").add("Left Pos", this::getLeftPositionInches).add("Right Pos", this::getRightPositionInches);
 
   }
 
@@ -74,48 +84,36 @@ public class Climb extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    double diff = getLeftPosition() - getRightPosition();
-    
-    // setLeftVelocity(targetVelocity + ((diff > 0) ? targetVelocity * diff * compConstant : 0.0));
-    // setRightVelocity(targetVelocity + ((diff < 0) ? targetVelocity * -diff * compConstant : 0.0));
-  
-    // if(getRightPosition() > minPos || getLeftPosition() > minPos){
-    //   targetVelocity = Math.max(0, targetVelocity);
-    // } else if(getRightPosition() < maxPos || getLeftPosition() < maxPos){
-    //   targetVelocity = Math.min(0, targetVelocity);
+    double rightPos = getRightPosition();
+    double leftPos = getLeftPosition();
+    double diff = leftPos - rightPos;
+
+    // if (Math.abs(diff) > EPSILON) {
+    //   if (diff < 0) {
+    //     leftComp += BETA_P;
+    //     rightComp = 1.0;
+    //   }
+    //   if (diff > 0) {
+    //     leftComp = 1.0;
+    //     rightComp += BETA_P;
+    //   }
     // }
 
-    setLeftVelocity(targetVelocity);
-    setRightVelocity(targetVelocity * rightComp);
-    
-    if (Math.abs(diff) > EPSILON) {
-      if (diff < 0) rightComp -= BETA_P;
-      if (diff > 0) rightComp += BETA_P;
+    double leftTargetExtensionSpeed = targetExtensionSpeed * leftComp;
+    double rightTargetExtensionSpeed = targetExtensionSpeed * rightComp;
+
+    if(!ntOverideSoftLimit.getBoolean(false)){
+      if(rightPos < 0) rightTargetExtensionSpeed = Math.min(0, rightTargetExtensionSpeed);
+      if(leftPos < 0) leftTargetExtensionSpeed = Math.min(0, leftTargetExtensionSpeed);
     }
-  }
 
-  public void setTargetVelocity(double velocity) {
-    targetVelocity = velocity;
-  }
-  
-
-  public void setRightVelocity(double velocity) {
-    rightExtensionMotor.set(velocity);
-    rightExtensionMotor.getPIDController().setReference(velocity, ControlType.kVelocity); // rpm
-  }
-
-  public void setLeftVelocity(double velocity) {
-    leftExtensionMotor.set(velocity);
-    leftExtensionMotor.getPIDController().setReference(velocity, ControlType.kVelocity); // rpm
+    setLeftExtensionMotor(leftTargetExtensionSpeed);
+    setRightExtensionMotor(rightTargetExtensionSpeed);
   }
 
   public void runRotatorMotor(double output) {
     if (getRotatorPosition() < 0.0 && output < 0.0) output = 0;
     rotatorMotor.set(accelLimiter.calculate(output));
-  }
-
-  public void setRotatorPosition(double pos) {
-    rotatorMotor.getEncoder().setPosition(pos > 0.0 ? pos : 0.0);
   }
 
   public void initialize() {
@@ -128,25 +126,16 @@ public class Climb extends SubsystemBase {
     piston.set(extended);
   }
 
-  public void runLeftExtensionMotor(double output) {
-    leftExtensionMotor.set(output);
+  private void setLeftExtensionMotor(double output) {
+    leftExtensionMotor.set(-output);
   }
 
-  public void runRightExtensionMotor(double output) {
-    rightExtensionMotor.set(output);
+  private void setRightExtensionMotor(double output) {
+    rightExtensionMotor.set(-output);
   }
 
-  public void runBothExtensionMotors(double output) {
-    runLeftExtensionMotor(output);
-    runRightExtensionMotor(output);
-  }
-
-  public double getRightExtensionMotorSpeed() {
-    return rightExtensionMotor.getEncoder().getVelocity();
-  }
-
-  public double getLeftExtensionMotorSpeed() {
-    return leftExtensionMotor.getEncoder().getVelocity();
+  public void setExtensionMotor(double output){
+    targetExtensionSpeed = output;
   }
 
   public double getRightPosition() {
@@ -157,12 +146,12 @@ public class Climb extends SubsystemBase {
     return leftExtensionMotor.getEncoder().getPosition();
   }
 
-  public void setRightPosition(double position) {
-    rightExtensionMotor.getPIDController().setReference(position, ControlType.kPosition);
+  public double getRightPositionInches() {
+    return rightExtensionMotor.getEncoder().getPosition() * PhysicalConstants.CLIMB_EXTENSION_INCHES_PER_ROTATION;
   }
 
-  public void setLeftPosition(double position) {
-    leftExtensionMotor.getPIDController().setReference(position, ControlType.kPosition);
+  public double getLeftPositionInches() {
+    return leftExtensionMotor.getEncoder().getPosition() * PhysicalConstants.CLIMB_EXTENSION_INCHES_PER_ROTATION;
   }
 
   public double getRotatorPosition() {

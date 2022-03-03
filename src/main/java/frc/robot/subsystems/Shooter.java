@@ -183,7 +183,7 @@ public class Shooter extends SubsystemBase {
     return 
       Math.abs(getShooterRpm()) > 200 &&
       Math.abs(getShooterRpm() - targetRPM/3.454545457) < RPMAcceptableDiff &&
-      Math.abs(targetTurretPos) < turretAcceptableDiff &&
+      Math.abs(getTurretPosDegrees() - targetTurretPos) < turretAcceptableDiff &&
       Math.abs(getHoodPos() - targetHoodPos) < hoodAcceptableDiff;
   }
 }
