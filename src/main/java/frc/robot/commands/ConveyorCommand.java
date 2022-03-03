@@ -13,7 +13,7 @@ import frc.robot.commands.autonomous.AutonomousController;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Shooter;
 
-public class ManualConveyor extends CommandBase {
+public class ConveyorCommand extends CommandBase {
   public static interface Controls {
     boolean getConveyorMotor();
     boolean getBallChainReverse();
@@ -34,7 +34,7 @@ public class ManualConveyor extends CommandBase {
   
 
   /** Creates a new ConveyorCommand2. */
-  public ManualConveyor(Conveyor conveyor, Controls controls, Shooter shooter) {
+  public ConveyorCommand(Conveyor conveyor, Controls controls, Shooter shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
 
     addRequirements(conveyor);
@@ -46,7 +46,7 @@ public class ManualConveyor extends CommandBase {
     ntTable = NetworkTableInstance.getDefault().getTable("Transfer");
   }
 
-  public ManualConveyor(Conveyor conveyor, Shooter shooter, Boolean shoot){ // Autonomouse
+  public ConveyorCommand(Conveyor conveyor, Shooter shooter, Boolean shoot){ // Autonomouse
     this(conveyor, new AutonomousController(false,"conveyor", (shoot ? "shooter" : "")), shooter);
 
   }

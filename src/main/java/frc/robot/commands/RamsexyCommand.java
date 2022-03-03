@@ -40,7 +40,7 @@ import java.util.function.Supplier;
  *
  * <p>This class is provided by the NewCommands VendorDep
  */
-public class LeoRamsete extends CommandBase {
+public class RamsexyCommand extends CommandBase {
   private final Timer m_timer = new Timer();
   private final boolean m_usePID;
   private Trajectory m_trajectory;
@@ -78,7 +78,7 @@ public class LeoRamsete extends CommandBase {
    *     the robot drive.
    * @param driveTrain The subsystems to require.
    */
-  public LeoRamsete(
+  public RamsexyCommand(
       Supplier<Pose2d> pose,
       RamseteController controller,
       SimpleMotorFeedforward feedforward,
@@ -116,7 +116,7 @@ public class LeoRamsete extends CommandBase {
    * @param outputMetersPerSecond A function that consumes the computed left and right wheel speeds.
    * @param requirements The subsystems to require.
    */
-  public LeoRamsete(
+  public RamsexyCommand(
       Trajectory trajectory,
       Supplier<Pose2d> pose,
       RamseteController follower,

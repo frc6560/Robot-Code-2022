@@ -5,10 +5,10 @@
 package frc.robot.utility;
 
 import edu.wpi.first.math.trajectory.Trajectory;
-import frc.robot.commands.LeoRamsete;
+import frc.robot.commands.RamsexyCommand;
 
 /** Add your docs here. */
 public interface AutoWrapperInterface {
     public Trajectory getTrajectory(); 
-    public LeoRamsete getCommand();
+    public RamsexyCommand getCommand();
 }

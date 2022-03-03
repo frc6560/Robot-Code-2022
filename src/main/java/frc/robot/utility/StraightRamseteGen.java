@@ -18,7 +18,7 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.Constants.PhysicalConstants;
-import frc.robot.commands.LeoRamsete;
+import frc.robot.commands.RamsexyCommand;
 import frc.robot.subsystems.DriveTrain;
 
 /** Add your docs here. */
@@ -51,12 +51,12 @@ public class StraightRamseteGen implements AutoWrapperInterface {
                                 config);
         }
 
-        public LeoRamsete getCommand() {
+        public RamsexyCommand getCommand() {
 
                 PIDController leftController = new PIDController(PhysicalConstants.KP, 0, 0);
                 PIDController rightController = new PIDController(PhysicalConstants.KP, 0, 0);
 
-                return new LeoRamsete(
+                return new RamsexyCommand(
                                 driveTrain::getPose,
                                 new RamseteController(
                                                 PhysicalConstants.kRamseteB,

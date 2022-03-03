@@ -20,7 +20,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import frc.robot.Constants.PhysicalConstants;
-import frc.robot.commands.LeoRamsete;
+import frc.robot.commands.RamsexyCommand;
 import frc.robot.subsystems.DriveTrain;
 
 /** Add your docs here. */
@@ -43,12 +43,12 @@ public class AutoWrapperPathWeaver implements AutoWrapperInterface {
         this.driveTrain = driveTrain;
     }
 
-    public LeoRamsete getCommand() {
+    public RamsexyCommand getCommand() {
 
         PIDController leftController = new PIDController(PhysicalConstants.KP, 0, 0);
         PIDController rightController = new PIDController(PhysicalConstants.KP, 0, 0);
 
-        return new LeoRamsete(
+        return new RamsexyCommand(
                 driveTrain::getPose,
                 new RamseteController(
                         PhysicalConstants.kRamseteB,

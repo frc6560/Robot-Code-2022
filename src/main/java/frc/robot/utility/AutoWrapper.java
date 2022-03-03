@@ -18,7 +18,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants.PhysicalConstants;
-import frc.robot.commands.LeoRamsete;
+import frc.robot.commands.RamsexyCommand;
 import frc.robot.subsystems.DriveTrain;
 
 /** Add your docs here. */
@@ -56,13 +56,13 @@ public class AutoWrapper implements AutoWrapperInterface{
     }
 
     @Override
-    public LeoRamsete getCommand() {
+    public RamsexyCommand getCommand() {
         
 
         PIDController leftController = new PIDController(PhysicalConstants.KP, 0, 0);
         PIDController rightController = new PIDController(PhysicalConstants.KP, 0, 0);
 
-        return new LeoRamsete(
+        return new RamsexyCommand(
                 driveTrain::getPose,
                 new RamseteController(
                         PhysicalConstants.kRamseteB,

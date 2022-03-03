@@ -2,14 +2,14 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.controls.manualdrive;
+package frc.robot.controls.manualdrive;
 
-import frc.robot.commands.ManualDrive;
-import frc.robot.commands.ManualIntake;
-import frc.robot.commands.ManualShooter;
+import frc.robot.commands.DriveCommand;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.Limelight;
-import frc.robot.commands.ManualConveyor;
-import frc.robot.commands.ManualClimb;
+import frc.robot.commands.ConveyorCommand;
+import frc.robot.commands.ClimbCommand;
 
 import frc.robot.utility.NumberStepper;
 import frc.robot.utility.PovNumberStepper;
@@ -23,7 +23,7 @@ import static frc.robot.Constants.*;
 
 
 /** Add your docs here. */
-public class ManualControls implements ManualDrive.Controls, ManualIntake.Controls, ManualShooter.Controls, Limelight.Controls, ManualConveyor.Controls, ManualClimb.Controls {
+public class ManualControls implements DriveCommand.Controls, IntakeCommand.Controls, ShooterCommand.Controls, Limelight.Controls, ConveyorCommand.Controls, ClimbCommand.Controls {
 
     private final Joystick xbox;
     private final Joystick controlStation;

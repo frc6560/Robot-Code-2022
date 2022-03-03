@@ -4,17 +4,17 @@
 
 package frc.robot.commands.autonomous;
 
-import frc.robot.commands.ManualIntake;
-import frc.robot.commands.ManualShooter;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.Limelight;
-import frc.robot.commands.ManualConveyor;
+import frc.robot.commands.ConveyorCommand;
 
 import java.util.HashMap;
 
 
 
 /** Add your docs here. */
-public class AutonomousController implements ManualIntake.Controls, ManualShooter.Controls, Limelight.Controls, ManualConveyor.Controls {
+public class AutonomousController implements IntakeCommand.Controls, ShooterCommand.Controls, Limelight.Controls, ConveyorCommand.Controls {
 
     private HashMap<String, Boolean> subsystemMap;
 

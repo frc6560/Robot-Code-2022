@@ -17,10 +17,10 @@ import frc.robot.utility.Util;
 import frc.robot.Constants;
 import frc.robot.Constants.ShooterCalibrations;
 import frc.robot.commands.autonomous.AutonomousController;
-import frc.robot.commands.controls.manualdrive.ManualControls;
+import frc.robot.controls.manualdrive.ManualControls;
 import frc.robot.subsystems.Limelight;
 
-public class ManualShooter extends CommandBase {
+public class ShooterCommand extends CommandBase {
 
   public static interface Controls {
     double shooterHoodTest();
@@ -46,7 +46,7 @@ public class ManualShooter extends CommandBase {
   private int targetBallCount = -1;
   private double doneShootingFrames = 0;
 
-  public ManualShooter(Shooter shooter, Controls controls, Limelight limelight) {
+  public ShooterCommand(Shooter shooter, Controls controls, Limelight limelight) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
     this.controls = controls;
@@ -70,7 +70,7 @@ public class ManualShooter extends CommandBase {
     ntUseCalibrationMap.setBoolean(true);
   }
 
-  public ManualShooter(Shooter shooter, Limelight limelight, boolean shootingFar, int ballCount){ // Autonomouse
+  public ShooterCommand(Shooter shooter, Limelight limelight, boolean shootingFar, int ballCount){ // Autonomouse
     this(shooter, new AutonomousController(shootingFar, "Shooter", "conveyor", "Intake"), limelight);
     this.targetBallCount = ballCount;
   }

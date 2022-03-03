@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.autonomous.AutonomousController;
 import frc.robot.subsystems.Intake;
 
-public class ManualIntake extends CommandBase {
+public class IntakeCommand extends CommandBase {
 
   private final Intake intake;
   private final Controls controls;
@@ -20,14 +20,14 @@ public class ManualIntake extends CommandBase {
   }
 
   /** Creates a new IntakeCommand. */
-  public ManualIntake(Intake intake, Controls controls) {
+  public IntakeCommand(Intake intake, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
     this.intake = intake;
     this.controls = controls;
   }
 
-  public ManualIntake(Intake intake){ // Autonomouse
+  public IntakeCommand(Intake intake){ // Autonomouse
     this(intake, new AutonomousController(false, "Intake"));
   }
 
