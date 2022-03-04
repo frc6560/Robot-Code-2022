@@ -50,8 +50,10 @@ public class ThreeBallCommandGroup implements CommandGroupInterface {
                 .andThen(new InplaceTurn(driveTrain, 134))
                 
                 .andThen(threeBall3.getCommand().raceWith((new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false))))
+
+                .andThen(new InplaceTurn(driveTrain, -25))
                 
-                .andThen((new ShooterCommand(shooter, limelight, false, 1).raceWith(new ConveyorCommand(conveyor, shooter, true)))
+                .andThen((new ShooterCommand(shooter, limelight, true, 1).raceWith(new ConveyorCommand(conveyor, shooter, true)))
                 
                 );
     }

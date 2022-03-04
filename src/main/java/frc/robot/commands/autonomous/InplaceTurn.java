@@ -4,6 +4,8 @@
 
 package frc.robot.commands.autonomous;
 
+import org.opencv.core.Mat;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.utility.Util;
@@ -44,7 +46,7 @@ public class InplaceTurn extends CommandBase {
   @Override
   public boolean isFinished() {
     double curRotation = driveTrain.getPose().getRotation().getDegrees();
-    System.out.println(Util.getHeadingDiff(curRotation, startRotation));
-    return  Util.getHeadingDiff(curRotation, startRotation) > Math.abs(degreesToTurn);
+    System.out.println(Math.abs(curRotation - startRotation));
+    return  Math.abs(curRotation - startRotation) > Math.abs(degreesToTurn);
   }
 }

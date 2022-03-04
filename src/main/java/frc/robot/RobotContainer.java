@@ -12,6 +12,9 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.ConveyorCommand;
 import frc.robot.commands.DriveCommand;
@@ -21,6 +24,7 @@ import frc.robot.commands.autonomous.AutonomousController;
 import frc.robot.commands.autonomous.InplaceTurn;
 import frc.robot.commands.autonomous.paths.FiveBallCommandGroup;
 import frc.robot.commands.autonomous.paths.FourBallCommandGroup;
+import frc.robot.commands.autonomous.paths.OneBallCommandGroup;
 import frc.robot.commands.autonomous.paths.ThreeBallCommandGroup;
 import frc.robot.commands.autonomous.paths.TwoBallCommandGroup;
 import frc.robot.controls.manualdrive.ManualControls;
@@ -70,6 +74,9 @@ public class RobotContainer {
   private final Joystick controlStation = new Joystick(1);
   private final Joystick xbox2 = new Joystick(2);
 
+  // A chooser for autonomous commands
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
+
   // declare paths
   // private AutoUtil path1 = new AutoUtil("paths/output/Test1.wpilib.json",
   // driveTrain);
@@ -91,11 +98,11 @@ public class RobotContainer {
   private ManualControls controls;
   // private AutonomousController autonomousController;
 
+  private final OneBallCommandGroup oneBallCommandGroup;
   private final TwoBallCommandGroup twoBallCommandGroup;
   private final ThreeBallCommandGroup threeBallCommandGroup;
   private final FourBallCommandGroup fourBallCommandGroup;
   private final FiveBallCommandGroup fiveBallCommandGroup;
-
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -122,10 +129,21 @@ public class RobotContainer {
     manualClimb = new ClimbCommand(climb, controls);
     climb.setDefaultCommand(manualClimb);
 
+    oneBallCommandGroup =  new OneBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
     twoBallCommandGroup = new TwoBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
     threeBallCommandGroup = new ThreeBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
     fourBallCommandGroup = new FourBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
     fiveBallCommandGroup = new FiveBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
+
+    // Add commands to the autonomous command chooser
+    m_chooser.setDefaultOption("Four Ball", fourBallCommandGroup.getCommand());
+
+    m_chooser.addOption("One Ball", oneBallCommandGroup.getCommand());
+    m_chooser.addOption("Two Ball", twoBallCommandGroup.getCommand());
+    m_chooser.addOption("Three Ball", threeBallCommandGroup.getCommand());
+
+    // Put the chooser on the dashboard
+    Shuffleboard.getTab("Auto Choose").add(m_chooser);
   }
 
   /**
@@ -145,41 +163,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // return
-    // threeBall1.getCommand().raceWith(new ManualIntake(intake)).raceWith(new
-    // ManualConveyor(conveyor, shooter, false)).withTimeout(2.5).andThen(
-    // (new ManualShooter(shooter, limelight, true, 2).raceWith(new
-    // ManualConveyor(conveyor, shooter, true)))
-    // );
 
-    // return (threeBall1.getCommand()
-    // .raceWith(new ManualIntake(intake))
-    // .raceWith(new ManualConveyor(conveyor, shooter, false))
-    // )
-
-    // .andThen((new ManualShooter(shooter, limelight, false, 2))
-    // .raceWith(new ManualConveyor(conveyor, shooter, true))
-    // )
-
-    // .andThen(new InplaceTurn(driveTrain, 134))
-
-    // .andThen(threeBall3.getCommand()
-    // .raceWith((new ManualIntake(intake))
-    // .raceWith(new ManualConveyor(conveyor, shooter, false)))
-    // )
-
-    // .andThen((new ManualShooter(shooter, limelight, false, 1)
-    // .raceWith(new ManualConveyor(conveyor, shooter, true)))
-    // );
-
-    // new InplaceTurn(driveTrain, 178)).andThen(
-    // threeBall3.getCommand());
-    // .raceWith(new ManualIntake(intake)).raceWith(new ManualConveyor(conveyor,
-    // shooter));
-    // return
-
-    // return new InplaceTurn(driveTrain, 178);
-
-    return threeBallCommandGroup.getCommand();
+    return m_chooser.getSelected();  
+  
   }
 }
