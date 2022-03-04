@@ -94,8 +94,8 @@ public final class Constants {
         public static final double KAVOLTSECONDSQUARDPERMETER = 0.73896;
         public static final double KP = 2.4691;
 
-        public static final double MAXSPEEDMETERS = 1;
-        public static final double MAXACCELERATIONMETERS = 1;
+        public static final double MAXSPEEDMETERS = 4; //Three ball: 1 //Four ball: 4
+        public static final double MAXACCELERATIONMETERS = 1; //Three ball:1 //Four ball: 1
 
 
          //Autonomous
