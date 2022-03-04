@@ -88,16 +88,16 @@ public class Climb extends SubsystemBase {
     double leftPos = getLeftPosition();
     double diff = leftPos - rightPos;
 
-    // if (Math.abs(diff) > EPSILON) {
-    //   if (diff < 0) {
-    //     leftComp += BETA_P;
-    //     rightComp = 1.0;
-    //   }
-    //   if (diff > 0) {
-    //     leftComp = 1.0;
-    //     rightComp += BETA_P;
-    //   }
-    // }
+    if (Math.abs(diff) > EPSILON) {
+      if (diff < 0) {
+        leftComp += BETA_P;
+        rightComp = 1.0;
+      }
+      if (diff > 0) {
+        leftComp = 1.0;
+        rightComp += BETA_P;
+      }
+    }
 
     double leftTargetExtensionSpeed = targetExtensionSpeed * leftComp;
     double rightTargetExtensionSpeed = targetExtensionSpeed * rightComp;
@@ -127,11 +127,11 @@ public class Climb extends SubsystemBase {
   }
 
   private void setLeftExtensionMotor(double output) {
-    leftExtensionMotor.set(-output);
+    leftExtensionMotor.set(output);
   }
 
   private void setRightExtensionMotor(double output) {
-    rightExtensionMotor.set(-output);
+    rightExtensionMotor.set(output);
   }
 
   public void setExtensionMotor(double output){
@@ -139,19 +139,19 @@ public class Climb extends SubsystemBase {
   }
 
   public double getRightPosition() {
-    return rightExtensionMotor.getEncoder().getPosition();
+    return -rightExtensionMotor.getEncoder().getPosition();
   }
 
   public double getLeftPosition() {
-    return leftExtensionMotor.getEncoder().getPosition();
+    return -leftExtensionMotor.getEncoder().getPosition();
   }
 
   public double getRightPositionInches() {
-    return rightExtensionMotor.getEncoder().getPosition() * PhysicalConstants.CLIMB_EXTENSION_INCHES_PER_ROTATION;
+    return getRightPosition() * PhysicalConstants.CLIMB_EXTENSION_INCHES_PER_ROTATION;
   }
 
   public double getLeftPositionInches() {
-    return leftExtensionMotor.getEncoder().getPosition() * PhysicalConstants.CLIMB_EXTENSION_INCHES_PER_ROTATION;
+    return getLeftPosition()* PhysicalConstants.CLIMB_EXTENSION_INCHES_PER_ROTATION;
   }
 
   public double getRotatorPosition() {

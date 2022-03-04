@@ -44,7 +44,7 @@ public class ClimbCommand extends CommandBase {
     nTable = NetworkTableInstance.getDefault().getTable("Climb");
 
     extensionSpeed = nTable.getEntry("Extension Speed");
-    extensionSpeed.setDouble(0.3);
+    extensionSpeed.setDouble(0.6);
 
     rotationSpeed = nTable.getEntry("Rotation Speed");
     rotationSpeed.setDouble(0.3);
