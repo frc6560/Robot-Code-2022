@@ -12,18 +12,18 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ManualClimb;
-import frc.robot.commands.ManualConveyor;
-import frc.robot.commands.ManualDrive;
-import frc.robot.commands.ManualIntake;
-import frc.robot.commands.ManualShooter;
+import frc.robot.commands.ClimbCommand;
+import frc.robot.commands.ConveyorCommand;
+import frc.robot.commands.DriveCommand;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.autonomous.AutonomousController;
 import frc.robot.commands.autonomous.InplaceTurn;
 import frc.robot.commands.autonomous.paths.FiveBallCommandGroup;
 import frc.robot.commands.autonomous.paths.FourBallCommandGroup;
 import frc.robot.commands.autonomous.paths.ThreeBallCommandGroup;
 import frc.robot.commands.autonomous.paths.TwoBallCommandGroup;
-import frc.robot.commands.controls.manualdrive.ManualControls;
+import frc.robot.controls.manualdrive.ManualControls;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.DriveTrain;
@@ -50,21 +50,21 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   private final DriveTrain driveTrain = new DriveTrain();
-  private final ManualDrive manualDrive;
+  private final DriveCommand manualDrive;
 
   private final Limelight limelight;
 
   private final Shooter shooter = new Shooter();
-  private final ManualShooter manualShooter;
+  private final ShooterCommand manualShooter;
 
   private final Intake intake = new Intake();
-  private final ManualIntake manualIntake;
+  private final IntakeCommand manualIntake;
 
   private final Conveyor conveyor = new Conveyor();
-  private final ManualConveyor manualConveyor;
+  private final ConveyorCommand manualConveyor;
 
   private final Climb climb = new Climb();
-  private final ManualClimb manualClimb;
+  private final ClimbCommand manualClimb;
 
   private final Joystick xbox = new Joystick(0);
   private final Joystick controlStation = new Joystick(1);
@@ -105,21 +105,21 @@ public class RobotContainer {
     configureButtonBindings();
     controls = new ManualControls(xbox, controlStation, xbox2);
 
-    manualDrive = new ManualDrive(driveTrain, controls);
+    manualDrive = new DriveCommand(driveTrain, controls);
     driveTrain.setDefaultCommand(manualDrive);
 
     limelight = new Limelight(controls);
 
-    manualShooter = new ManualShooter(shooter, controls, limelight);
+    manualShooter = new ShooterCommand(shooter, controls, limelight);
     shooter.setDefaultCommand(manualShooter);
 
-    manualIntake = new ManualIntake(intake, controls);
+    manualIntake = new IntakeCommand(intake, controls);
     intake.setDefaultCommand(manualIntake);
 
-    manualConveyor = new ManualConveyor(conveyor, controls, shooter);
+    manualConveyor = new ConveyorCommand(conveyor, controls, shooter);
     conveyor.setDefaultCommand(manualConveyor);
 
-    manualClimb = new ManualClimb(climb, controls);
+    manualClimb = new ClimbCommand(climb, controls);
     climb.setDefaultCommand(manualClimb);
 
     twoBallCommandGroup = new TwoBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);

@@ -5,9 +5,9 @@
 package frc.robot.commands.autonomous.paths;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.ManualConveyor;
-import frc.robot.commands.ManualIntake;
-import frc.robot.commands.ManualShooter;
+import frc.robot.commands.ConveyorCommand;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.autonomous.InplaceTurn;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.DriveTrain;
@@ -49,21 +49,21 @@ public class FiveBallCommandGroup implements CommandGroupInterface {
         public Command getCommand() {
                 return (
                         
-                        threeBall1.getCommand().raceWith(new ManualIntake(intake)).raceWith(new ManualConveyor(conveyor, shooter, false)))
+                        threeBall1.getCommand().raceWith(new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false)))
                         
-                        .andThen((new ManualShooter(shooter, limelight, false, 2)).raceWith(new ManualConveyor(conveyor, shooter, true)))
+                        .andThen((new ShooterCommand(shooter, limelight, false, 2)).raceWith(new ConveyorCommand(conveyor, shooter, true)))
                         
                         .andThen(new InplaceTurn(driveTrain, 134))
                         
-                        .andThen(threeBall3.getCommand().raceWith((new ManualIntake(intake)).raceWith(new ManualConveyor(conveyor, shooter, false))))
+                        .andThen(threeBall3.getCommand().raceWith((new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false))))
                         
-                        .andThen((new ManualShooter(shooter, limelight, false, 1).raceWith(new ManualConveyor(conveyor, shooter, true))))
+                        .andThen((new ShooterCommand(shooter, limelight, false, 1).raceWith(new ConveyorCommand(conveyor, shooter, true))))
                         
-                        .andThen(fiveBall4.getCommand().raceWith(new ManualIntake(intake)).raceWith(new ManualConveyor(conveyor, shooter, false)))
+                        .andThen(fiveBall4.getCommand().raceWith(new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false)))
                         
                         .andThen(strightRamseteGen.getCommand())
 
-                        .andThen((new ManualShooter(shooter, limelight, false, 1).raceWith(new ManualConveyor(conveyor, shooter, true)))
+                        .andThen((new ShooterCommand(shooter, limelight, false, 1).raceWith(new ConveyorCommand(conveyor, shooter, true)))
                         
                         );
         }

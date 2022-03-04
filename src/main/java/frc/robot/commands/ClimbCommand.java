@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climb;
 import frc.robot.utility.NetworkTable.NtValueDisplay;
 
-public class ManualClimb extends CommandBase {
+public class ClimbCommand extends CommandBase {
   /** Creates a new ManualClimb. */
 
   public static interface Controls {
@@ -35,7 +35,7 @@ public class ManualClimb extends CommandBase {
   private NetworkTableEntry rotationSpeed;
   
 
-  public ManualClimb(Climb climb, Controls controls) {
+  public ClimbCommand(Climb climb, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.climb = climb;
     this.controls = controls;

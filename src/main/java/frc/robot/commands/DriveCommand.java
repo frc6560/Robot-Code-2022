@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 
 
-public class ManualDrive extends CommandBase {
+public class DriveCommand extends CommandBase {
   /** Creates a new ManualDrive. */
 
   public static interface Controls {
@@ -30,7 +30,7 @@ public class ManualDrive extends CommandBase {
 
   private final Controls controls;
 
-  public ManualDrive(DriveTrain driveTrain, Controls controls) {
+  public DriveCommand(DriveTrain driveTrain, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrain);
     this.driveTrain = driveTrain;
