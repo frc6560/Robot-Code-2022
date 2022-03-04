@@ -49,7 +49,7 @@ public class FourBallCommandGroup implements CommandGroupInterface {
                         
                         threeBall1.getCommand().raceWith(new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false)))
                         
-                        .andThen((new ManualShooter(shooter, limelight, false, 2)).raceWith(new ManualConveyor(conveyor, shooter, true)))
+                        .andThen((new ShooterCommand(shooter, limelight, false, 2)).raceWith(new ConveyorCommand(conveyor, shooter, true)))
                         
                         .andThen(new InplaceTurn(driveTrain, 134))
                         
@@ -57,7 +57,7 @@ public class FourBallCommandGroup implements CommandGroupInterface {
                         
                         .andThen(strightRamseteGen.getCommand()
 
-                        .andThen((new ManualShooter(shooter, limelight, false, 2).raceWith(new ManualConveyor(conveyor, shooter, true))))
+                        .andThen((new ShooterCommand(shooter, limelight, false, 2).raceWith(new ConveyorCommand(conveyor, shooter, true))))
                         
                         );
         }

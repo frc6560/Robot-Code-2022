@@ -4,6 +4,7 @@
 
 package frc.robot.commands.autonomous.paths;
 
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.ConveyorCommand;
 import frc.robot.commands.IntakeCommand;
@@ -15,9 +16,10 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utility.AutoWrapper;
+import frc.robot.utility.StraightRamseteGen;
 
 /** Add your docs here. */
-public class ThreeBallCommandGroup implements CommandGroupInterface {
+public class OneBallCommandGroup implements CommandGroupInterface {
 
     private final DriveTrain driveTrain;
     private final Intake intake;
@@ -25,35 +27,29 @@ public class ThreeBallCommandGroup implements CommandGroupInterface {
     private final Shooter shooter;
     private final Limelight limelight;
 
-    private AutoWrapper threeBall1;
-    private AutoWrapper threeBall3;
+    private StraightRamseteGen path1;
+    private StraightRamseteGen path2;
 
-    public ThreeBallCommandGroup(DriveTrain driveTrain, Intake intake, Conveyor conveyor, Shooter shooter, Limelight limelight){
+
+    public OneBallCommandGroup(DriveTrain driveTrain, Intake intake, Conveyor conveyor, Shooter shooter, Limelight limelight){
         this.driveTrain = driveTrain;
         this.intake = intake;
         this.conveyor = conveyor;
         this.shooter = shooter;
         this.limelight = limelight;
 
-        threeBall1 = new AutoWrapper("Threeball_1", driveTrain);
-        threeBall3 = new AutoWrapper("Threeball_3", driveTrain);
-
+        path1 = new StraightRamseteGen(driveTrain, 1.5);
+        path2 = new StraightRamseteGen(driveTrain, -2);
     }
     @Override
     public Command getCommand() {
         return (
             
-                threeBall1.getCommand().raceWith(new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false)))
+                path1.getCommand()
                 
-                .andThen((new ShooterCommand(shooter, limelight, false, 2)).raceWith(new ConveyorCommand(conveyor, shooter, true)))
+                .andThen((new ShooterCommand(shooter, limelight, true, 1)).raceWith(new ConveyorCommand(conveyor, shooter, true)))
                 
-                .andThen(new InplaceTurn(driveTrain, 134))
-                
-                .andThen(threeBall3.getCommand().raceWith((new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false))))
-
-                .andThen(new InplaceTurn(driveTrain, -25))
-                
-                .andThen((new ShooterCommand(shooter, limelight, true, 1).raceWith(new ConveyorCommand(conveyor, shooter, true)))
+                .andThen(path2.getCommand())
                 
                 );
     }
