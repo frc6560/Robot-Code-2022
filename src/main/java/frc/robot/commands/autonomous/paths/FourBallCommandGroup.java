@@ -39,7 +39,7 @@ public class FourBallCommandGroup implements CommandGroupInterface {
 
                 threeBall1 = new AutoWrapper("Threeball_1", driveTrain);
                 fourBallCont = new AutoWrapper("Fourball_Cont", driveTrain);
-                strightRamseteGen = new StraightRamseteGen(driveTrain, 3);
+                strightRamseteGen = new StraightRamseteGen(driveTrain, -3);
 
         }
 

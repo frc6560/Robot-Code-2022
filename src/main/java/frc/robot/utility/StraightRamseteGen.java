@@ -39,7 +39,7 @@ public class StraightRamseteGen implements AutoWrapperInterface {
 
         public StraightRamseteGen(DriveTrain driveTrain, double targetLength) {
                 this.driveTrain = driveTrain;
-                config.setReversed(true);
+                config.setReversed(targetLength < 0);
                 trajectory = TrajectoryGenerator.generateTrajectory(
                                 // Start at the origin facing the +X direction
                                 new Pose2d(0, 0, new Rotation2d(0)),
