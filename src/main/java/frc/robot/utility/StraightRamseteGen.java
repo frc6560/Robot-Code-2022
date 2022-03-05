@@ -46,7 +46,7 @@ public class StraightRamseteGen implements AutoWrapperInterface {
                                 // Pass through these two interior waypoints, making an 's' curve path
                                 List.of(),
                                 // End 3 meters straight ahead of where we started, facing forwar
-                                new Pose2d(targetLength * Math.copySign(1, targetLength), 0, new Rotation2d(0)),
+                                new Pose2d(targetLength, 0, new Rotation2d(0)),
                                 // Pass config
                                 config);
         }

@@ -48,9 +48,6 @@ public class OneBallCommandGroup implements CommandGroupInterface {
                 path1.getCommand()
                 
                 .andThen((new ShooterCommand(shooter, limelight, true, 1)).raceWith(new ConveyorCommand(conveyor, shooter, true)))
-                
-                .andThen(path2.getCommand())
-                
                 );
     }
 
