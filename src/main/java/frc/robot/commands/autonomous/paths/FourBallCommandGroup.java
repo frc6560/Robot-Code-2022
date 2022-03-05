@@ -5,6 +5,7 @@
 package frc.robot.commands.autonomous.paths;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.PhysicalConstants;
 import frc.robot.commands.ConveyorCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterCommand;
@@ -48,8 +49,10 @@ public class FourBallCommandGroup implements CommandGroupInterface {
                 return (
                         
                         threeBall1.getCommand().raceWith(new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false)))
+
+                        .andThen(new IntakeCommand(intake).raceWith(new ConveyorCommand(conveyor, shooter, false)).withTimeout(1))
                         
-                        .andThen((new ShooterCommand(shooter, limelight, false, 2)).raceWith(new ConveyorCommand(conveyor, shooter, true)))
+                        .andThen((new ShooterCommand(shooter, limelight, false, 2)).raceWith(new ConveyorCommand(conveyor, shooter, true))).withTimeout(PhysicalConstants.SHOOTERTIMEOUT)
                         
                         .andThen(new InplaceTurn(driveTrain, 134))
                         
@@ -57,7 +60,7 @@ public class FourBallCommandGroup implements CommandGroupInterface {
                         
                         .andThen(strightRamseteGen.getCommand()
 
-                        .andThen((new ShooterCommand(shooter, limelight, false, 2).raceWith(new ConveyorCommand(conveyor, shooter, true))))
+                        .andThen((new ShooterCommand(shooter, limelight, false, 2).raceWith(new ConveyorCommand(conveyor, shooter, true)))).withTimeout(PhysicalConstants.SHOOTERTIMEOUT)
                         
                         );
         }
