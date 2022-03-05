@@ -37,8 +37,8 @@ public class Climb extends SubsystemBase {
   private double rightComp = 1.0;
   private double leftComp = 1.0;
 
-  private final double minPos = -99999999;
-  private final double maxPos = 99999999;
+  private final double minPos = 0;
+  private final double maxPos = 23; //TODO: change
 
   private double targetExtensionSpeed = 0;
 
@@ -88,24 +88,27 @@ public class Climb extends SubsystemBase {
     double leftPos = getLeftPosition();
     double diff = leftPos - rightPos;
 
-    if (Math.abs(diff) > EPSILON) {
-      if (diff < 0) {
-        leftComp += BETA_P;
-        rightComp = 1.0;
-      }
-      if (diff > 0) {
-        leftComp = 1.0;
-        rightComp += BETA_P;
-      }
+    if (diff < 0) {
+      leftComp += BETA_P;
+      rightComp = 1.0;
     }
+    if (diff > 0) {
+      leftComp = 1.0;
+      rightComp += BETA_P;
+    }
+    
 
     double leftTargetExtensionSpeed = targetExtensionSpeed * leftComp;
     double rightTargetExtensionSpeed = targetExtensionSpeed * rightComp;
 
-    if(!ntOverideSoftLimit.getBoolean(false)){
-      if(rightPos < 0) rightTargetExtensionSpeed = Math.min(0, rightTargetExtensionSpeed);
-      if(leftPos < 0) leftTargetExtensionSpeed = Math.min(0, leftTargetExtensionSpeed);
+    if(!ntOverideSoftLimit.getBoolean(false)){ //TODO: check w/ radin
+      if (rightPos < minPos) rightTargetExtensionSpeed = Math.min(0, rightTargetExtensionSpeed);
+      if (leftPos < minPos) leftTargetExtensionSpeed = Math.min(0, leftTargetExtensionSpeed);
+      
+      if (rightPos > maxPos) rightTargetExtensionSpeed = Math.max(0, rightTargetExtensionSpeed);
+      if (leftPos > maxPos) leftTargetExtensionSpeed = Math.max(0, leftTargetExtensionSpeed);
     }
+
 
     setLeftExtensionMotor(leftTargetExtensionSpeed);
     setRightExtensionMotor(rightTargetExtensionSpeed);
@@ -135,7 +138,7 @@ public class Climb extends SubsystemBase {
   }
 
   public void setExtensionMotor(double output){
-    targetExtensionSpeed = output;
+    targetExtensionSpeed = -output;
   }
 
   public double getRightPosition() {

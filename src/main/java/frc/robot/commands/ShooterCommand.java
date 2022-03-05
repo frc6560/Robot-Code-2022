@@ -60,7 +60,7 @@ public class ShooterCommand extends CommandBase {
     ntTestHood = ntTable.getEntry("Hood Angle");
     ntTestHood.setDouble(0.0);
 
-    ntTestRPM = ntTable.getEntry("Target RPM");
+    ntTestRPM = ntTable.getEntry("Target Cal RPM");
     ntTestRPM.setDouble(0.0);
 
     ntAddCalibrateButton = ntTable.getEntry("Save point on map");
@@ -69,6 +69,7 @@ public class ShooterCommand extends CommandBase {
     ntUseCalibrationMap = ntTable.getEntry("Use calibration map?");
     ntUseCalibrationMap.setBoolean(true);
   }
+  
 
   public ShooterCommand(Shooter shooter, Limelight limelight, boolean shootingFar, int ballCount){ // Autonomouse
     this(shooter, new AutonomousController(shootingFar, "Shooter", "conveyor", "Intake"), limelight);

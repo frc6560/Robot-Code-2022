@@ -104,7 +104,7 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
     @Override
     public int getLimelightPipeline(){
-        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_3) ? 2 : 1;
+        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_3) ? 2 : 2;
     }
 
     @Override
@@ -138,7 +138,7 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
     @Override
     public double getClimbExtensionMotors() {
-        return -controlStation.getRawAxis(ControllerIds.DRIVER_STATION_Y_AXIS);
+        return controlStation.getRawAxis(ControllerIds.DRIVER_STATION_Y_AXIS);
     }
 
     @Override
