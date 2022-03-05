@@ -22,6 +22,7 @@ import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.autonomous.AutonomousController;
 import frc.robot.commands.autonomous.InplaceTurn;
+import frc.robot.commands.autonomous.paths.CommandGroupInterface;
 import frc.robot.commands.autonomous.paths.FiveBallCommandGroup;
 import frc.robot.commands.autonomous.paths.FourBallCommandGroup;
 import frc.robot.commands.autonomous.paths.OneBallCommandGroup;
@@ -39,6 +40,7 @@ import frc.robot.utility.AutoWrapper;
 import frc.robot.utility.AutoWrapperPathWeaver;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /**
@@ -98,6 +100,7 @@ public class RobotContainer {
   private ManualControls controls;
   // private AutonomousController autonomousController;
 
+  private final RamseteCommand nullCommand = null;
   private final OneBallCommandGroup oneBallCommandGroup;
   private final TwoBallCommandGroup twoBallCommandGroup;
   private final ThreeBallCommandGroup threeBallCommandGroup;
@@ -141,6 +144,7 @@ public class RobotContainer {
     m_chooser.addOption("One Ball", oneBallCommandGroup.getCommand());
     m_chooser.addOption("Two Ball", twoBallCommandGroup.getCommand());
     m_chooser.addOption("Three Ball", threeBallCommandGroup.getCommand());
+    m_chooser.addOption("Nothing", nullCommand);
 
     // Put the chooser on the dashboard
     Shuffleboard.getTab("Auto Choose").add(m_chooser);
