@@ -44,7 +44,7 @@ public class TwoBallCommandGroup implements CommandGroupInterface {
             
                 threeBall1.getCommand().raceWith(new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false)))
                 
-                .andThen((new ShooterCommand(shooter, limelight, false, 2)).raceWith(new ConveyorCommand(conveyor, shooter, true)).withTimeout(PhysicalConstants.SHOOTERTIMEOUT)      
+                .andThen((new ShooterCommand(shooter, limelight, false, 2)).raceWith(new ConveyorCommand(conveyor, shooter, true))    
                 
                 );
     }
