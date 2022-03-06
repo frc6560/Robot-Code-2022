@@ -59,7 +59,7 @@ public class ClimbCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climb.runRotatorMotor(controls.getClimbRotation() * rotationSpeed.getDouble(0.0));
+    // climb.runRotatorMotor(controls.getClimbRotation() * rotationSpeed.getDouble(0.0));
 
     climb.setExtensionMotor(controls.getClimbExtensionMotors() * extensionSpeed.getDouble(0.0));
     climb.setPiston(controls.getClimbPiston());

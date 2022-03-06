@@ -38,13 +38,18 @@ public class Climb extends SubsystemBase {
   private double leftComp = 1.0;
 
   private final double minPos = 0;
-  private final double maxPos = 23; //TODO: change
+  private final double maxPos = 22; //TODO: change
 
   private double targetExtensionSpeed = 0;
 
   private NetworkTable nTable;
   private NetworkTableEntry rightCompensationConstant;
   private NetworkTableEntry ntOverideSoftLimit;
+
+  private NetworkTableEntry ntOverrideOnlyRight;
+  private NetworkTableEntry ntOverrideOnlyLeft;
+  // private boolean ntOverrideOnlyLeftEnabled;
+  // private boolean ntOverrideOnlyRightEnabled;
 
   private double extensionSpeed = 0.3;
 
@@ -57,6 +62,15 @@ public class Climb extends SubsystemBase {
 
     ntOverideSoftLimit = nTable.getEntry("Climb Override");
     ntOverideSoftLimit.setBoolean(false);
+
+    // ntOverrideOnlyLeft = nTable.getEntry("Override ONLY Left?");
+    // ntOverrideOnlyLeft.setBoolean(false);
+
+    // ntOverrideOnlyRight = nTable.getEntry("Override ONLY Right?");
+    // ntOverrideOnlyRight.setBoolean(false);
+
+    // ntOverrideOnlyLeftEnabled = false;
+    // ntOverrideOnlyRightEnabled = false;
 
     NtValueDisplay.ntDispTab("Climb").add("Left Pos", this::getLeftPositionInches).add("Right Pos", this::getRightPositionInches);
 
@@ -84,17 +98,17 @@ public class Climb extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    double rightPos = getRightPosition();
-    double leftPos = getLeftPosition();
+    double rightPos = getRightPositionInches();
+    double leftPos = getLeftPositionInches();
     double diff = leftPos - rightPos;
 
     if (diff < 0) {
-      leftComp += BETA_P;
+      leftComp += Math.copySign(BETA_P, -targetExtensionSpeed);
       rightComp = 1.0;
     }
     if (diff > 0) {
       leftComp = 1.0;
-      rightComp += BETA_P;
+      rightComp += Math.copySign(BETA_P, -targetExtensionSpeed);
     }
     
 
@@ -108,6 +122,18 @@ public class Climb extends SubsystemBase {
       if (rightPos > maxPos) rightTargetExtensionSpeed = Math.max(0, rightTargetExtensionSpeed);
       if (leftPos > maxPos) leftTargetExtensionSpeed = Math.max(0, leftTargetExtensionSpeed);
     }
+    // else {
+    //   if (ntOverrideOnlyLeft.getBoolean(false)) {
+    //     if (ntOverrideOnlyRightEnabled) {
+    //       ntOverrideOnlyRightEnabled = false;
+    //       ntOverrideOnlyRight.setBoolean(false);
+    //     }
+    //     if (ntOverrideOnlyRight.getBoolean(false)) {
+    //       ntOverrideOnlyLeftEnabled = true;
+
+    //     }
+    //   }
+    // }
 
 
     setLeftExtensionMotor(leftTargetExtensionSpeed);
@@ -115,7 +141,7 @@ public class Climb extends SubsystemBase {
   }
 
   public void runRotatorMotor(double output) {
-    if (getRotatorPosition() < 0.0 && output < 0.0) output = 0;
+    if (getRotatorPosition() < -50 && output < 0.0) output = 0;
     rotatorMotor.set(accelLimiter.calculate(output));
   }
 

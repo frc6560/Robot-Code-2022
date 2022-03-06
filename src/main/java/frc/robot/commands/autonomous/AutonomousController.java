@@ -18,7 +18,7 @@ public class AutonomousController implements IntakeCommand.Controls, ShooterComm
 
     private HashMap<String, Boolean> subsystemMap;
 
-    private boolean useLimelightFar = false;
+    private boolean useLimelightFar;
 
     public AutonomousController(boolean useLimelightFar, String... subsystems) {
       subsystemMap = new HashMap<String, Boolean>() {{
@@ -31,7 +31,7 @@ public class AutonomousController implements IntakeCommand.Controls, ShooterComm
         sub = sub.toLowerCase();
         subsystemMap.replace(sub, true);
       }
-
+      this.useLimelightFar = useLimelightFar;
     }
 
     @Override

@@ -142,6 +142,7 @@ public final class Constants {
             SHOOT_CALIBRATION_MAP.add(9.2, new ShootCalibrationMap.Trajectory(3420.0, -0.1143));
             SHOOT_CALIBRATION_MAP.add(10.5, new ShootCalibrationMap.Trajectory(3540, -0.0571));
             SHOOT_CALIBRATION_MAP.add(11.5, new ShootCalibrationMap.Trajectory(3650.0, 0.1429));
+            SHOOT_CALIBRATION_MAP.add(12.2, new ShootCalibrationMap.Trajectory(3790.0, 0.2));
             SHOOT_CALIBRATION_MAP.add(12.9, new ShootCalibrationMap.Trajectory(3880.0, 0.38));
             SHOOT_CALIBRATION_MAP.add(14.0, new ShootCalibrationMap.Trajectory(4090.0, 0.4286));
             SHOOT_CALIBRATION_MAP.add(17.5, new ShootCalibrationMap.Trajectory(4400.0, 1));
