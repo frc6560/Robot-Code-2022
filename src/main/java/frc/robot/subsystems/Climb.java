@@ -9,6 +9,11 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -24,11 +29,14 @@ import frc.robot.utility.NetworkTable.NtValueDisplay;
 public class Climb extends SubsystemBase {
   /** Creates a new Climb. */
 
-  private final Solenoid piston = new Solenoid(PneumaticsModuleType.CTREPCM, RobotIds.CLIMB_PISTON);
+  private final Solenoid lockingPiston = new Solenoid(PneumaticsModuleType.CTREPCM, RobotIds.CLIMB_PISTON);
+  private final Solenoid rotatorPiston = new Solenoid(PneumaticsModuleType.CTREPCM, RobotIds.CLIMB_ROTATOR_PISTON);
 
-  private final CANSparkMax rotatorMotor = new CANSparkMax(RobotIds.CLIMB_ROTATOR_MOTOR, MotorType.kBrushless);
-  private final CANSparkMax leftExtensionMotor = new CANSparkMax(RobotIds.CLIMB_LEFT_EXTENSION_MOTOR, MotorType.kBrushless);
-  private final CANSparkMax rightExtensionMotor = new CANSparkMax(RobotIds.CLIMB_RIGHT_EXTENSION_MOTOR, MotorType.kBrushless);
+  //private final CANSparkMax rotatorMotor = new CANSparkMax(RobotIds.CLIMB_ROTATOR_MOTOR, MotorType.kBrushless);
+
+
+  private final TalonFX leftExtensionMotor = new TalonFX(RobotIds.CLIMB_LEFT_EXTENSION_MOTOR);
+  private final TalonFX rightExtensionMotor = new TalonFX(RobotIds.CLIMB_RIGHT_EXTENSION_MOTOR);
 
   private final SlewRateLimiter accelLimiter = new SlewRateLimiter(3);
 
@@ -38,7 +46,8 @@ public class Climb extends SubsystemBase {
   private double leftComp = 1.0;
 
   private final double minPos = 0;
-  private final double maxPos = 22; //TODO: change
+  private final double maxPosRetracted = 22; //TODO: change
+  private final double maxPosExtended = 22; //TODO: change
 
   private double targetExtensionSpeed = 0;
 
@@ -77,7 +86,6 @@ public class Climb extends SubsystemBase {
   }
 
   private void setupAllMotors() {
-    setupMotor(rotatorMotor, false);
     setupMotor(leftExtensionMotor, false);
     setupMotor(rightExtensionMotor, false);
   }
@@ -95,6 +103,11 @@ public class Climb extends SubsystemBase {
     //motors[0].setPeriodicFramePeriod(PeriodicFrame.kStatus2, 10);
   }
 
+  private void setupMotor(TalonFX motor, boolean inverted) {
+    motor.configFactoryDefault();
+    motor.setInverted(inverted);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -103,12 +116,12 @@ public class Climb extends SubsystemBase {
     double diff = leftPos - rightPos;
 
     if (diff < 0) {
-      leftComp += Math.copySign(BETA_P, -targetExtensionSpeed);
+      leftComp += BETA_P;
       rightComp = 1.0;
     }
     if (diff > 0) {
       leftComp = 1.0;
-      rightComp += Math.copySign(BETA_P, -targetExtensionSpeed);
+      rightComp += BETA_P;
     }
     
 
@@ -119,8 +132,8 @@ public class Climb extends SubsystemBase {
       if (rightPos < minPos) rightTargetExtensionSpeed = Math.min(0, rightTargetExtensionSpeed);
       if (leftPos < minPos) leftTargetExtensionSpeed = Math.min(0, leftTargetExtensionSpeed);
       
-      if (rightPos > maxPos) rightTargetExtensionSpeed = Math.max(0, rightTargetExtensionSpeed);
-      if (leftPos > maxPos) leftTargetExtensionSpeed = Math.max(0, leftTargetExtensionSpeed);
+      if (rightPos > (isRotatorPistonExtended() ? maxPosExtended : maxPosRetracted)) rightTargetExtensionSpeed = Math.max(0, rightTargetExtensionSpeed);
+      if (leftPos > (isRotatorPistonExtended() ? maxPosExtended : maxPosRetracted)) leftTargetExtensionSpeed = Math.max(0, leftTargetExtensionSpeed);
     }
     // else {
     //   if (ntOverrideOnlyLeft.getBoolean(false)) {
@@ -140,27 +153,23 @@ public class Climb extends SubsystemBase {
     setRightExtensionMotor(rightTargetExtensionSpeed);
   }
 
-  public void runRotatorMotor(double output) {
-    if (getRotatorPosition() < -50 && output < 0.0) output = 0;
-    rotatorMotor.set(accelLimiter.calculate(output));
-  }
+  
 
   public void initialize() {
-    rotatorMotor.set(0);
-    leftExtensionMotor.set(0);
-    rightExtensionMotor.set(0);
+    leftExtensionMotor.set(TalonFXControlMode.PercentOutput, 0);
+    rightExtensionMotor.set(TalonFXControlMode.PercentOutput, 0);
   }
 
   public void setPiston(boolean extended) {
-    piston.set(extended);
+    lockingPiston.set(extended);
   }
 
   private void setLeftExtensionMotor(double output) {
-    leftExtensionMotor.set(output);
+    leftExtensionMotor.set(TalonFXControlMode.PercentOutput, output);
   }
 
   private void setRightExtensionMotor(double output) {
-    rightExtensionMotor.set(output);
+    rightExtensionMotor.set(TalonFXControlMode.PercentOutput, output);
   }
 
   public void setExtensionMotor(double output){
@@ -168,11 +177,11 @@ public class Climb extends SubsystemBase {
   }
 
   public double getRightPosition() {
-    return -rightExtensionMotor.getEncoder().getPosition();
+    return -rightExtensionMotor.getSelectedSensorPosition();
   }
 
   public double getLeftPosition() {
-    return -leftExtensionMotor.getEncoder().getPosition();
+    return -leftExtensionMotor.getSelectedSensorPosition();
   }
 
   public double getRightPositionInches() {
@@ -183,7 +192,13 @@ public class Climb extends SubsystemBase {
     return getLeftPosition()* PhysicalConstants.CLIMB_EXTENSION_INCHES_PER_ROTATION;
   }
 
-  public double getRotatorPosition() {
-    return rotatorMotor.getEncoder().getPosition();
+  public void setRotatorPiston(boolean extended) {
+    rotatorPiston.set(extended);
   }
+
+  public boolean isRotatorPistonExtended() {
+    return this.rotatorPiston.get();
+  }
+
+  
 }
