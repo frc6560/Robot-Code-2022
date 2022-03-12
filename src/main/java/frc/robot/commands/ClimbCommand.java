@@ -47,7 +47,7 @@ public class ClimbCommand extends CommandBase {
     extensionSpeed.setDouble(0.8);
 
     rotationSpeed = nTable.getEntry("Rotation Speed");
-    rotationSpeed.setDouble(0.3);
+    rotationSpeed.setDouble(0.5);
   }
 
   // Called when the command is initially scheduled.

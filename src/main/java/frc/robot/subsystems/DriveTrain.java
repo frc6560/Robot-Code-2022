@@ -29,6 +29,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SerialPort;
 import frc.robot.Constants.ConversionConstants;
 import frc.robot.Constants.PhysicalConstants;
@@ -71,7 +72,7 @@ public class DriveTrain extends SubsystemBase {
   private double kP, kI, kD, kFF;
 
   private NetworkTable ntTable;
-  private NetworkTableEntry ntspeed, ntP, ntI, ntD, ntFF, ntifTesting;
+  private NetworkTableEntry ntPosition, ntspeed, ntP, ntI, ntD, ntFF, ntifTestingVelocity, ntifTestingRotation;
 
 
   /** Creates a new DriveTrainLeoGood. */
@@ -104,8 +105,15 @@ public class DriveTrain extends SubsystemBase {
     ntFF.setDouble(0.0);
     ntspeed = ntTable.getEntry("Target Speed");
     ntspeed.setDouble(0.0);
-    ntifTesting = ntTable.getEntry("If testing");
-    ntifTesting.setBoolean(false);
+
+    ntPosition = ntTable.getEntry("Target Position");
+    ntPosition.setDouble(0.0);
+    
+    ntifTestingVelocity = ntTable.getEntry("If testing Postion");
+    ntifTestingVelocity.setBoolean(false);
+
+    ntifTestingRotation = ntTable.getEntry("If testing Rotation");
+    ntifTestingRotation.setBoolean(false);
 
     NtValueDisplay.ntDispTab("Drivetrain").add("L Actual Speed", this::getLVelocity).add("R Actual Speed", this::getRVelocity);
     NtValueDisplay.ntDispTab("Drivetrain")
@@ -118,14 +126,12 @@ public class DriveTrain extends SubsystemBase {
 
   }
 
-  public void calibrateGyro(){
-    gyro.calibrate();
-  }
-
   @Override
   public void periodic() {
 
     System.out.println(gyro.isCalibrating());
+    if(!gyro.isConnected())
+      DriverStation.reportError("gryo is off", false);
     // System.out.println("hi");
     // This method will be called once per scheduler run
     m_odometry.update(getGyroAngle(), leftEncoder.getPosition(), rightEncoder.getPosition());
@@ -133,12 +139,16 @@ public class DriveTrain extends SubsystemBase {
 
     double speed = ntspeed.getDouble(0.0);
 
-    if(ntifTesting.getBoolean(false)){
+    if(ntifTestingVelocity.getBoolean(false)){
       setWheelVelocity(speed, speed);
 
       updatePID();
     }
 
+    if(ntifTestingRotation.getBoolean(false)){
+      double targetPostion = ntPosition.getDouble(0.0);
+      setWheelPosition(new double[]{targetPostion, 0.2}, new double[]{-targetPostion, 0.2});
+    }
     
 
 
@@ -252,7 +262,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void setVelocity(double forward, double turn) {
-    if(!ntifTesting.getBoolean(false)){
+    if(!ntifTestingVelocity.getBoolean(false) && !ntifTestingRotation.getBoolean(false)){
       m_drive.arcadeDrive(forwardLimiter.calculate(forward), turnLimiter.calculate(turn));    //differentialDrive.arcadeDrive(forward, turn);
     }
   }
@@ -274,6 +284,14 @@ public class DriveTrain extends SubsystemBase {
 
   }
 
+  public void setWheelPosition(double[] left, double[] right){
+    setLPositionMeters(left[0], left[1]);
+    setRPositionMeters(right[0], right[1]);
+
+    m_drive.feed();
+
+  }
+
 
   public void setLVelocityMeters(double velocity, double accel){
     for (CANSparkMax motor : leftMotors) {
@@ -283,6 +301,18 @@ public class DriveTrain extends SubsystemBase {
   public void setRVelocityMeters(double velocity, double accel){
     for (CANSparkMax motor : rightMotors) {
       motor.getPIDController().setReference(velocity, ControlType.kVelocity, 0, simpleFF.calculate(velocity, accel), ArbFFUnits.kVoltage);
+    }
+  }
+
+  public void setLPositionMeters(double position, double accel){
+    for (CANSparkMax motor : leftMotors) {
+      motor.getPIDController().setReference(position, ControlType.kPosition, 0, simpleFF.calculate(position, accel), ArbFFUnits.kVoltage);
+    }
+  }
+
+  public void setRPositionMeters(double position, double accel){
+    for (CANSparkMax motor : rightMotors) {
+      motor.getPIDController().setReference(position, ControlType.kPosition, 0, simpleFF.calculate(position, accel), ArbFFUnits.kVoltage);
     }
   }
 

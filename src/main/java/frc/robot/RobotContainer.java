@@ -149,8 +149,6 @@ public class RobotContainer {
 
     // Put the chooser on the dashboard
     Shuffleboard.getTab("Auto Choose").add(m_chooser);
-
-    driveTrain.calibrateGyro();
   }
 
   /**
