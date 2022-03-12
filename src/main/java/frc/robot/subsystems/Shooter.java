@@ -129,7 +129,9 @@ public class Shooter extends SubsystemBase {
 
       speed *= Math.copySign(1, turretPosDiff);
 
+      //changed
       turretMotor.set(speed);
+      // turretMotor.set(0.0);
     }
   }
 
@@ -175,7 +177,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getTurretPosDegrees(){
-    return getTurretPos() / 45 / (5.33333 * 1.028571428571429) * 360 + 90;
+    return getTurretPos() / 45 / (5.33333 * 1.028571428571429) * 360 ;//+ 90;
   }
 
   public boolean isShooterReady(){

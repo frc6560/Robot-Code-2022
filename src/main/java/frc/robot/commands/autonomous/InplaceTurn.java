@@ -26,7 +26,7 @@ public class InplaceTurn extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    startRotation = driveTrain.getPose().getRotation().getDegrees();
+    startRotation = driveTrain.getAngleContinuous();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -45,7 +45,7 @@ public class InplaceTurn extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double curRotation = driveTrain.getPose().getRotation().getDegrees();
+    double curRotation = driveTrain.getAngleContinuous();
     System.out.println(Math.abs(curRotation - startRotation));
     return  Math.abs(curRotation - startRotation) > Math.abs(degreesToTurn);
   }

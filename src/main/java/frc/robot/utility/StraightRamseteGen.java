@@ -12,6 +12,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
@@ -27,9 +28,9 @@ public class StraightRamseteGen implements AutoWrapperInterface {
         private Trajectory trajectory;
 
         DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
-                        new SimpleMotorFeedforward(PhysicalConstants.KSVOLTS,
-                                        PhysicalConstants.KVVOLTSECONDSPERMETER,
-                                        PhysicalConstants.KAVOLTSECONDSQUARDPERMETER),
+                        new SimpleMotorFeedforward(PhysicalConstants.KS,
+                                        PhysicalConstants.KV,
+                                        PhysicalConstants.KA),
                         PhysicalConstants.DIFFERENTIAL_DRIVE_KINEMATICS,
                         10);
         TrajectoryConfig config = new TrajectoryConfig(PhysicalConstants.MAXSPEEDMETERS,
@@ -53,26 +54,12 @@ public class StraightRamseteGen implements AutoWrapperInterface {
 
         public RamsexyCommand getCommand() {
 
-                PIDController leftController = new PIDController(PhysicalConstants.KP, 0, 0);
-                PIDController rightController = new PIDController(PhysicalConstants.KP, 0, 0);
-
                 return new RamsexyCommand(
-                                driveTrain::getPose,
-                                new RamseteController(
-                                                PhysicalConstants.kRamseteB,
-                                                PhysicalConstants.kRamseteZeta),
-                                new SimpleMotorFeedforward(
-                                                PhysicalConstants.KSVOLTS,
-                                                PhysicalConstants.KVVOLTSECONDSPERMETER,
-                                                PhysicalConstants.KAVOLTSECONDSQUARDPERMETER),
-                                PhysicalConstants.DIFFERENTIAL_DRIVE_KINEMATICS,
-                                driveTrain::getWheelSpeeds,
-                                leftController,
-                                rightController,
-                                (x, y) -> {
-                                        driveTrain.tankDriveVolts(x, y);
-                                },
                                 this,
+                                driveTrain::getPose,
+                                new RamseteController(),
+                                new DifferentialDriveKinematics(PhysicalConstants.trackWidthMeters),
+                                driveTrain::setWheelVelocity,
                                 driveTrain);
 
         }

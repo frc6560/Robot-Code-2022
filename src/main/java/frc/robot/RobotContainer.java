@@ -38,6 +38,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.utility.AutoUtil;
 import frc.robot.utility.AutoWrapper;
 import frc.robot.utility.AutoWrapperPathWeaver;
+import frc.robot.utility.StraightRamseteGen;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -148,6 +149,8 @@ public class RobotContainer {
 
     // Put the chooser on the dashboard
     Shuffleboard.getTab("Auto Choose").add(m_chooser);
+
+    driveTrain.calibrateGyro();
   }
 
   /**
@@ -168,7 +171,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
 
-    return m_chooser.getSelected();  
-  
+    // return m_chooser.getSelected();  
+    // return new StraightRamseteGen(driveTrain, 7.62).getCommand();
+    // return new AutoWrapper("New Path", driveTrain).getCommand();
+    return fourBallCommandGroup.getCommand();
   }
 }

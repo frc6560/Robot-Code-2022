@@ -46,23 +46,29 @@ public class FourBallCommandGroup implements CommandGroupInterface {
 
         @Override
         public Command getCommand() {
+                // return (
+                        
+                //         threeBall1.getCommand().raceWith(new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false)))
+
+                //         .andThen(new IntakeCommand(intake).raceWith(new ConveyorCommand(conveyor, shooter, false)).withTimeout(1))
+                        
+                //         .andThen((new ShooterCommand(shooter, limelight, false, 2)).raceWith(new ConveyorCommand(conveyor, shooter, true)))
+                        
+                //         .andThen(new InplaceTurn(driveTrain, 134))
+                        
+                //         .andThen(fourBallCont.getCommand().raceWith((new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false))))
+                        
+                //         .andThen(strightRamseteGen.getCommand()
+
+                //         .andThen((new ShooterCommand(shooter, limelight, false, 2).raceWith(new ConveyorCommand(conveyor, shooter, true))))
+                        
+                //         );
                 return (
-                        
-                        threeBall1.getCommand().raceWith(new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false)))
-
-                        .andThen(new IntakeCommand(intake).raceWith(new ConveyorCommand(conveyor, shooter, false)).withTimeout(1))
-                        
-                        .andThen((new ShooterCommand(shooter, limelight, false, 2)).raceWith(new ConveyorCommand(conveyor, shooter, true)))
-                        
+                        threeBall1.getCommand()
                         .andThen(new InplaceTurn(driveTrain, 134))
-                        
-                        .andThen(fourBallCont.getCommand().raceWith((new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false))))
-                        
-                        .andThen(strightRamseteGen.getCommand()
-
-                        .andThen((new ShooterCommand(shooter, limelight, false, 2).raceWith(new ConveyorCommand(conveyor, shooter, true))))
-                        
-                        );
+                        .andThen(fourBallCont.getCommand())
+                        .andThen(strightRamseteGen.getCommand()));
+                
         }
 
 }

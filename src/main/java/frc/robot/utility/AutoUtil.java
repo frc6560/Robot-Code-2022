@@ -34,9 +34,9 @@ public class AutoUtil {
     private Trajectory trajectory;
     private DriveTrain driveTrain;
     DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
-            new SimpleMotorFeedforward(PhysicalConstants.KSVOLTS,
-                    PhysicalConstants.KVVOLTSECONDSPERMETER,
-                    PhysicalConstants.KAVOLTSECONDSQUARDPERMETER),
+            new SimpleMotorFeedforward(PhysicalConstants.KS,
+                    PhysicalConstants.KV,
+                    PhysicalConstants.KA),
             PhysicalConstants.DIFFERENTIAL_DRIVE_KINEMATICS,
             10);
     TrajectoryConfig config = new TrajectoryConfig(PhysicalConstants.MAXSPEEDMETERS,
