@@ -50,10 +50,9 @@ public class Climb extends SubsystemBase {
     ntOverideSoftLimit = nTable.getEntry("Climb Override");
     ntOverideSoftLimit.setBoolean(false);
 
-    NtValueDisplay.ntDispTab("Climb").add("Left Pos", this::getLeftPositionInches).add("Right Pos",
-        this::getRightPositionInches);
-    NtValueDisplay.ntDispTab("Climb").add("Left Vel", this::getLeftVelocityInches).add("Right Vel",
-        this::getRightVelocityInches);
+    NtValueDisplay.ntDispTab("Climb")
+        .add("Left Pos", this::getLeftPositionInches).add("Right Pos", this::getRightPositionInches)
+        .add("Left Vel", this::getLeftVelocityInches).add("Right Vel", this::getRightVelocityInches);
 
   }
 
