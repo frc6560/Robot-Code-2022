@@ -132,8 +132,8 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
     }
 
     @Override
-    public double getClimbRotation() {
-        return controlStation.getRawAxis(ControllerIds.DRIVER_STATION_X_AXIS);
+    public boolean getClimbRotatorEngaged() {
+        return controlStation.getRawAxis(ControllerIds.DRIVER_STATION_X_AXIS) > 0.1;
     }
 
     @Override
@@ -142,8 +142,8 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
     }
 
     @Override
-    public boolean getClimbPiston() {
-        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_4);
+    public boolean getClimbLockEngaged() {
+        return !controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_4);
     }
 
     @Override

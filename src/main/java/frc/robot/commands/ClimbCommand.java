@@ -18,8 +18,8 @@ public class ClimbCommand extends CommandBase {
   /** Creates a new ManualClimb. */
 
   public static interface Controls {
-    double getClimbRotation();
-    boolean getClimbPiston();
+    boolean getClimbLockEngaged();
+    boolean getClimbRotatorEngaged();
     double getClimbExtensionMotors();
     
     double leftOverrideExtensionVelocity();
@@ -60,9 +60,10 @@ public class ClimbCommand extends CommandBase {
   @Override
   public void execute() {
     // climb.runRotatorMotor(controls.getClimbRotation() * rotationSpeed.getDouble(0.0));
+    climb.setRotatorPiston(controls.getClimbRotatorEngaged());
 
     climb.setExtensionMotor(controls.getClimbExtensionMotors() * extensionSpeed.getDouble(0.0));
-    climb.setPiston(controls.getClimbPiston());
+    climb.setPiston(controls.getClimbLockEngaged());
   }
 
   // Called once the command ends or is interrupted.
