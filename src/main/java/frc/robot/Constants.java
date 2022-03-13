@@ -78,14 +78,14 @@ public final class Constants {
         public static final int SHOOTER_TURRET_MOTOR = 4;
 
 
-        public static final int INTAKE_MOTOR = 2;
+        public static final int INTAKE_MOTOR = 17;
         public static final int INTAKE_OVERHEAD_MOTOR = 3;
         public static final int INTAKE_SOLENOID = 0;
 
         public static final int CLIMB_PISTON = 3;
         public static final int CLIMB_ROTATOR_PISTON = 2; //TODO: set constant
-        public static final int CLIMB_LEFT_EXTENSION_MOTOR = 5;
-        public static final int CLIMB_RIGHT_EXTENSION_MOTOR = 14;
+        public static final int CLIMB_LEFT_EXTENSION_MOTOR = 10;
+        public static final int CLIMB_RIGHT_EXTENSION_MOTOR = 43;
     }
 
     public static final class PhysicalConstants {

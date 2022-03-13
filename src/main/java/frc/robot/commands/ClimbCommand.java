@@ -30,30 +30,17 @@ public class ClimbCommand extends CommandBase {
   private final Climb climb;
   private final Controls controls;
 
-  private NetworkTable nTable;
-  private NetworkTableEntry extensionSpeed;
-  private NetworkTableEntry rotationSpeed;
-  
-
   public ClimbCommand(Climb climb, Controls controls) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.climb = climb;
     this.controls = controls;
     addRequirements(climb);
-
-    nTable = NetworkTableInstance.getDefault().getTable("Climb");
-
-    extensionSpeed = nTable.getEntry("Extension Speed");
-    extensionSpeed.setDouble(0.8);
-
-    rotationSpeed = nTable.getEntry("Rotation Speed");
-    rotationSpeed.setDouble(0.3);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    climb.initialize();
+    climb.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -62,14 +49,14 @@ public class ClimbCommand extends CommandBase {
     // climb.runRotatorMotor(controls.getClimbRotation() * rotationSpeed.getDouble(0.0));
     climb.setRotatorPiston(controls.getClimbRotatorEngaged());
 
-    climb.setExtensionMotor(controls.getClimbExtensionMotors() * extensionSpeed.getDouble(0.0));
+    climb.setExtensionMotors(controls.getClimbExtensionMotors());
     climb.setPiston(controls.getClimbLockEngaged());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    climb.initialize();
+    climb.reset();
   }
 
   // Returns true when the command should end.

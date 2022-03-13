@@ -34,7 +34,7 @@ public class Intake extends SubsystemBase {
   public Intake() {
     intakeMotor.restoreFactoryDefaults();
     intakeMotor.setOpenLoopRampRate(0.1);
-    intakeMotor.setInverted(true);
+    intakeMotor.setInverted(false);
     
     ntTable = NetworkTableInstance.getDefault().getTable("Intake");
   }
