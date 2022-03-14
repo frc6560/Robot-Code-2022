@@ -50,7 +50,7 @@ public class ClimbCommand extends CommandBase {
     climb.setRotatorPiston(controls.getClimbRotatorEngaged());
 
     climb.setExtensionMotors(controls.getClimbExtensionMotors());
-    climb.setPiston(controls.getClimbLockEngaged());
+    climb.setLockPiston(controls.getClimbLockEngaged());
   }
 
   // Called once the command ends or is interrupted.

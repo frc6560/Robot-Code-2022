@@ -5,16 +5,20 @@
 package frc.robot;
 
 import com.fasterxml.jackson.databind.util.Converter;
+import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.RobotIds;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.ConveyorCommand;
 import frc.robot.commands.DriveCommand;
@@ -54,6 +58,12 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  
+  public static final I2C.Port colorSensorPort = I2C.Port.kOnboard;
+  public static final ColorSensorV3 colorSensor = new ColorSensorV3(colorSensorPort);
+  
+  public static final DigitalInput conveyorSensor = new DigitalInput(RobotIds.CONVEYOR_SENSOR);
+
 
   private final DriveTrain driveTrain = new DriveTrain();
   private final DriveCommand manualDrive;

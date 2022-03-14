@@ -6,15 +6,23 @@ package frc.robot.commands;
 
 import java.lang.invoke.ConstantBootstraps;
 
+import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorSensorV3;
+
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utility.ShootCalibrationMap;
 import frc.robot.utility.Util;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
+import frc.robot.Constants.RobotIds;
 import frc.robot.Constants.ShooterCalibrations;
 import frc.robot.commands.autonomous.AutonomousController;
 import frc.robot.controls.manualdrive.ManualControls;
@@ -32,6 +40,15 @@ public class ShooterCommand extends CommandBase {
   private Shooter shooter;
   private Controls controls;
   private Limelight limelight;
+
+  private ColorMatch colorMatch = new ColorMatch();
+  private final Color blueColor = new Color(0, 0, 255);
+  private final Color redColor = new Color(255, 0, 0);
+
+  private final boolean isRedAlliance;
+
+  private boolean missBall = false;
+  private final double ballMissAngle = 10;
 
   private NetworkTable ntTable;
   private NetworkTableEntry ntTestRPM;
@@ -54,6 +71,9 @@ public class ShooterCommand extends CommandBase {
 
     addRequirements(shooter, limelight);
 
+    colorMatch.addColorMatch(blueColor);
+    colorMatch.addColorMatch(redColor);
+
     
     this.ntTable = NetworkTableInstance.getDefault().getTable("Shooter");
 
@@ -68,6 +88,8 @@ public class ShooterCommand extends CommandBase {
 
     ntUseCalibrationMap = ntTable.getEntry("Use calibration map?");
     ntUseCalibrationMap.setBoolean(true);
+
+    isRedAlliance =  NetworkTableInstance.getDefault().getTable("FMSInfo").getEntry("IsRedAlliance").getBoolean(false);
   }
   
 
@@ -88,6 +110,10 @@ public class ShooterCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    missBall = false;
+    if(!RobotContainer.conveyorSensor.get() && (colorMatch.matchClosestColor(RobotContainer.colorSensor.getColor()).color == blueColor && isRedAlliance)){
+      missBall = true;
+    }
 
     limelight.setForceOff(!controls.getAimShooter());
 
@@ -103,6 +129,14 @@ public class ShooterCommand extends CommandBase {
 
       // shooter.setTurretPos(shooter.getTurretPos() + controls.shooterTurretTest()); // manual control of turret using climb joystick (button board);
       double turrTarget = limelight.getHorizontalAngle();
+
+      // if(missBall){
+      //   if(turrTarget > 0){
+      //     turrTarget -= ballMissAngle;
+      //   } else{
+      //     turrTarget += ballMissAngle;
+      //   }
+      // }
       
       if((shooter.getTurretPosDegrees() > 85 && turrTarget > 0) || (shooter.getTurretPosDegrees() < -85 && turrTarget < 0))
         turrTarget = 0;

@@ -133,7 +133,7 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
     @Override
     public boolean getClimbRotatorEngaged() {
-        return controlStation.getRawAxis(ControllerIds.DRIVER_STATION_X_AXIS) > 0.1;
+        return controlStation.getRawAxis(ControllerIds.DRIVER_STATION_TOGGLE_4) > 0.1;
     }
 
     @Override

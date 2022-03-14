@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import frc.robot.RobotContainer;
 import frc.robot.Constants.RobotIds;
 
 public class Conveyor extends SubsystemBase {
@@ -18,8 +19,6 @@ public class Conveyor extends SubsystemBase {
   
   private final CANSparkMax overHeadMotor = new CANSparkMax(RobotIds.INTAKE_OVERHEAD_MOTOR, MotorType.kBrushless);
   
-  private final DigitalInput conveyorSensor = new DigitalInput(RobotIds.CONVEYOR_SENSOR);
-
   /** Creates a new Conveyor. */
   public Conveyor() {
     conveyorMotorTop.restoreFactoryDefaults();
@@ -48,7 +47,7 @@ public class Conveyor extends SubsystemBase {
   }
 
   public boolean getSensor() {
-    return !conveyorSensor.get();
+    return !RobotContainer.conveyorSensor.get();
     //return false;
   }
 

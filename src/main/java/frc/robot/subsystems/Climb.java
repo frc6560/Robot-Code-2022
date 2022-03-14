@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
@@ -21,38 +22,47 @@ import frc.robot.utility.NetworkTable.NtValueDisplay;
 
 public class Climb extends SubsystemBase {
 
-  private final Solenoid lockingPiston = new Solenoid(PneumaticsModuleType.CTREPCM, RobotIds.CLIMB_PISTON);
-  private final Solenoid rotatorPiston = new Solenoid(PneumaticsModuleType.CTREPCM, RobotIds.CLIMB_ROTATOR_PISTON);
+  private final Solenoid lockingPiston = new Solenoid(PneumaticsModuleType.CTREPCM, 2);
+  private final Solenoid rotatorPiston = new Solenoid(PneumaticsModuleType.CTREPCM, 3);
 
   private final TalonFX leftExtensionMotor = new TalonFX(RobotIds.CLIMB_LEFT_EXTENSION_MOTOR);
   private final TalonFX rightExtensionMotor = new TalonFX(RobotIds.CLIMB_RIGHT_EXTENSION_MOTOR);
 
   private final double minPos = 0;
-  private final double maxPosRetracted = 17000; // TODO: change
-  private final double maxPosExtended = 17650;
+  private final double maxPos = 22.5;
+
+  private double rightComp = 1;
+  private double leftComp = 1;
+  private final double comp_beta = 1.05;
 
   private NetworkTable nTable;
   private NetworkTableEntry ntOverideSoftLimit;
   private NetworkTableEntry rightCompensationConstant;
   private NetworkTableEntry ntExtensionSpeed;
+  private NetworkTableEntry rightTestSpeed;
+  private NetworkTableEntry leftTestSpeed;
 
   /** Creates a new Climb. */
   public Climb() {
     setupAllMotors();
     nTable = NetworkTableInstance.getDefault().getTable("Climb");
 
-    rightCompensationConstant = nTable.getEntry("Right Compensation Constant");
-    rightCompensationConstant.setDouble(0.99);
-
     ntExtensionSpeed = nTable.getEntry("Extension Speed");
-    ntExtensionSpeed.setDouble(0.5);
+    ntExtensionSpeed.setDouble(0.3);
 
     ntOverideSoftLimit = nTable.getEntry("Climb Override");
     ntOverideSoftLimit.setBoolean(false);
+    
+    rightTestSpeed = nTable.getEntry("Right Override speed");
+    rightTestSpeed.setDouble(0.0);
+
+    leftTestSpeed = nTable.getEntry("left Override speed");
+    leftTestSpeed.setDouble(0.0);
+    
 
     NtValueDisplay.ntDispTab("Climb")
-        .add("Left Pos", this::getLeftPositionInches).add("Right Pos", this::getRightPositionInches)
-        .add("Left Vel", this::getLeftVelocityInches).add("Right Vel", this::getRightVelocityInches);
+        .add("Left Pos", this::getLeftPositionInches)
+        .add("Right Pos", this::getRightPositionInches);
 
   }
 
@@ -79,41 +89,69 @@ public class Climb extends SubsystemBase {
       output = 0;
     }
 
-    // System.out.println(output);
     double extensionSpeed = ntExtensionSpeed.getDouble(0.5);
+
+    double leftSpeed;
+    double rightSpeed;
     
-    if(ntOverideSoftLimit.getBoolean(false) == false){
+    if(!ntOverideSoftLimit.getBoolean(false)){
+
       if(output > 0){
-        if (leftPos < maxPosExtended) {
-          setLeftExtensionMotor(output * extensionSpeed);
+        if (leftPos < maxPos) {
+          leftSpeed = (output * extensionSpeed);
         }else{
-          setLeftExtensionMotor(0.0);
+          leftSpeed = (0.0);
         }
     
-        if (rightPos < maxPosExtended) {
-          setRightExtensionMotor(output * extensionSpeed);
+        if (rightPos < maxPos) {
+          rightSpeed = (output * extensionSpeed);
         }else{
-          setRightExtensionMotor(0.0);
+          rightSpeed = (0.0);
         }
       }else{
+        output /= 1.5;
+
         if (leftPos > minPos) {
-          setLeftExtensionMotor(output * extensionSpeed);
+          leftSpeed = (output * extensionSpeed);
         }else{
-          setLeftExtensionMotor(0.0);
+          leftSpeed = (0.0);
         }
     
         if (rightPos > minPos) {
-          setRightExtensionMotor(output * extensionSpeed);
+          rightSpeed = (output * extensionSpeed);
         }else{
-          setRightExtensionMotor(0.0);
+          rightSpeed = (0.0);
         }
       }
     }else{
-      setLeftExtensionMotor(output * extensionSpeed);
-      setRightExtensionMotor(output * extensionSpeed);
+      leftSpeed = (output * extensionSpeed);
+      rightSpeed = (output * extensionSpeed);
     }
-    
 
+    double diff = getRightPositionInches() - getLeftPositionInches();
+    // double dir = Math.copySign(1, output);
+
+    if(output > 0){
+      rightComp = 1;
+      leftComp = Math.min(2, Math.max(1 + diff/0.5, 0));
+    } else{
+      leftComp = 1;
+      rightComp = Math.min(2, Math.max(1 + diff/0.5, 0));
+    }
+
+
+
+    // if(diff > 0){
+      // leftComp = Math.min(2, Math.max(1 + diff/100, 0));
+    //   rightComp = 1.0;
+    // } else{
+      // rightComp = 1 + diff/10;
+    //   leftComp = 1.0;
+    // }
+
+
+    setLeftExtensionMotor(leftSpeed * leftComp);
+    setRightExtensionMotor(rightSpeed * rightComp);
   }
 
   private void setLeftExtensionMotor(double output) {
@@ -121,9 +159,7 @@ public class Climb extends SubsystemBase {
   }
 
   private void setRightExtensionMotor(double output) {
-    System.out.println(output * rightCompensationConstant.getDouble(0.99));
-
-    rightExtensionMotor.set(TalonFXControlMode.PercentOutput, output * rightCompensationConstant.getDouble(1.0));
+    rightExtensionMotor.set(TalonFXControlMode.PercentOutput, output);
   }
 
   private void setupAllMotors() {
@@ -135,6 +171,10 @@ public class Climb extends SubsystemBase {
     motor.configFactoryDefault();
     motor.setInverted(inverted);
     motor.setSelectedSensorPosition(0.0);
+    motor.setNeutralMode(NeutralMode.Brake);
+
+    // motor.configForwardSoftLimitThreshold(100);
+    // motor.configForwardSoftLimitEnable(true);
   }
 
   public double getRightPosition() {
@@ -145,6 +185,14 @@ public class Climb extends SubsystemBase {
     return leftExtensionMotor.getSelectedSensorPosition();
   }
 
+  public double getRightPositionInches() {
+    return getRightPosition() / 2048 * PhysicalConstants.CLIMB_EXTENSION_INCHES_PER_ROTATION;
+  }
+
+  public double getLeftPositionInches() {
+    return getLeftPosition() / 2048 * PhysicalConstants.CLIMB_EXTENSION_INCHES_PER_ROTATION;
+  }
+
   public double getRightVelocity() {
     return rightExtensionMotor.getSelectedSensorVelocity();
   }
@@ -153,23 +201,15 @@ public class Climb extends SubsystemBase {
     return leftExtensionMotor.getSelectedSensorVelocity();
   }
 
-  public double getRightPositionInches() {
-    return getRightPosition() * PhysicalConstants.CLIMB_EXTENSION_INCHES_PER_ROTATION;
-  }
+  // public double getRightVelocityInches() {
+  //   return getRightVelocity() * PhysicalConstants.CLIMB_EXTENSION_INCHES_PER_ROTATION;
+  // }
 
-  public double getLeftPositionInches() {
-    return getLeftPosition() * PhysicalConstants.CLIMB_EXTENSION_INCHES_PER_ROTATION;
-  }
+  // public double getLeftVelocityInches() {
+  //   return getRightVelocity() * PhysicalConstants.CLIMB_EXTENSION_INCHES_PER_ROTATION;
+  // }
 
-  public double getRightVelocityInches() {
-    return getRightVelocity() * PhysicalConstants.CLIMB_EXTENSION_INCHES_PER_ROTATION;
-  }
-
-  public double getLeftVelocityInches() {
-    return getRightVelocity() * PhysicalConstants.CLIMB_EXTENSION_INCHES_PER_ROTATION;
-  }
-
-  public void setPiston(boolean extended) {
+  public void setLockPiston(boolean extended) {
     lockingPiston.set(extended);
   }
 }

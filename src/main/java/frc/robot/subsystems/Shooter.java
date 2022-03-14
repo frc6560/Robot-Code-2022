@@ -35,6 +35,8 @@ public class Shooter extends SubsystemBase {
   private final PWM hoodServoL;
   private final PWM hoodServoR;
 
+  private double startAngle = 0;
+
   private double targetRPM;
   private double targetHoodPos;
   private double targetTurretPos;
@@ -129,7 +131,7 @@ public class Shooter extends SubsystemBase {
 
       speed *= Math.copySign(1, turretPosDiff);
 
-      // turretMotor.set(speed);
+      turretMotor.set(speed);
     }
   }
 
@@ -175,14 +177,14 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getTurretPosDegrees(){
-    return getTurretPos() / 45 / (5.33333 * 1.028571428571429) * 360 + 90;
+    return getTurretPos() / 45 / (5.33333 * 1.028571428571429) * 360 + startAngle;
   }
 
   public boolean isShooterReady(){
     // System.out.println("1:  " + (Math.abs(getShooterRpm()) > 200) + "    2:  " + (Math.abs(getShooterRpm() - targetRPM/3.454545457) < RPMAcceptableDiff) + "   3:   " + (Math.abs(targetTurretPos) < turretAcceptableDiff) + "   4:  " + (Math.abs(getHoodPos() - targetHoodPos) < hoodAcceptableDiff));
     return 
       Math.abs(getShooterRpm()) > 200 &&
-      Math.abs(getShooterRpm() - targetRPM/3.454545457) < RPMAcceptableDiff &&
+      Math.abs(getShooterRpm() - targetRPM / 3.454545457) < RPMAcceptableDiff &&
       Math.abs(getTurretPosDegrees() - targetTurretPos) < turretAcceptableDiff &&
       Math.abs(getHoodPos() - targetHoodPos) < hoodAcceptableDiff;
   }
