@@ -114,8 +114,8 @@ public final class Constants {
 
         public static final RamseteController RAMSETE_CONTROLLER = new RamseteController(PhysicalConstants.kRamseteB, PhysicalConstants.kRamseteZeta);
         public static final DifferentialDriveKinematics DIFFERENTIAL_DRIVE_KINEMATICS = new DifferentialDriveKinematics(PhysicalConstants.trackWidthMeters);
-        public static final double ROTATIONSTOMETERS = (((0.5 * Math.PI) * 0.3048) / 10.384615384615384615384615384615) * 1.293518518518519;
-        // public static final double ROTATIONSTOMETERS = (((0.5 * Math.PI) * 0.3048) / 7.5);
+        // public static final double ROTATIONSTOMETERS = (((0.5 * Math.PI) * 0.3048) / 10.384615384615384615384615384615) * 1.293518518518519;
+        public static final double ROTATIONSTOMETERS = (((0.5 * Math.PI) * 0.3048) / 8.05);
         public static final double RPMTOMETERSPERSEC = ROTATIONSTOMETERS / 60.0; 
         public static final double RPM_PER_FALCON_UNIT = 10.0 * 60.0 / 2048.0;
         public static final double MAX_HOOD_ENCODER_DISTANCE = 3630.0;
@@ -147,18 +147,24 @@ public final class Constants {
         
         static {
             SHOOT_CALIBRATION_MAP.add(0.0, new ShootCalibrationMap.Trajectory(3000.0, -1));
-            SHOOT_CALIBRATION_MAP.add(7.0, new ShootCalibrationMap.Trajectory(3440.0, -0.5714));
-            SHOOT_CALIBRATION_MAP.add(8.6, new ShootCalibrationMap.Trajectory(3480.0, -0.15));
-            SHOOT_CALIBRATION_MAP.add(9.2, new ShootCalibrationMap.Trajectory(3420.0, -0.1143));
-            SHOOT_CALIBRATION_MAP.add(10.5, new ShootCalibrationMap.Trajectory(3540, -0.0571));
-            SHOOT_CALIBRATION_MAP.add(11.5, new ShootCalibrationMap.Trajectory(3650.0, 0.1429));
-            SHOOT_CALIBRATION_MAP.add(12.2, new ShootCalibrationMap.Trajectory(3790.0, 0.2));
-            SHOOT_CALIBRATION_MAP.add(12.9, new ShootCalibrationMap.Trajectory(3880.0, 0.38));
-            SHOOT_CALIBRATION_MAP.add(14.0, new ShootCalibrationMap.Trajectory(4090.0, 0.4286));
-            SHOOT_CALIBRATION_MAP.add(17.5, new ShootCalibrationMap.Trajectory(4400.0, 1));
-            SHOOT_CALIBRATION_MAP.add(25, new ShootCalibrationMap.Trajectory(4600.0, 1));
+            SHOOT_CALIBRATION_MAP.add(9.2, new ShootCalibrationMap.Trajectory(3200.0, -0.35));
+            SHOOT_CALIBRATION_MAP.add(10.1, new ShootCalibrationMap.Trajectory(3200.0, -0.2));
+            SHOOT_CALIBRATION_MAP.add(11, new ShootCalibrationMap.Trajectory(3280.0, -0.15));
+            SHOOT_CALIBRATION_MAP.add(9.2, new ShootCalibrationMap.Trajectory(3320.0, -0.1));
+            SHOOT_CALIBRATION_MAP.add(9.2, new ShootCalibrationMap.Trajectory(3400.0, -0.1));
+            SHOOT_CALIBRATION_MAP.add(13.9, new ShootCalibrationMap.Trajectory(3500.0, 0.0));
             SHOOT_CALIBRATION_MAP.add(100.0, new ShootCalibrationMap.Trajectory(4700.0, 1));
         }
     }
+    /*
+ 
+            // SHOOT_CALIBRATION_MAP.add(9.2, new ShootCalibrationMap.Trajectory(3200.0, -0.35));
+            // SHOOT_CALIBRATION_MAP.add(10.1, new ShootCalibrationMap.Trajectory(3200.0, -0.2));
+            // SHOOT_CALIBRATION_MAP.add(11, new ShootCalibrationMap.Trajectory(3280.0, -0.15));
+            // SHOOT_CALIBRATION_MAP.add(9.2, new ShootCalibrationMap.Trajectory(3320.0, -0.1));
+            // SHOOT_CALIBRATION_MAP.add(9.2, new ShootCalibrationMap.Trajectory(3400.0, -0.1));
+            // SHOOT_CALIBRATION_MAP.add(13.9, new ShootCalibrationMap.Trajectory(3500.0, 0.0));
+
+    */
     
 }

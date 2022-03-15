@@ -85,7 +85,10 @@ public class DriveTrain extends SubsystemBase {
 
     m_odometry = new DifferentialDriveOdometry(new Rotation2d());
     NtValueDisplay.ntDispTab("Drivetrain")
-    .add("Degrees", ()->(getAngleContinuous()));
+    .add("Degrees", ()->(getAngleContinuous()))
+    .add("Left Position", this::getLeftEnocoder)
+    .add("Right Position", this::getRightEncoder);
+
 
 
     kP = 0; 
@@ -124,6 +127,14 @@ public class DriveTrain extends SubsystemBase {
 
 
 
+  }
+
+  public double getLeftEnocoder(){
+    return leftEncoder.getPosition();
+  }
+
+  public double getRightEncoder(){
+    return rightEncoder.getPosition();
   }
 
   @Override
@@ -194,7 +205,7 @@ public class DriveTrain extends SubsystemBase {
       motor.setInverted(inverted);
       motor.getEncoder().setPosition(0);
       motor.setClosedLoopRampRate(0.0);
-      motor.setIdleMode(IdleMode.kBrake);
+      motor.setIdleMode(IdleMode.kCoast);
 
       SparkMaxPIDController pidController = motor.getPIDController();
       pidController.setP(PhysicalConstants.KP);
