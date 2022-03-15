@@ -15,7 +15,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PWM;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.utility.Util;
 
 import static frc.robot.Constants.*;
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
@@ -35,7 +34,7 @@ public class Shooter extends SubsystemBase {
   private final PWM hoodServoL;
   private final PWM hoodServoR;
 
-  private double startAngle = 0;
+  private double startAngle = 90;
 
   private double targetRPM;
   private double targetHoodPos;
