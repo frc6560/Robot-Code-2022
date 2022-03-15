@@ -129,7 +129,7 @@ public class DriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
 
-    System.out.println(gyro.isCalibrating());
+    // System.out.println(gyro.isCalibrating());
     if(!gyro.isConnected())
       DriverStation.reportError("gryo is off", false);
     // System.out.println("hi");

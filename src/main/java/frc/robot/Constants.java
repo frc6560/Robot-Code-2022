@@ -103,8 +103,8 @@ public final class Constants {
 
 
 
-        public static final double MAXSPEEDMETERS = 5; //Three ball: 1 //Four ball: 4
-        public static final double MAXACCELERATIONMETERS = 2; //Three ball:1 //Four ball: 1
+        public static final double MAXSPEEDMETERS = 3; //Three ball: 1 //Four ball: 4
+        public static final double MAXACCELERATIONMETERS = 1; //Three ball:1 //Four ball: 1
 
 
          //Autonomous
