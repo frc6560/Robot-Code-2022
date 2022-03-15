@@ -110,9 +110,12 @@ public class ShooterCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    missBall = false;
-    if(!RobotContainer.conveyorSensor.get() && (colorMatch.matchClosestColor(RobotContainer.colorSensor.getColor()).color == blueColor && isRedAlliance)){
-      missBall = true;
+    
+    if(!RobotContainer.conveyorSensor.get()){
+      if(colorMatch.matchClosestColor(RobotContainer.colorSensor.getColor()).color == blueColor && isRedAlliance)
+        missBall = true;
+      else
+        missBall = false;
     }
 
     limelight.setForceOff(!controls.getAimShooter());
@@ -130,13 +133,13 @@ public class ShooterCommand extends CommandBase {
       // shooter.setTurretPos(shooter.getTurretPos() + controls.shooterTurretTest()); // manual control of turret using climb joystick (button board);
       double turrTarget = limelight.getHorizontalAngle();
 
-      // if(missBall){
-      //   if(turrTarget > 0){
-      //     turrTarget -= ballMissAngle;
-      //   } else{
-      //     turrTarget += ballMissAngle;
-      //   }
-      // }
+      if(missBall){
+        if(turrTarget > 0){
+          turrTarget -= ballMissAngle;
+        } else{
+          turrTarget += ballMissAngle;
+        }
+      }
       
       if((shooter.getTurretPosDegrees() > 85 && turrTarget > 0) || (shooter.getTurretPosDegrees() < -85 && turrTarget < 0))
         turrTarget = 0;
