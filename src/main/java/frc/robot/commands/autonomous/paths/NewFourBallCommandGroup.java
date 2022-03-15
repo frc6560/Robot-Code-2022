@@ -46,33 +46,16 @@ public class NewFourBallCommandGroup implements CommandGroupInterface {
 
         @Override
         public Command getCommand() {
-                // return (
-                        
-                //         threeBall1.getCommand().raceWith(new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false)))
-
-                //         .andThen(new IntakeCommand(intake).raceWith(new ConveyorCommand(conveyor, shooter, false)).withTimeout(1))
-                        
-                //         .andThen((new ShooterCommand(shooter, limelight, false, 2)).raceWith(new ConveyorCommand(conveyor, shooter, true)))
-                        
-                //         .andThen(new InplaceTurn(driveTrain, 134))
-                        
-                //         .andThen(fourBallCont.getCommand().raceWith((new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false))))
-                        
-                //         .andThen(strightRamseteGen.getCommand()
-
-                //         .andThen((new ShooterCommand(shooter, limelight, false, 2).raceWith(new ConveyorCommand(conveyor, shooter, true))))
-                        
-                //         );
                 return (
-                        newFourBall1.getCommand().raceWith(new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false))
+                        newFourBall1.getCommand().raceWith(new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false)))
 
-                        .andThen(new ShooterCommand(shooter, limelight, true, 2)).raceWith(new ConveyorCommand(conveyor, shooter, true))
+                        .andThen((new ShooterCommand(shooter, limelight, true, 2)).raceWith(new ConveyorCommand(conveyor, shooter, true)))
 
-                        .andThen(newFourBall2.getCommand()).raceWith(new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false))
+                        .andThen(newFourBall2.getCommand().raceWith(new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false)))
 
                         .andThen(strightRamseteGen.getCommand())        
 
-                        .andThen(new ShooterCommand(shooter, limelight, true, 2)).raceWith(new ConveyorCommand(conveyor, shooter, true))
+                        .andThen((new ShooterCommand(shooter, limelight, true, 2).raceWith(new ConveyorCommand(conveyor, shooter, true)))
                         
                         );
                 
