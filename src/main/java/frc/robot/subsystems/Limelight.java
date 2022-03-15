@@ -57,7 +57,8 @@ public class Limelight extends SubsystemBase {
   // }
 
   public double getDistance() {
-    return -0.376023*ntY.getDouble(0.0) + 11.0681;
+    // return -0.376023*ntY.getDouble(0.0) + 11.0681;
+    return ntY.getDouble(0.0);
   }
 
   public double getHorizontalAngle() {

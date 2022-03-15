@@ -146,14 +146,14 @@ public final class Constants {
     public static ShootCalibrationMap SHOOT_CALIBRATION_MAP = new ShootCalibrationMap();
         
         static {
-            SHOOT_CALIBRATION_MAP.add(0.0, new ShootCalibrationMap.Trajectory(3000.0, -1));
-            SHOOT_CALIBRATION_MAP.add(9.2, new ShootCalibrationMap.Trajectory(3200.0, -0.35));
-            SHOOT_CALIBRATION_MAP.add(10.1, new ShootCalibrationMap.Trajectory(3200.0, -0.2));
-            SHOOT_CALIBRATION_MAP.add(11, new ShootCalibrationMap.Trajectory(3280.0, -0.15));
-            SHOOT_CALIBRATION_MAP.add(9.2, new ShootCalibrationMap.Trajectory(3320.0, -0.1));
-            SHOOT_CALIBRATION_MAP.add(9.2, new ShootCalibrationMap.Trajectory(3400.0, -0.1));
-            SHOOT_CALIBRATION_MAP.add(13.9, new ShootCalibrationMap.Trajectory(3500.0, 0.0));
-            SHOOT_CALIBRATION_MAP.add(100.0, new ShootCalibrationMap.Trajectory(4700.0, 1));
+            SHOOT_CALIBRATION_MAP.add(100.0, new ShootCalibrationMap.Trajectory(3000.0, -1));      //Degrees   Distance
+            SHOOT_CALIBRATION_MAP.add(4.968, new ShootCalibrationMap.Trajectory(3200.0, -0.35));   // 4.968      9.2
+            SHOOT_CALIBRATION_MAP.add(2.5746, new ShootCalibrationMap.Trajectory(3200.0, -0.2));   // 2.5746    10.1
+            SHOOT_CALIBRATION_MAP.add(0.1811, new ShootCalibrationMap.Trajectory(3280.0, -0.15));  // 0.1811     11
+            SHOOT_CALIBRATION_MAP.add(-2.478, new ShootCalibrationMap.Trajectory(3320.0, -0.1));   // -2.478     12
+            SHOOT_CALIBRATION_MAP.add(-5.138, new ShootCalibrationMap.Trajectory(3400.0, -0.1));   // -5.138     13
+            SHOOT_CALIBRATION_MAP.add(-7.531, new ShootCalibrationMap.Trajectory(3500.0, 0.0));    // -7.531    13.9
+            SHOOT_CALIBRATION_MAP.add(-100, new ShootCalibrationMap.Trajectory(4700.0, 1));
         }
     }
     /*
@@ -161,8 +161,8 @@ public final class Constants {
             // SHOOT_CALIBRATION_MAP.add(9.2, new ShootCalibrationMap.Trajectory(3200.0, -0.35));
             // SHOOT_CALIBRATION_MAP.add(10.1, new ShootCalibrationMap.Trajectory(3200.0, -0.2));
             // SHOOT_CALIBRATION_MAP.add(11, new ShootCalibrationMap.Trajectory(3280.0, -0.15));
-            // SHOOT_CALIBRATION_MAP.add(9.2, new ShootCalibrationMap.Trajectory(3320.0, -0.1));
-            // SHOOT_CALIBRATION_MAP.add(9.2, new ShootCalibrationMap.Trajectory(3400.0, -0.1));
+            // SHOOT_CALIBRATION_MAP.add(12, new ShootCalibrationMap.Trajectory(3320.0, -0.1));
+            // SHOOT_CALIBRATION_MAP.add(13, new ShootCalibrationMap.Trajectory(3400.0, -0.1));
             // SHOOT_CALIBRATION_MAP.add(13.9, new ShootCalibrationMap.Trajectory(3500.0, 0.0));
 
     */
