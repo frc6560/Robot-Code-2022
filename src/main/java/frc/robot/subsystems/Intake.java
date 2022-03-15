@@ -22,7 +22,7 @@ public class Intake extends SubsystemBase {
 
   private final int minFramesDown = 20;
 
-  private double targetIntakeMotorOutput = 0.5;
+  private double targetIntakeMotorOutput = 0.7;
 
   private boolean reversed = false;
 

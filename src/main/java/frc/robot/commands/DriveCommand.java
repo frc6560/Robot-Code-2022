@@ -6,11 +6,11 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.DriveTrain_Old;
 
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 
@@ -79,7 +79,9 @@ public class DriveCommand extends CommandBase {
 
     y *= speed;
 
-    driveTrain.setVelocity(y, x);
+    if(!DriverStation.isAutonomous()){
+      driveTrain.setVelocity(y, x);
+    }
 
     //System.out.println(driveTrain.getCurrentPose());
   }

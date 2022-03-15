@@ -89,12 +89,21 @@ public final class Constants {
     }
 
     public static final class PhysicalConstants {
-        public static final double KSVOLTS = 0.18085;
-        public static final double KVVOLTSECONDSPERMETER = 2.7552;
-        public static final double KAVOLTSECONDSQUARDPERMETER = 0.73896;
-        public static final double KP = 2.4691;
+        // public static final double KSVOLTS = 0.18085;
+        // public static final double KVVOLTSECONDSPERMETER = 2.7552;
+        // public static final double KAVOLTSECONDSQUARDPERMETER = 0.73896;
+        // public static final double KP = 2.4691;
 
-        public static final double MAXSPEEDMETERS = 4; //Three ball: 1 //Four ball: 4
+        public static final double KS = 0.18053;
+        public static final double KV = 2.2327;
+        public static final double KA = 0.23044;
+        public static final double KP = 0.000014; //0.000014
+        public static final double KI = 0.000000003; //0.000000003
+        public static final double KD = 0.0000;
+
+
+
+        public static final double MAXSPEEDMETERS = 3; //Three ball: 1 //Four ball: 4
         public static final double MAXACCELERATIONMETERS = 1; //Three ball:1 //Four ball: 1
 
 
@@ -106,6 +115,7 @@ public final class Constants {
         public static final RamseteController RAMSETE_CONTROLLER = new RamseteController(PhysicalConstants.kRamseteB, PhysicalConstants.kRamseteZeta);
         public static final DifferentialDriveKinematics DIFFERENTIAL_DRIVE_KINEMATICS = new DifferentialDriveKinematics(PhysicalConstants.trackWidthMeters);
         public static final double ROTATIONSTOMETERS = (((0.5 * Math.PI) * 0.3048) / 10.384615384615384615384615384615) * 1.293518518518519;
+        // public static final double ROTATIONSTOMETERS = (((0.5 * Math.PI) * 0.3048) / 7.5);
         public static final double RPMTOMETERSPERSEC = ROTATIONSTOMETERS / 60.0; 
         public static final double RPM_PER_FALCON_UNIT = 10.0 * 60.0 / 2048.0;
         public static final double MAX_HOOD_ENCODER_DISTANCE = 3630.0;
@@ -120,15 +130,15 @@ public final class Constants {
 
         public static final double MAX_ACCELERATION = 13;
 
-        public static final double trackWidthMeters = 0.70104;
+        public static final double trackWidthMeters = 0.81434;
 
        
     }
 
     public static final class ConversionConstants {
         public static final double SECONDS_PER_MINUTE = 60.0;
-        public static final double FEET_PER_METER = 3.28084;
-        public static final Double METERS_TO_FEET = 1.0/FEET_PER_METER;
+        public static final double FEET_TO_METER = 0.3048;
+        public static final double METERS_TO_FEET = 1.0/FEET_TO_METER;
     }
 
     public static final class ShooterCalibrations {

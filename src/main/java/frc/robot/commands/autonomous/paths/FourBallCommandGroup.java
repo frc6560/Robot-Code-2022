@@ -63,6 +63,12 @@ public class FourBallCommandGroup implements CommandGroupInterface {
                         .andThen((new ShooterCommand(shooter, limelight, false, 2).raceWith(new ConveyorCommand(conveyor, shooter, true))))
                         
                         );
+                // return (
+                //         threeBall1.getCommand()
+                //         .andThen(new InplaceTurn(driveTrain, 134))
+                //         .andThen(fourBallCont.getCommand()));
+                //         // .andThen(strightRamseteGen.getCommand()));
+                
         }
 
 }

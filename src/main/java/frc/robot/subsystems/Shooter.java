@@ -131,7 +131,9 @@ public class Shooter extends SubsystemBase {
 
       speed *= Math.copySign(1, turretPosDiff);
 
+      //changed
       turretMotor.set(speed);
+      // turretMotor.set(0.0);
     }
   }
 

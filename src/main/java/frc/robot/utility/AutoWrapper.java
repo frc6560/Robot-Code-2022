@@ -12,6 +12,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -22,7 +23,7 @@ import frc.robot.commands.RamsexyCommand;
 import frc.robot.subsystems.DriveTrain;
 
 /** Add your docs here. */
-public class AutoWrapper implements AutoWrapperInterface{
+public class AutoWrapper implements AutoWrapperInterface {
     private Trajectory trajectory;
     private DriveTrain driveTrain;
 
@@ -34,7 +35,8 @@ public class AutoWrapper implements AutoWrapperInterface{
 
     public AutoWrapper(String pathName, DriveTrain driveTrain) {
         try {
-            trajectory = PathPlanner.loadPath(pathName, PhysicalConstants.MAXSPEEDMETERS, PhysicalConstants.MAXACCELERATIONMETERS);
+            trajectory = PathPlanner.loadPath(pathName, PhysicalConstants.MAXSPEEDMETERS,
+                    PhysicalConstants.MAXACCELERATIONMETERS);
         } catch (Exception ex) {
             DriverStation.reportError("Unable to open trajectory: " + pathName, ex.getStackTrace());
         }
@@ -46,9 +48,9 @@ public class AutoWrapper implements AutoWrapperInterface{
         rightReference = table.getEntry("right_reference");
         rightMeasurement = table.getEntry("right_measurement");
     }
-    
+
     @Override
-    public Trajectory getTrajectory(){
+    public Trajectory getTrajectory() {
         Transform2d transform = driveTrain.getPose().minus(trajectory.getInitialPose());
 
         Trajectory newTrajectory = trajectory.transformBy(transform);
@@ -63,30 +65,38 @@ public class AutoWrapper implements AutoWrapperInterface{
         PIDController rightController = new PIDController(PhysicalConstants.KP, 0, 0);
 
         return new RamsexyCommand(
-                driveTrain::getPose,
-                new RamseteController(
-                        PhysicalConstants.kRamseteB,
-                        PhysicalConstants.kRamseteZeta),
-                new SimpleMotorFeedforward(
-                        PhysicalConstants.KSVOLTS,
-                        PhysicalConstants.KVVOLTSECONDSPERMETER,
-                        PhysicalConstants.KAVOLTSECONDSQUARDPERMETER),
-                PhysicalConstants.DIFFERENTIAL_DRIVE_KINEMATICS,
-                driveTrain::getWheelSpeeds,
-                leftController,
-                rightController,
-                (x, y) -> {
-                    driveTrain.tankDriveVolts(x, y);
+            this, 
+            driveTrain::getPose, 
+            new RamseteController(PhysicalConstants.kRamseteB, PhysicalConstants.kRamseteZeta),
+            new DifferentialDriveKinematics(PhysicalConstants.trackWidthMeters),
+            driveTrain::setWheelVelocity,
+            driveTrain);
 
-                    System.out.println(x + " " + y);
-                    leftMeasurement.setDouble(driveTrain.getWheelSpeeds().leftMetersPerSecond);
-                    leftReference.setDouble(leftController.getSetpoint());
+        // return new RamsexyCommand(
+        //         driveTrain::getPose,
+        //         new RamseteController(
+        //                 PhysicalConstants.kRamseteB,
+        //                 PhysicalConstants.kRamseteZeta),
+        //         new SimpleMotorFeedforward(
+        //                 PhysicalConstants.KSVOLTS,
+        //                 PhysicalConstants.KVVOLTSECONDSPERMETER,
+        //                 PhysicalConstants.KAVOLTSECONDSQUARDPERMETER),
+        //         PhysicalConstants.DIFFERENTIAL_DRIVE_KINEMATICS,
+        //         driveTrain::getWheelSpeeds,
+        //         leftController,
+        //         rightController,
+        //         (x, y) -> {
+        //             driveTrain.tankDriveVolts(x, y);
 
-                    rightMeasurement.setDouble(driveTrain.getWheelSpeeds().rightMetersPerSecond);
-                    rightReference.setDouble(rightController.getSetpoint());
-                },
-                this,
-                driveTrain);
+        //             System.out.println(x + " " + y);
+        //             leftMeasurement.setDouble(driveTrain.getWheelSpeeds().leftMetersPerSecond);
+        //             leftReference.setDouble(leftController.getSetpoint());
+
+        //             rightMeasurement.setDouble(driveTrain.getWheelSpeeds().rightMetersPerSecond);
+        //             rightReference.setDouble(rightController.getSetpoint());
+        //         },
+        //         this,
+        //         driveTrain);
     }
 
 }

@@ -35,6 +35,14 @@ public class ClimbCommand extends CommandBase {
     this.climb = climb;
     this.controls = controls;
     addRequirements(climb);
+
+    nTable = NetworkTableInstance.getDefault().getTable("Climb");
+
+    extensionSpeed = nTable.getEntry("Extension Speed");
+    extensionSpeed.setDouble(0.8);
+
+    rotationSpeed = nTable.getEntry("Rotation Speed");
+    rotationSpeed.setDouble(0.5);
   }
 
   // Called when the command is initially scheduled.

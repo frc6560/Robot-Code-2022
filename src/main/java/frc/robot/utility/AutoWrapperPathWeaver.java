@@ -12,6 +12,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.networktables.NetworkTable;
@@ -45,34 +46,14 @@ public class AutoWrapperPathWeaver implements AutoWrapperInterface {
 
     public RamsexyCommand getCommand() {
 
-        PIDController leftController = new PIDController(PhysicalConstants.KP, 0, 0);
-        PIDController rightController = new PIDController(PhysicalConstants.KP, 0, 0);
 
         return new RamsexyCommand(
-                driveTrain::getPose,
-                new RamseteController(
-                        PhysicalConstants.kRamseteB,
-                        PhysicalConstants.kRamseteZeta),
-                new SimpleMotorFeedforward(
-                        PhysicalConstants.KSVOLTS,
-                        PhysicalConstants.KVVOLTSECONDSPERMETER,
-                        PhysicalConstants.KAVOLTSECONDSQUARDPERMETER),
-                PhysicalConstants.DIFFERENTIAL_DRIVE_KINEMATICS,
-                driveTrain::getWheelSpeeds,
-                leftController,
-                rightController,
-                (x, y) -> {
-                    driveTrain.tankDriveVolts(x, y);
-
-                    System.out.println(x + " " + y);
-                    leftMeasurement.setDouble(driveTrain.getWheelSpeeds().leftMetersPerSecond);
-                    leftReference.setDouble(leftController.getSetpoint());
-
-                    rightMeasurement.setDouble(driveTrain.getWheelSpeeds().rightMetersPerSecond);
-                    rightReference.setDouble(rightController.getSetpoint());
-                },
-                this,
-                driveTrain);
+            this, 
+            driveTrain::getPose, 
+            new RamseteController(),
+            new DifferentialDriveKinematics(PhysicalConstants.trackWidthMeters),
+            (x, y) -> {},
+            driveTrain);
     }
 
     @Override
