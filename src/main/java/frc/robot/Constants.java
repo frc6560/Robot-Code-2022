@@ -115,7 +115,7 @@ public final class Constants {
         public static final RamseteController RAMSETE_CONTROLLER = new RamseteController(PhysicalConstants.kRamseteB, PhysicalConstants.kRamseteZeta);
         public static final DifferentialDriveKinematics DIFFERENTIAL_DRIVE_KINEMATICS = new DifferentialDriveKinematics(PhysicalConstants.trackWidthMeters);
         // public static final double ROTATIONSTOMETERS = (((0.5 * Math.PI) * 0.3048) / 10.384615384615384615384615384615) * 1.293518518518519;
-        public static final double ROTATIONSTOMETERS = (((0.5 * Math.PI) * 0.3048) / 8.05);
+        public static final double ROTATIONSTOMETERS = (((0.5 * Math.PI) * 0.3048) / 8.0);
         public static final double RPMTOMETERSPERSEC = ROTATIONSTOMETERS / 60.0; 
         public static final double RPM_PER_FALCON_UNIT = 10.0 * 60.0 / 2048.0;
         public static final double MAX_HOOD_ENCODER_DISTANCE = 3630.0;
