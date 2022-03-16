@@ -56,8 +56,6 @@ public class NewFourBallCommandGroup implements CommandGroupInterface {
                         .andThen(strightRamseteGen.getCommand().raceWith(new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false)))        
 
                         .andThen((new ShooterCommand(shooter, limelight, true, 2).raceWith(new ConveyorCommand(conveyor, shooter, true)))
-
-                        .andThen(new InplaceTurn(driveTrain, 170))
                         
                         );
                 

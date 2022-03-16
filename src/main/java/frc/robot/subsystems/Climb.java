@@ -22,8 +22,7 @@ import frc.robot.utility.NetworkTable.NtValueDisplay;
 
 public class Climb extends SubsystemBase {
 
-  private final Solenoid lockingPiston = new Solenoid(PneumaticsModuleType.CTREPCM, 2);
-  private final Solenoid rotatorPiston = new Solenoid(PneumaticsModuleType.CTREPCM, 3);
+  private final Solenoid rotatorPiston = new Solenoid(PneumaticsModuleType.CTREPCM, 2);
 
   private final TalonFX leftExtensionMotor = new TalonFX(RobotIds.CLIMB_LEFT_EXTENSION_MOTOR);
   private final TalonFX rightExtensionMotor = new TalonFX(RobotIds.CLIMB_RIGHT_EXTENSION_MOTOR);
@@ -209,7 +208,4 @@ public class Climb extends SubsystemBase {
   //   return getRightVelocity() * PhysicalConstants.CLIMB_EXTENSION_INCHES_PER_ROTATION;
   // }
 
-  public void setLockPiston(boolean extended) {
-    lockingPiston.set(extended);
-  }
 }
