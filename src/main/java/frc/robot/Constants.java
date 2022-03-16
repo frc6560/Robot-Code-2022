@@ -95,7 +95,7 @@ public final class Constants {
         // public static final double KP = 2.4691;
 
         public static final double KS = 0.18053;
-        public static final double KV = 2.2327;
+        public static final double KV = 2.1727;
         public static final double KA = 0.23044;
         public static final double KP = 0.000014; //0.000014
         public static final double KI = 0.000000003; //0.000000003
@@ -103,8 +103,8 @@ public final class Constants {
 
 
 
-        public static final double MAXSPEEDMETERS = 3; //Three ball: 1 //Four ball: 4
-        public static final double MAXACCELERATIONMETERS = 1; //Three ball:1 //Four ball: 1
+        public static final double MAXSPEEDMETERS = 6; //Three ball: 1 //Four ball: 4
+        public static final double MAXACCELERATIONMETERS = 0.9; //Three ball:1 //Four ball: 1
 
 
          //Autonomous
@@ -130,7 +130,7 @@ public final class Constants {
 
         public static final double MAX_ACCELERATION = 13;
 
-        public static final double trackWidthMeters = 0.81434;
+        public static final double trackWidthMeters = 0.708025;
 
        
     }

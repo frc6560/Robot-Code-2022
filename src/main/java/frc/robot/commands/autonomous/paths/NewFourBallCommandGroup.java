@@ -49,13 +49,15 @@ public class NewFourBallCommandGroup implements CommandGroupInterface {
                 return (
                         newFourBall1.getCommand().raceWith(new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false)))
 
-                        .andThen((new ShooterCommand(shooter, limelight, true, 2)).raceWith(new ConveyorCommand(conveyor, shooter, true)))
+                        .andThen((new ShooterCommand(shooter, limelight, true, 2)).raceWith(new ConveyorCommand(conveyor, shooter, true))).withTimeout(5)
 
                         .andThen(newFourBall2.getCommand().raceWith(new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false)))
 
-                        .andThen(strightRamseteGen.getCommand())        
+                        .andThen(strightRamseteGen.getCommand().raceWith(new IntakeCommand(intake)).raceWith(new ConveyorCommand(conveyor, shooter, false)))        
 
                         .andThen((new ShooterCommand(shooter, limelight, true, 2).raceWith(new ConveyorCommand(conveyor, shooter, true)))
+
+                        .andThen(new InplaceTurn(driveTrain, 170))
                         
                         );
                 

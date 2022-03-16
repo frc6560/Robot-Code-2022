@@ -21,9 +21,6 @@ public class ClimbCommand extends CommandBase {
     boolean getClimbLockEngaged();
     boolean getClimbRotatorEngaged();
     double getClimbExtensionMotors();
-    
-    double leftOverrideExtensionVelocity();
-    double rightOverrideExtensionVelocity();
   }
 
 
@@ -48,9 +45,7 @@ public class ClimbCommand extends CommandBase {
   public void execute() {
     // climb.runRotatorMotor(controls.getClimbRotation() * rotationSpeed.getDouble(0.0));
     climb.setRotatorPiston(controls.getClimbRotatorEngaged());
-
     climb.setExtensionMotors(controls.getClimbExtensionMotors());
-    climb.setLockPiston(controls.getClimbLockEngaged());
   }
 
   // Called once the command ends or is interrupted.

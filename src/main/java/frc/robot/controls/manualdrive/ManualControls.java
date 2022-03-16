@@ -133,7 +133,7 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
     @Override
     public boolean getClimbRotatorEngaged() {
-        return controlStation.getRawAxis(ControllerIds.DRIVER_STATION_TOGGLE_4) > 0.1;
+        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_4);
     }
 
     @Override
@@ -144,15 +144,5 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
     @Override
     public boolean getClimbLockEngaged() {
         return !controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_4);
-    }
-
-    @Override
-    public double leftOverrideExtensionVelocity() {
-        return backupXbox.getRawAxis(ControllerIds.XBOX_L_JOY_Y);
-    }
-
-    @Override
-    public double rightOverrideExtensionVelocity() {
-        return backupXbox.getRawAxis(ControllerIds.XBOX_R_JOY_Y);
     }
 }

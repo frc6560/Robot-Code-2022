@@ -18,7 +18,7 @@ public class Intake extends SubsystemBase {
   private final CANSparkMax intakeMotor = new CANSparkMax(RobotIds.INTAKE_MOTOR, MotorType.kBrushless);
   private final Solenoid intakePiston = new Solenoid(PneumaticsModuleType.CTREPCM, RobotIds.INTAKE_SOLENOID);
 
-  private final int minFramesDown = 20;
+  private final int minFramesDown = 3;
 
   private double targetIntakeMotorOutput = 0.7;
 

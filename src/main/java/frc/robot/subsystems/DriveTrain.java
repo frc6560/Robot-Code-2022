@@ -205,7 +205,7 @@ public class DriveTrain extends SubsystemBase {
       motor.setInverted(inverted);
       motor.getEncoder().setPosition(0);
       motor.setClosedLoopRampRate(0.0);
-      motor.setIdleMode(IdleMode.kCoast);
+      motor.setIdleMode(IdleMode.kBrake);
 
       SparkMaxPIDController pidController = motor.getPIDController();
       pidController.setP(PhysicalConstants.KP);

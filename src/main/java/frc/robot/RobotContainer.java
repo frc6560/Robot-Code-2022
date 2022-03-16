@@ -29,6 +29,7 @@ import frc.robot.commands.autonomous.InplaceTurn;
 import frc.robot.commands.autonomous.paths.CommandGroupInterface;
 import frc.robot.commands.autonomous.paths.FiveBallCommandGroup;
 import frc.robot.commands.autonomous.paths.FourBallCommandGroup;
+import frc.robot.commands.autonomous.paths.NewFourBallCommandGroup;
 import frc.robot.commands.autonomous.paths.OneBallCommandGroup;
 import frc.robot.commands.autonomous.paths.ThreeBallCommandGroup;
 import frc.robot.commands.autonomous.paths.TwoBallCommandGroup;
@@ -117,6 +118,7 @@ public class RobotContainer {
   private final ThreeBallCommandGroup threeBallCommandGroup;
   private final FourBallCommandGroup fourBallCommandGroup;
   private final FiveBallCommandGroup fiveBallCommandGroup;
+  private final NewFourBallCommandGroup newFourBallCommandGroup;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -148,6 +150,8 @@ public class RobotContainer {
     threeBallCommandGroup = new ThreeBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
     fourBallCommandGroup = new FourBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
     fiveBallCommandGroup = new FiveBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
+    newFourBallCommandGroup = new NewFourBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
+
 
     // Add commands to the autonomous command chooser
     m_chooser.setDefaultOption("Four Ball", fourBallCommandGroup.getCommand());
@@ -182,6 +186,6 @@ public class RobotContainer {
     // return m_chooser.getSelected();  
     // return new StraightRamseteGen(driveTrain, 7.62).getCommand();
     // return new AutoWrapper("New Path", driveTrain).getCommand();
-    return fourBallCommandGroup.getCommand();
+    return newFourBallCommandGroup.getCommand();
   }
 }
