@@ -154,7 +154,7 @@ public class RobotContainer {
 
 
     // Add commands to the autonomous command chooser
-    m_chooser.setDefaultOption("Four Ball", fourBallCommandGroup.getCommand());
+    m_chooser.setDefaultOption("New Four Ball", newFourBallCommandGroup.getCommand());
 
     m_chooser.addOption("One Ball", oneBallCommandGroup.getCommand());
     m_chooser.addOption("Two Ball", twoBallCommandGroup.getCommand());
@@ -183,9 +183,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
 
-    // return m_chooser.getSelected();  
+    return m_chooser.getSelected();  
     // return new StraightRamseteGen(driveTrain, 7.62).getCommand();
     // return new AutoWrapper("New Path", driveTrain).getCommand();
-    return newFourBallCommandGroup.getCommand();
+    // return newFourBallCommandGroup.getCommand();
   }
 }
