@@ -47,7 +47,7 @@ public class Climb extends SubsystemBase {
     nTable = NetworkTableInstance.getDefault().getTable("Climb");
 
     ntExtensionSpeed = nTable.getEntry("Extension Speed");
-    ntExtensionSpeed.setDouble(0.3);
+    ntExtensionSpeed.setDouble(0.9);
 
     ntOverideSoftLimit = nTable.getEntry("Climb Override");
     ntOverideSoftLimit.setBoolean(false);
