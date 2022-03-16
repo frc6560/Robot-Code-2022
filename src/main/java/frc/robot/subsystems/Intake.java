@@ -37,10 +37,6 @@ public class Intake extends SubsystemBase {
       .add("Target Intake Output", this::getTargetIntakeSpeed);
   }
 
-  public void setIntakeMotorOutput(double output) {
-    targetIntakeMotorOutput = output * (reversed ? -1: 1);
-  }
-
   public void setPiston(boolean out) {
     intakePiston.set(out);
   }
@@ -54,7 +50,7 @@ public class Intake extends SubsystemBase {
       downFrames = 0;
     }
     
-    intakeMotor.set(canRunIntakeMotor() ? targetIntakeMotorOutput : 0.0);
+    intakeMotor.set(canRunIntakeMotor() ? targetIntakeMotorOutput * (reversed ? -1: 1) : 0.0);
   }
 
   public double getIntakeSpeed(){
