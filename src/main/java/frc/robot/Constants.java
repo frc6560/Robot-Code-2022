@@ -46,8 +46,8 @@ public final class Constants {
         public static final int DRIVER_STATION_TOGGLE_3 = 6;
         public static final int DRIVER_STATION_TOGGLE_4 = 9;
 
-        public static final int DRIVER_STATION_BUTTON_1 = 4;
-        public static final int DRIVER_STATION_BUTTON_2 = 1;
+        public static final int DRIVER_STATION_BUTTON_1 = 1;
+        public static final int DRIVER_STATION_BUTTON_2 = 4;
         public static final int DRIVER_STATION_BUTTON_3 = 3;
 
         public static final int DRIVER_STATION_X_AXIS = 0;
