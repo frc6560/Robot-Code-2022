@@ -108,7 +108,7 @@ public class Climb extends SubsystemBase {
           rightSpeed = (0.0);
         }
       }else{
-        output /= 1.5;
+        output /= 1.28;
 
         if (leftPos > minPos) {
           leftSpeed = (output * extensionSpeed);
