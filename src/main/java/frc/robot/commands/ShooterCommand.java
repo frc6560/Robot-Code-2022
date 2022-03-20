@@ -35,6 +35,8 @@ public class ShooterCommand extends CommandBase {
     double shooterTurretTest();
     boolean getAimShooter();
     boolean overrideTurretCenter();
+
+    boolean getHotRPMChange();
   }
 
   private Shooter shooter;
@@ -57,6 +59,8 @@ public class ShooterCommand extends CommandBase {
   private NetworkTableEntry ntAddCalibrateButton;
   private boolean prevCalibButton = false;
   private NetworkTableEntry ntUseCalibrationMap;
+
+  private NetworkTableEntry hotRPMAddition;
 
   private double targetHoodPos = 0.0;
   
@@ -88,6 +92,10 @@ public class ShooterCommand extends CommandBase {
 
     ntUseCalibrationMap = ntTable.getEntry("Use calibration map?");
     ntUseCalibrationMap.setBoolean(true);
+
+    hotRPMAddition = ntTable.getEntry("hot RPM Addition");
+    hotRPMAddition.setDouble(60.0);
+    
 
     isRedAlliance =  NetworkTableInstance.getDefault().getTable("FMSInfo").getEntry("IsRedAlliance").getBoolean(false);
   }
@@ -124,7 +132,7 @@ public class ShooterCommand extends CommandBase {
     if(controls.getAimShooter()){
       targetHoodPos = getShooterHoodAngle(dist);
 
-      shooter.setShooterRpm(getShooterRpm(dist));
+      shooter.setShooterRpm(getShooterRpm(dist) + (controls.getHotRPMChange() ? hotRPMAddition.getDouble(0.0) : 0.0) );
       
       if(targetHoodPos >= -1){
         shooter.setHoodPos(targetHoodPos);

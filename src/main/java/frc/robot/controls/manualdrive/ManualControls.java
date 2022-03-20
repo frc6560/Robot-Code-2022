@@ -32,7 +32,7 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
     private final PovNumberStepper speed;
     private final PovNumberStepper turnSpeed;
-
+    
 
     public ManualControls(Joystick xbox, Joystick controlStation, Joystick backupXbox) {
         this.xbox = xbox;
@@ -55,6 +55,7 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
             .add("DEV: xbox X Position", this::getX)
             .add("DEV: xbox Y Position", this::getY);
     }
+
 
     @Override
     public double getX() {
@@ -131,6 +132,11 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
         return xbox.getRawAxis(ControllerIds.XBOX_L_TRIGGER) > 0.1;
     }
 
+    @Override
+    public boolean getHotRPMChange(){
+        return xbox.getRawButton(ControllerIds.XBOX_A_BUTTON);
+    }
+    
     @Override
     public boolean getClimbRotatorEngaged() {
         return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_4);

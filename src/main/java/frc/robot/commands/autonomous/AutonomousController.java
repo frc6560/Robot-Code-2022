@@ -76,6 +76,12 @@ public class AutonomousController implements IntakeCommand.Controls, ShooterComm
     public boolean overrideTurretCenter(){
       return false;
     }
+    
+
+    @Override
+    public boolean getHotRPMChange(){
+        return false;
+    }
 
 
     @Override
