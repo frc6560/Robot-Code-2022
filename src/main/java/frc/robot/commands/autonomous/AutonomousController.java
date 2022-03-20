@@ -83,6 +83,11 @@ public class AutonomousController implements IntakeCommand.Controls, ShooterComm
         return false;
     }
 
+    @Override
+    public boolean getHotHoodChange(){
+        return false;
+    }
+    
 
     @Override
     public double shooterHoodTest() {

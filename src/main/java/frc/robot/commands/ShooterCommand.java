@@ -37,6 +37,7 @@ public class ShooterCommand extends CommandBase {
     boolean overrideTurretCenter();
 
     boolean getHotRPMChange();
+    boolean getHotHoodChange();
   }
 
   private Shooter shooter;
@@ -61,6 +62,7 @@ public class ShooterCommand extends CommandBase {
   private NetworkTableEntry ntUseCalibrationMap;
 
   private NetworkTableEntry hotRPMAddition;
+  private NetworkTableEntry hotHoodAddition;
 
   private double targetHoodPos = 0.0;
   
@@ -94,7 +96,10 @@ public class ShooterCommand extends CommandBase {
     ntUseCalibrationMap.setBoolean(true);
 
     hotRPMAddition = ntTable.getEntry("hot RPM Addition");
-    hotRPMAddition.setDouble(60.0);
+    hotRPMAddition.setDouble(50.0);
+
+    hotHoodAddition = ntTable.getEntry("hot Hood Addition");
+    hotHoodAddition.setDouble(0.05);
     
 
     isRedAlliance =  NetworkTableInstance.getDefault().getTable("FMSInfo").getEntry("IsRedAlliance").getBoolean(false);
@@ -135,7 +140,7 @@ public class ShooterCommand extends CommandBase {
       shooter.setShooterRpm(getShooterRpm(dist) + (controls.getHotRPMChange() ? hotRPMAddition.getDouble(0.0) : 0.0) );
       
       if(targetHoodPos >= -1){
-        shooter.setHoodPos(targetHoodPos);
+        shooter.setHoodPos(targetHoodPos - (controls.getHotHoodChange() ? hotHoodAddition.getDouble(0.0) : 0.0) );
       }
 
       // shooter.setTurretPos(shooter.getTurretPos() + controls.shooterTurretTest()); // manual control of turret using climb joystick (button board);
