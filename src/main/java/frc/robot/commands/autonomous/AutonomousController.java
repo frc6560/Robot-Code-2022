@@ -73,7 +73,7 @@ public class AutonomousController implements IntakeCommand.Controls, ShooterComm
     }
 
     @Override
-    public boolean overrideTurretCenter(){
+    public boolean overrideTurretCenter(){ 
       return false;
     }
     

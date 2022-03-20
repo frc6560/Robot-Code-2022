@@ -129,6 +129,7 @@ public class Shooter extends SubsystemBase {
                     turretTurnSpeed / 3
       ;
 
+      speed /= 1.333;
       speed *= Math.copySign(1, turretPosDiff);
 
       //changed
@@ -143,6 +144,10 @@ public class Shooter extends SubsystemBase {
 
   public void setTurretPos(double pos){
     targetTurretPos = pos;
+  }
+
+  public double getTurretSpeed() {
+    return turretMotor.getEncoder().getVelocity();
   }
 
   public void setTurretDeltaPos(double delta){
