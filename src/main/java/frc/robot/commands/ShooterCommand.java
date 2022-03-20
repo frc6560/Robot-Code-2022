@@ -124,7 +124,7 @@ public class ShooterCommand extends CommandBase {
     if(controls.getAimShooter()){
       targetHoodPos = getShooterHoodAngle(dist);
 
-      shooter.setShooterRpm(getShooterRpm(dist) * 3.454545457);
+      shooter.setShooterRpm(getShooterRpm(dist));
       
       if(targetHoodPos >= -1){
         shooter.setHoodPos(targetHoodPos);

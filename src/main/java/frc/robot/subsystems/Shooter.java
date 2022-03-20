@@ -15,6 +15,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PWM;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 import static frc.robot.Constants.*;
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
@@ -92,7 +93,7 @@ public class Shooter extends SubsystemBase {
 
     ntDispTab("Shooter")
       .add("Actual RPM", this::getShooterRpm)
-      .add("Target RPM", ()->(targetRPM/3.454545457))
+      .add("Target RPM", ()->(targetRPM))
 
       .add("Target Turret", () -> targetTurretPos)
       .add("Actual Turret", this::getTurretPosDegrees)
@@ -112,8 +113,8 @@ public class Shooter extends SubsystemBase {
     hoodServoL.setSpeed(targetHoodPos);
     hoodServoR.setSpeed(targetHoodPos);
 
-    shooterMotorL.set(ControlMode.Velocity, targetRPM);
-    shooterMotorR.set(ControlMode.Velocity, targetRPM);
+    shooterMotorL.set(ControlMode.Velocity, targetRPM / Constants.PhysicalConstants.RPM_PER_FALCON_UNIT);
+    shooterMotorR.set(ControlMode.Velocity, targetRPM / Constants.PhysicalConstants.RPM_PER_FALCON_UNIT);
     // shooterMotorL.set(ControlMode.PercentOutput, 0.5);
 
     double turretPosDiff = targetTurretPos - this.getTurretPosDegrees();
