@@ -73,7 +73,7 @@ public class AutonomousController implements IntakeCommand.Controls, ShooterComm
     }
 
     @Override
-    public boolean overrideTurretCenter(){
+    public boolean overrideTurretCenter(){ 
       return false;
     }
     
@@ -83,6 +83,11 @@ public class AutonomousController implements IntakeCommand.Controls, ShooterComm
         return false;
     }
 
+    @Override
+    public boolean getHotHoodChange(){
+        return false;
+    }
+    
 
     @Override
     public double shooterHoodTest() {

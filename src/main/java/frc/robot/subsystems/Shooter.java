@@ -21,7 +21,7 @@ import static frc.robot.Constants.*;
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
 public class Shooter extends SubsystemBase {
-  private final double RPMAcceptableDiff = 100;
+  private final double RPMAcceptableDiff = 60;
   private final double turretAcceptableDiff = 3;
   private final double hoodAcceptableDiff = 10;
 
@@ -129,6 +129,7 @@ public class Shooter extends SubsystemBase {
                     turretTurnSpeed / 3
       ;
 
+      speed /= 1.333;
       speed *= Math.copySign(1, turretPosDiff);
 
       //changed
@@ -143,6 +144,10 @@ public class Shooter extends SubsystemBase {
 
   public void setTurretPos(double pos){
     targetTurretPos = pos;
+  }
+
+  public double getTurretSpeed() {
+    return turretMotor.getEncoder().getVelocity();
   }
 
   public void setTurretDeltaPos(double delta){
@@ -186,7 +191,7 @@ public class Shooter extends SubsystemBase {
     // System.out.println("1:  " + (Math.abs(getShooterRpm()) > 200) + "    2:  " + (Math.abs(getShooterRpm() - targetRPM/3.454545457) < RPMAcceptableDiff) + "   3:   " + (Math.abs(targetTurretPos) < turretAcceptableDiff) + "   4:  " + (Math.abs(getHoodPos() - targetHoodPos) < hoodAcceptableDiff));
     return 
       Math.abs(getShooterRpm()) > 200 &&
-      Math.abs(getShooterRpm() - targetRPM / 3.454545457) < RPMAcceptableDiff &&
+      Math.abs(getShooterRpm() - targetRPM) < RPMAcceptableDiff &&
       Math.abs(getTurretPosDegrees() - targetTurretPos) < turretAcceptableDiff &&
       Math.abs(getHoodPos() - targetHoodPos) < hoodAcceptableDiff;
   }
