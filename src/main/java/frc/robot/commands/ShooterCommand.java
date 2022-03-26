@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.invoke.ConstantBootstraps;
 
 import com.revrobotics.ColorMatch;
@@ -164,8 +166,10 @@ public class ShooterCommand extends CommandBase {
     if(targetBallCount != -1 && shooter.getBallShotCount() >= targetBallCount) doneShootingFrames++;
 
     if(!prevCalibButton && ntAddCalibrateButton.getBoolean(false)){
-      ShooterCalibrations.SHOOT_CALIBRATION_MAP.add(dist, new ShootCalibrationMap.Trajectory(ntTestRPM.getDouble(0.0), ntTestHood.getDouble(0.0)));
+      ShooterCalibrations.NEW_SHOOT_CALIBRATION_MAP.add(dist, new ShootCalibrationMap.Trajectory(ntTestRPM.getDouble(0.0), ntTestHood.getDouble(0.0)));
+      saveNewCalibrationMap();
       System.out.println("added a point");
+      System.out.println(ShooterCalibrations.NEW_SHOOT_CALIBRATION_MAP.toString());
     }
     prevCalibButton = ntAddCalibrateButton.getBoolean(false);
   }
@@ -217,4 +221,10 @@ public class ShooterCommand extends CommandBase {
   public boolean isFinished() {
     return doneShooting();
   }
+
+  //method that supplies newcalibrationmap to networktables
+  public void saveNewCalibrationMap(){
+    ntTable.getEntry("NEW Shoot Calibration Map").setString(ShooterCalibrations.NEW_SHOOT_CALIBRATION_MAP.toString());
+  }
+
 }

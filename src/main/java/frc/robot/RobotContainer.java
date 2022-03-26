@@ -27,7 +27,6 @@ import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.autonomous.AutonomousController;
 import frc.robot.commands.autonomous.InplaceTurn;
 import frc.robot.commands.autonomous.paths.CommandGroupInterface;
-import frc.robot.commands.autonomous.paths.FiveBallCommandGroup;
 import frc.robot.commands.autonomous.paths.FourBallCommandGroup;
 import frc.robot.commands.autonomous.paths.NewFourBallCommandGroup;
 import frc.robot.commands.autonomous.paths.OneBallCommandGroup;
@@ -117,7 +116,6 @@ public class RobotContainer {
   private final TwoBallCommandGroup twoBallCommandGroup;
   private final ThreeBallCommandGroup threeBallCommandGroup;
   private final FourBallCommandGroup fourBallCommandGroup;
-  private final FiveBallCommandGroup fiveBallCommandGroup;
   private final NewFourBallCommandGroup newFourBallCommandGroup;
 
   /**
@@ -149,7 +147,6 @@ public class RobotContainer {
     twoBallCommandGroup = new TwoBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
     threeBallCommandGroup = new ThreeBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
     fourBallCommandGroup = new FourBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
-    fiveBallCommandGroup = new FiveBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
     newFourBallCommandGroup = new NewFourBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
 
 

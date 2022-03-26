@@ -9,6 +9,7 @@ package frc.robot.utility;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Add your docs here.
@@ -27,6 +28,11 @@ public class ShootCalibrationMap {
             this.shooterRpm = shooterRpm;
             this.hoodPos = hoodPos;
         }
+
+        @Override
+        public String toString() {
+            return "shooterRpm=" + shooterRpm + ",hoodPos=" + hoodPos;
+        }
     }
 
     private static class Point {
@@ -36,6 +42,11 @@ public class ShootCalibrationMap {
         public Point(double distance, Trajectory trajectory) {
             this.distance = distance;
             this.trajectory = trajectory;
+        }
+
+        @Override
+        public String toString() {
+            return "distance=" + distance + "," + trajectory.toString();
         }
     }
 
@@ -83,5 +94,56 @@ public class ShootCalibrationMap {
             if (p1.distance > p2.distance) return 1;
             return 0;
         });
+    }
+
+    @Override
+    public String toString() {
+        return String.join(";", points.stream().map(Point::toString).toArray(String[]::new));
+    }
+
+    //method that converts key and returns array of maps based off following schema:
+    //distance=0,shooterRpm=100,hoodPos=1;distance=2,shooterRpm=0,hoodPos=-1
+    //for each instance, add to array
+    public static ArrayList<Map<String,Double>> convertKey(String key) {
+        ArrayList<Map<String,Double>> maps = new ArrayList<>();
+        String[] split = key.split(";");
+        for(String s : split) {
+            String[] split2 = s.split(",");
+            Map<String,Double> map = new java.util.HashMap<>();
+            for(String s2 : split2) {
+                String[] split3 = s2.split("=");
+                map.put(split3[0], Double.parseDouble(split3[1]));
+            }
+            maps.add(map);
+        }
+        return maps;        
+    }
+
+    public void updateMap() {
+        String key = "distance=0,shooterRpm=100,hoodPos=1;distance=2,shooterRpm=0,hoodPos=-1";
+        ArrayList<Map<String,Double>> maps = convertKey(key);
+        double avgDistance = 0;
+        double avgShooterRpm = 0;
+        double avgHoodPos = 0;
+        int total = 0;
+        for(Map<String,Double> map : maps) {
+            avgDistance += map.get("distance");
+            avgShooterRpm += map.get("shooterRpm");
+            avgHoodPos += map.get("hoodPos");
+            total++;
+        }
+        avgDistance /= total;
+        avgShooterRpm /= total;
+        avgHoodPos /= total;
+
+        try {
+            Trajectory t = get(avgDistance);
+            double deltaHoodPos = avgHoodPos / t.hoodPos;
+            double deltaShooterRpm = avgShooterRpm / t.shooterRpm;
+            points.replaceAll( i -> new Point(i.distance, new Trajectory(i.trajectory.hoodPos * deltaHoodPos, i.trajectory.shooterRpm * deltaShooterRpm)));
+        } catch (OutOfBoundsException e) {
+            e.printStackTrace();
+        }
+        
     }
 }

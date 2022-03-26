@@ -144,6 +144,7 @@ public final class Constants {
     public static final class ShooterCalibrations {
         
     public static ShootCalibrationMap SHOOT_CALIBRATION_MAP = new ShootCalibrationMap();
+    public static ShootCalibrationMap NEW_SHOOT_CALIBRATION_MAP = new ShootCalibrationMap();
         
         static {
             SHOOT_CALIBRATION_MAP.add(100.0, new ShootCalibrationMap.Trajectory(3000.0, -1));      //Degrees   Distance
