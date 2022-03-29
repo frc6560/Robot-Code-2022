@@ -1,5 +1,7 @@
 
 # Charging Champions Robot Code 2022
+[![Build Robot Code](https://github.com/Charging-Champions-6560/Robot-Code-2022/actions/workflows/main.yml/badge.svg)](https://github.com/Charging-Champions-6560/Robot-Code-2022/actions/workflows/main.yml)
+
 This code is the Charging Champions robot code for 2022.
 
 ## Authors
