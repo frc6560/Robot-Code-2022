@@ -37,6 +37,7 @@ public class ShooterCommand extends CommandBase {
     double shooterTurretTest();
     boolean getAimShooter();
     boolean overrideTurretCenter();
+    boolean getConstantAiming();
 
     boolean getHotRPMChange();
     boolean getHotHoodChange();
@@ -136,10 +137,13 @@ public class ShooterCommand extends CommandBase {
     limelight.setForceOff(!controls.getAimShooter());
 
     double dist = limelight.getDistance();
-    if(controls.getAimShooter()){
-      targetHoodPos = getShooterHoodAngle(dist);
+    if(controls.getAimShooter() || controls.getConstantAiming()){
+      
+      if (controls.getAimShooter()) {
+        shooter.setShooterRpm(getShooterRpm(dist) + (controls.getHotRPMChange() ? hotRPMAddition.getDouble(0.0) : 0.0) );
+      }
 
-      shooter.setShooterRpm(getShooterRpm(dist) + (controls.getHotRPMChange() ? hotRPMAddition.getDouble(0.0) : 0.0) );
+      targetHoodPos = getShooterHoodAngle(dist);
       
       if(targetHoodPos >= -1){
         shooter.setHoodPos(targetHoodPos - (controls.getHotHoodChange() ? hotHoodAddition.getDouble(0.0) : 0.0) );

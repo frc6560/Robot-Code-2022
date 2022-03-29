@@ -128,6 +128,11 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
     }
 
     @Override
+    public boolean getConstantAiming() {
+        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_3);
+    }
+
+    @Override
     public boolean overrideTurretCenter(){
         return xbox.getRawAxis(ControllerIds.XBOX_L_TRIGGER) > 0.1;
     }

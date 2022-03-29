@@ -122,7 +122,7 @@ public final class Constants {
         // TODO: change this constant;
         public static final double DRIVETRAIN_ROTS_PER_FOOT = 1.0 / ((6.0 / 12.0) * Math.PI);
 
-        public static final double CLIMB_EXTENSION_INCHES_PER_ROTATION = (1.0 / 5) * 0.5; // 1 rotation / 5 rot per bigRot * 0.5 inch per bigRot
+        public static final double CLIMB_EXTENSION_INCHES_PER_ROTATION = (1.0 / 3) * 0.5; // 1 rotation / 5 rot per bigRot * 0.5 inch per bigRot
 
         //TODO: change these constants
         public static final double MAX_SPEED = 1;

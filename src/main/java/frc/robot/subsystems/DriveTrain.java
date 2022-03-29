@@ -18,12 +18,18 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.MatBuilder;
+import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.networktables.NetworkTable;
@@ -31,6 +37,8 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.Timer;
+import frc.robot.Constants;
 import frc.robot.Constants.ConversionConstants;
 import frc.robot.Constants.PhysicalConstants;
 import frc.robot.Constants.RobotIds;
@@ -74,9 +82,17 @@ public class DriveTrain extends SubsystemBase {
   private NetworkTable ntTable;
   private NetworkTableEntry ntPosition, ntspeed, ntP, ntI, ntD, ntFF, ntifTestingVelocity, ntifTestingRotation;
 
+  private DifferentialDrivePoseEstimator estimator = new DifferentialDrivePoseEstimator(new Rotation2d(), new Pose2d(),
+        new MatBuilder<>(Nat.N5(), Nat.N1()).fill(0.02, 0.02, 0.01, 0.02, 0.02), // State measurement standard deviations. X, Y, theta.
+        new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.02, 0.02, 0.01), // Local measurement standard deviations. Left encoder, right encoder, gyro.
+        new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.1, 0.1, 0.01)); // Global measurement standard deviations. X, Y, and theta.
+
+
+  private final Field2d m_field = new Field2d();
 
   /** Creates a new DriveTrainLeoGood. */
   public DriveTrain() {
+    SmartDashboard.putData("Field", m_field);
     m_drive.setSafetyEnabled(false);
 
     setupAllMotors();
@@ -85,7 +101,7 @@ public class DriveTrain extends SubsystemBase {
 
     m_odometry = new DifferentialDriveOdometry(new Rotation2d());
     NtValueDisplay.ntDispTab("Drivetrain")
-    .add("Degrees", ()->(getAngleContinuous()))
+    .add("Degrees", this::getAngleContinuous)
     .add("Left Position", this::getLeftEnocoder)
     .add("Right Position", this::getRightEncoder);
 
@@ -120,10 +136,10 @@ public class DriveTrain extends SubsystemBase {
 
     NtValueDisplay.ntDispTab("Drivetrain").add("L Actual Speed", this::getLVelocity).add("R Actual Speed", this::getRVelocity);
     NtValueDisplay.ntDispTab("Drivetrain")
-    .add("Actual FF", () -> {return leftMotors[0].getPIDController().getFF();})
-    .add("Actual P", () -> {return leftMotors[0].getPIDController().getP();})
-    .add("Actual I", () -> {return leftMotors[0].getPIDController().getI();})
-    .add("Actual D", () -> {return leftMotors[0].getPIDController().getD();});
+    .add("Actual FF", () -> leftMotors[0].getPIDController().getFF())
+    .add("Actual P", () -> leftMotors[0].getPIDController().getP())
+    .add("Actual I", () -> leftMotors[0].getPIDController().getI())
+    .add("Actual D", () -> leftMotors[0].getPIDController().getD());
 
 
 
@@ -139,6 +155,7 @@ public class DriveTrain extends SubsystemBase {
 
   @Override
   public void periodic() {
+
 
     // System.out.println(gyro.isCalibrating());
     if(!gyro.isConnected())
@@ -160,9 +177,18 @@ public class DriveTrain extends SubsystemBase {
       double targetPostion = ntPosition.getDouble(0.0);
       setWheelPosition(new double[]{targetPostion, 0.2}, new double[]{-targetPostion, 0.2});
     }
+    estimator.updateWithTime(Timer.getFPGATimestamp(), getGyroAngle(), new DifferentialDriveWheelSpeeds(getLVelocity(), getRVelocity()), leftEncoder.getPosition(), rightEncoder.getPosition());
+
+    m_field.setRobotPose(estimator.getEstimatedPosition());
+  }
+
+  public void setRobotEstimatedPosition(double magnitude, double deltaTheta) {
+    Pose2d prevPose = estimator.getEstimatedPosition();
     
+    Rotation2d direction = prevPose.getRotation().plus(new Rotation2d(deltaTheta));
+    //Translation2d t = new Translation2d(magnitude, direction);
 
-
+    estimator.addVisionMeasurement(new Pose2d(magnitude, magnitude, direction), Timer.getFPGATimestamp());
   }
 
   private void updatePID(){

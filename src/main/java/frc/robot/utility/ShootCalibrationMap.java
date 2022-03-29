@@ -120,7 +120,7 @@ public class ShootCalibrationMap {
     }
 
     public void updateMap() {
-        String key = "distance=0,shooterRpm=100,hoodPos=1;distance=2,shooterRpm=0,hoodPos=-1";
+        String key = "distance=1.986525535583496,shooterRpm=3500,hoodPos=0.7";
         ArrayList<Map<String,Double>> maps = convertKey(key);
         double avgDistance = 0;
         double avgShooterRpm = 0;
@@ -140,7 +140,12 @@ public class ShootCalibrationMap {
             Trajectory t = get(avgDistance);
             double deltaHoodPos = avgHoodPos / t.hoodPos;
             double deltaShooterRpm = avgShooterRpm / t.shooterRpm;
-            points.replaceAll( i -> new Point(i.distance, new Trajectory(i.trajectory.hoodPos * deltaHoodPos, i.trajectory.shooterRpm * deltaShooterRpm)));
+            
+            points.replaceAll( i -> {
+                double newShooterRpm = i.trajectory.shooterRpm * deltaShooterRpm;
+                double newHoodPos = i.trajectory.hoodPos * deltaHoodPos;
+                return new Point(i.distance, new Trajectory(Math.copySign(Math.min(Math.abs(newShooterRpm), 5000), newShooterRpm), Math.copySign(Math.min(Math.abs(newHoodPos), 1.0), newHoodPos)));
+            });
         } catch (OutOfBoundsException e) {
             e.printStackTrace();
         }

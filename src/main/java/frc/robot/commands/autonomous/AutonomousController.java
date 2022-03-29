@@ -73,6 +73,12 @@ public class AutonomousController implements IntakeCommand.Controls, ShooterComm
     }
 
     @Override
+    public boolean getConstantAiming() {
+      //TODO: Change if we want
+      return false;
+    }
+
+    @Override
     public boolean overrideTurretCenter(){ 
       return false;
     }
