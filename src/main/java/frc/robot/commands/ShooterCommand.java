@@ -67,6 +67,8 @@ public class ShooterCommand extends CommandBase {
   private NetworkTableEntry hotRPMAddition;
   private NetworkTableEntry hotHoodAddition;
 
+  private final double IDLE_RPM = 1500;
+
   private double targetHoodPos = 0.0;
   
   private int targetBallCount = -1;
@@ -142,6 +144,9 @@ public class ShooterCommand extends CommandBase {
       if (controls.getAimShooter()) {
         shooter.setShooterRpm(getShooterRpm(dist) + (controls.getHotRPMChange() ? hotRPMAddition.getDouble(0.0) : 0.0) );
       }
+      else{
+        shooter.setShooterRpm(IDLE_RPM);
+      }
 
       targetHoodPos = getShooterHoodAngle(dist);
       
@@ -174,13 +179,13 @@ public class ShooterCommand extends CommandBase {
 
     if(targetBallCount != -1 && shooter.getBallShotCount() >= targetBallCount) doneShootingFrames++;
 
-    if(!prevCalibButton && ntAddCalibrateButton.getBoolean(false)){
-      ShooterCalibrations.NEW_SHOOT_CALIBRATION_MAP.add(dist, new ShootCalibrationMap.Trajectory(ntTestRPM.getDouble(0.0), ntTestHood.getDouble(0.0)));
-      saveNewCalibrationMap();
-      System.out.println("added a point");
-      System.out.println(ShooterCalibrations.NEW_SHOOT_CALIBRATION_MAP.toString());
-    }
-    prevCalibButton = ntAddCalibrateButton.getBoolean(false);
+    // if(!prevCalibButton && ntAddCalibrateButton.getBoolean(false)){
+    //   ShooterCalibrations.NEW_SHOOT_CALIBRATION_MAP.add(dist, new ShootCalibrationMap.Trajectory(ntTestRPM.getDouble(0.0), ntTestHood.getDouble(0.0)));
+    //   saveNewCalibrationMap();
+    //   System.out.println("added a point");
+    //   System.out.println(ShooterCalibrations.NEW_SHOOT_CALIBRATION_MAP.toString());
+    // }
+    // prevCalibButton = ntAddCalibrateButton.getBoolean(false);
   }
 
   public double getShooterRpm(double distance) {
@@ -232,8 +237,8 @@ public class ShooterCommand extends CommandBase {
   }
 
   //method that supplies newcalibrationmap to networktables
-  public void saveNewCalibrationMap(){
-    ntTable.getEntry("NEW Shoot Calibration Map").setString(ShooterCalibrations.NEW_SHOOT_CALIBRATION_MAP.toString());
-  }
+  // public void saveNewCalibrationMap(){
+  //   ntTable.getEntry("NEW Shoot Calibration Map").setString(ShooterCalibrations.NEW_SHOOT_CALIBRATION_MAP.toString());
+  // }
 
 }

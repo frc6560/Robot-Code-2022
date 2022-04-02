@@ -30,6 +30,9 @@ public class Climb extends SubsystemBase {
   private final double minPos = 0;
   private final double maxPos = 22.5;
 
+  private final double proximityThreshold = 1;
+  private final double proximitySlow = 0.3;
+
   private double rightComp = 1;
   private double leftComp = 1;
   private final double comp_beta = 1.05;
@@ -96,28 +99,36 @@ public class Climb extends SubsystemBase {
     if(!ntOverideSoftLimit.getBoolean(false)){
 
       if(output > 0){
-        if (leftPos < maxPos) {
-          leftSpeed = (output * extensionSpeed);
+        leftSpeed = (output * extensionSpeed);
+
+        if (leftPos < maxPos && leftPos < maxPos - proximityThreshold){
+          leftSpeed *= proximitySlow;
         }else{
           leftSpeed = (0.0);
         }
+
+        rightSpeed = (output * extensionSpeed);
     
-        if (rightPos < maxPos) {
-          rightSpeed = (output * extensionSpeed);
+        if (rightPos < maxPos && rightPos < maxPos - proximityThreshold) {
+          rightSpeed *= proximitySlow;
         }else{
           rightSpeed = (0.0);
         }
       }else{
         output /= 1.28;
+        
+        leftSpeed = (output * extensionSpeed);
 
-        if (leftPos > minPos) {
-          leftSpeed = (output * extensionSpeed);
+        if (leftPos > minPos && leftPos > minPos + proximityThreshold) {
+          leftSpeed *= proximitySlow;
         }else{
           leftSpeed = (0.0);
         }
+        
+        rightSpeed = (output * extensionSpeed);
     
-        if (rightPos > minPos) {
-          rightSpeed = (output * extensionSpeed);
+        if (rightPos > minPos && rightPos > minPos + proximityThreshold) {
+          rightSpeed *= proximitySlow;
         }else{
           rightSpeed = (0.0);
         }

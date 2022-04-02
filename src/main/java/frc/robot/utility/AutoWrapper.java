@@ -4,13 +4,10 @@
 
 package frc.robot.utility;
 
-import java.io.IOException;
-
 import com.pathplanner.lib.PathPlanner;
 
-import edu.wpi.first.math.controller.PIDController;
+// import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -61,8 +58,8 @@ public class AutoWrapper implements AutoWrapperInterface {
     public RamsexyCommand getCommand() {
         
 
-        PIDController leftController = new PIDController(PhysicalConstants.KP, 0, 0);
-        PIDController rightController = new PIDController(PhysicalConstants.KP, 0, 0);
+        // PIDController leftController = new PIDController(PhysicalConstants.KP, 0, 0);
+        // PIDController rightController = new PIDController(PhysicalConstants.KP, 0, 0);
 
         return new RamsexyCommand(
             this, 
