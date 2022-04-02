@@ -136,7 +136,7 @@ public class ShooterCommand extends CommandBase {
     //     missBall = false;
     // }
 
-    limelight.setForceOff(!controls.getAimShooter());
+    limelight.setForceOff(!(controls.getAimShooter() || controls.getConstantAiming()));
 
     double dist = limelight.getDistance();
     if(controls.getAimShooter() || controls.getConstantAiming()){

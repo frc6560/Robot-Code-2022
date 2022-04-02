@@ -66,14 +66,20 @@ public class Shooter extends SubsystemBase {
 
     //get PID
     shooterMotorL.config_kF(0, 0.047197957);
-    shooterMotorL.config_kP(0, 0.225);
-    shooterMotorL.config_kI(0, 0.00001);
+    // shooterMotorL.config_kP(0, 0.225);
+    shooterMotorL.config_kP(0, 0.12997);
+    shooterMotorL.config_kI(0, 0.00005);
+    // shooterMotorL.config_kI(0, 0.0);
     shooterMotorL.config_kD(0, 0.0);
 
     shooterMotorR.config_kF(0, 0.047197957);
-    shooterMotorR.config_kP(0, 0.225);
-    shooterMotorR.config_kI(0, 0.00001);
+    // shooterMotorR.config_kP(0, 0.225);
+    shooterMotorR.config_kP(0, 0.12997);
+    shooterMotorR.config_kI(0, 0.00005);
+    // shooterMotorR.config_kI(0, 0.0);
     shooterMotorR.config_kD(0, 0.0);
+
+    
 
     shooterMotorL.setInverted(false);
     shooterMotorR.setInverted(true);
