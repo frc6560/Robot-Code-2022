@@ -67,7 +67,7 @@ public class ShooterCommand extends CommandBase {
   private NetworkTableEntry hotRPMAddition;
   private NetworkTableEntry hotHoodAddition;
 
-  private final double IDLE_RPM = 1500;
+  private final double IDLE_RPM = 1000;
 
   private double targetHoodPos = 0.0;
   
