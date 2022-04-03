@@ -129,6 +129,7 @@ public final class Constants {
         public static final double MAX_TURN_SPEED = 1;
 
         public static final double MAX_ACCELERATION = 13;
+        public static final double MAX_TURN_ACCELERATION = 20;
 
         public static final double trackWidthMeters = 0.708025;
 

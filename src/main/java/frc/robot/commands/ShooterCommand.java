@@ -11,6 +11,8 @@ import java.lang.invoke.ConstantBootstraps;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorSensorV3;
 
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -57,6 +59,7 @@ public class ShooterCommand extends CommandBase {
   private final double ballMissAngle = 10;
 
   private NetworkTable ntTable;
+  private NetworkTable ntTableClimb;
   private NetworkTableEntry ntTestRPM;
   private NetworkTableEntry ntTestHood;
 
@@ -87,6 +90,7 @@ public class ShooterCommand extends CommandBase {
 
     
     this.ntTable = NetworkTableInstance.getDefault().getTable("Shooter");
+    this.ntTableClimb = NetworkTableInstance.getDefault().getTable("Climb");
 
     ntTestHood = ntTable.getEntry("Hood Angle");
     ntTestHood.setDouble(0.0);
@@ -139,7 +143,7 @@ public class ShooterCommand extends CommandBase {
     limelight.setForceOff(!(controls.getAimShooter() || controls.getConstantAiming()));
 
     double dist = limelight.getDistance();
-    if(controls.getAimShooter() || controls.getConstantAiming()){
+    if(controls.getAimShooter() || controls.getConstantAiming()) {
       
       if (controls.getAimShooter()) {
         shooter.setShooterRpm(getShooterRpm(dist) + (controls.getHotRPMChange() ? hotRPMAddition.getDouble(0.0) : 0.0) );
@@ -148,7 +152,9 @@ public class ShooterCommand extends CommandBase {
         shooter.setShooterRpm(IDLE_RPM);
       }
 
-      targetHoodPos = getShooterHoodAngle(dist);
+      Debouncer debouncer = new Debouncer(2, DebounceType.kFalling);
+      targetHoodPos = debouncer.calculate(limelight.hasTarget()) ? getShooterHoodAngle(dist) : 0.0;
+      
       
       if(targetHoodPos >= -1){
         shooter.setHoodPos(targetHoodPos - (controls.getHotHoodChange() ? hotHoodAddition.getDouble(0.0) : 0.0) );
@@ -168,7 +174,10 @@ public class ShooterCommand extends CommandBase {
       if((shooter.getTurretPosDegrees() > 85 && turrTarget > 0) || (shooter.getTurretPosDegrees() < -85 && turrTarget < 0))
         turrTarget = 0;
       
-      if(controls.overrideTurretCenter()) shooter.setTurretPos(0);
+      if (ntTableClimb.getEntry("Left Climb Pos").getDouble(0.0) > 8.0 && ntTableClimb.getEntry("Right Climb Pos").getDouble(0.0) > 8.0) {
+        shooter.setTurretPos(90.0); // turret is at 90 degrees when both climb arms are extended
+      }
+      else if (controls.overrideTurretCenter()) shooter.setTurretPos(0); // override controlled turret pos
       else shooter.setTurretDeltaPos(turrTarget); // limelight controlled turret pos;
 
       // ntTestHood.setDouble(targetHoodPos);

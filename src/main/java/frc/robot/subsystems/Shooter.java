@@ -143,10 +143,6 @@ public class Shooter extends SubsystemBase {
       // turretMotor.set(0.0);
     }
 
-    if (ntTable.getEntry("Left Climb Pos").getDouble(0.0) / 23.5 > 0.3 || ntTable.getEntry("Right Climb Pos").getDouble(0.0) / 23.5 > 0.3) {
-      setTurretPos(0.0);
-    }
-
   }
 
   public void setHoodPos(double pos) {
