@@ -4,24 +4,19 @@
 
 package frc.robot.commands.autonomous.paths;
 
-import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.ConveyorCommand;
-import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterCommand;
-import frc.robot.commands.autonomous.InplaceTurn;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
-import frc.robot.utility.AutoWrapper;
 import frc.robot.utility.StraightRamseteGen;
 
 /** Add your docs here. */
 public class OneBallCommandGroup implements CommandGroupInterface {
 
-    private final DriveTrain driveTrain;
     private final Intake intake;
     private final Conveyor conveyor;
     private final Shooter shooter;
@@ -32,7 +27,6 @@ public class OneBallCommandGroup implements CommandGroupInterface {
 
 
     public OneBallCommandGroup(DriveTrain driveTrain, Intake intake, Conveyor conveyor, Shooter shooter, Limelight limelight){
-        this.driveTrain = driveTrain;
         this.intake = intake;
         this.conveyor = conveyor;
         this.shooter = shooter;

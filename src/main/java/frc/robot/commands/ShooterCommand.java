@@ -4,32 +4,20 @@
 
 package frc.robot.commands;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.invoke.ConstantBootstraps;
 
 import com.revrobotics.ColorMatch;
-import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
-import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utility.ShootCalibrationMap;
-import frc.robot.utility.Util;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
-import frc.robot.Constants.RobotIds;
-import frc.robot.Constants.ShooterCalibrations;
 import frc.robot.commands.autonomous.AutonomousController;
-import frc.robot.controls.manualdrive.ManualControls;
 import frc.robot.subsystems.Limelight;
 
 public class ShooterCommand extends CommandBase {
@@ -174,9 +162,6 @@ public class ShooterCommand extends CommandBase {
       if((shooter.getTurretPosDegrees() > 85 && turrTarget > 0) || (shooter.getTurretPosDegrees() < -85 && turrTarget < 0))
         turrTarget = 0;
       
-      if (ntTableClimb.getEntry("Left Climb Pos").getDouble(0.0) > 8.0 && ntTableClimb.getEntry("Right Climb Pos").getDouble(0.0) > 8.0) {
-        shooter.setTurretPos(90.0); // turret is at 90 degrees when both climb arms are extended
-      }
       else if (controls.overrideTurretCenter()) shooter.setTurretPos(0); // override controlled turret pos
       else shooter.setTurretDeltaPos(turrTarget); // limelight controlled turret pos;
 
@@ -187,6 +172,11 @@ public class ShooterCommand extends CommandBase {
     }
 
     if(targetBallCount != -1 && shooter.getBallShotCount() >= targetBallCount) doneShootingFrames++;
+
+    
+    if (ntTableClimb.getEntry("Left Climb Pos").getDouble(0.0) > 8.0 && ntTableClimb.getEntry("Right Climb Pos").getDouble(0.0) > 8.0) {
+      shooter.setTurretPos(90.0); // turret is at 90 degrees when both climb arms are extended
+    }
 
     // if(!prevCalibButton && ntAddCalibrateButton.getBoolean(false)){
     //   ShooterCalibrations.NEW_SHOOT_CALIBRATION_MAP.add(dist, new ShootCalibrationMap.Trajectory(ntTestRPM.getDouble(0.0), ntTestHood.getDouble(0.0)));

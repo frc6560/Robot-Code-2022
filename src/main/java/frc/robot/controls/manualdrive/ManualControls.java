@@ -13,7 +13,6 @@ import frc.robot.commands.ClimbCommand;
 
 import frc.robot.utility.NumberStepper;
 import frc.robot.utility.PovNumberStepper;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;

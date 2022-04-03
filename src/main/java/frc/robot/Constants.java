@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import frc.robot.utility.AutoWrapper;
 import frc.robot.utility.ShootCalibrationMap;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
@@ -86,6 +85,10 @@ public final class Constants {
         public static final int CLIMB_ROTATOR_PISTON = 2; //TODO: set constant
         public static final int CLIMB_LEFT_EXTENSION_MOTOR = 10;
         public static final int CLIMB_RIGHT_EXTENSION_MOTOR = 43;
+
+        public static final int LED_LIGHT_RED = 5;
+        public static final int LED_LIGHT_GREEN = 6;
+        public static final int LED_LIGHT_BLUE = 7;
     }
 
     public static final class PhysicalConstants {

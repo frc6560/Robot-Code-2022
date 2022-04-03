@@ -67,7 +67,8 @@
   },
   "NetworkTables Settings": {
     "mode": "Client",
-    "serverTeam": "6560"
+    "serverTeam": "6560",
+    "visible": false
   },
   "Plots": {
     "Plot <0>": {
@@ -135,23 +136,9 @@
     "Plot <2>": {
       "plots": [
         {
-          "height": 332,
-          "series": [
-            {
-              "color": [
-                0.2980392277240753,
-                0.44705885648727417,
-                0.6901960968971252,
-                1.0
-              ],
-              "id": "NT:/Shooter/Target RPM"
-            }
-          ]
+          "height": 332
         }
-      ],
-      "window": {
-        "visible": false
-      }
+      ]
     }
   }
 }

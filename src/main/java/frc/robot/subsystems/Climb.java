@@ -7,8 +7,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -65,7 +63,9 @@ public class Climb extends SubsystemBase {
 
     NtValueDisplay.ntDispTab("Climb")
         .add("Left Climb Pos", this::getLeftPositionInches)
-        .add("Right Climb Pos", this::getRightPositionInches);
+        .add("Right Climb Pos", this::getRightPositionInches)
+        .add("Left Climb Vel", this::getleftVelocity)
+        .add("Right Climb Vel", this::getRightVelocity);
 
   }
 

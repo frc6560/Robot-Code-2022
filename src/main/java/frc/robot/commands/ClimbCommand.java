@@ -4,15 +4,9 @@
 
 package frc.robot.commands;
 
-import javax.swing.border.EtchedBorder;
-
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.Climb;
-import frc.robot.utility.NetworkTable.NtValueDisplay;
 
 public class ClimbCommand extends CommandBase {
   /** Creates a new ManualClimb. */

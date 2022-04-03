@@ -65,14 +65,14 @@ public class Shooter extends SubsystemBase {
     shooterMotorR.configFactoryDefault();
 
     //get PID
-    shooterMotorL.config_kF(0, 0.087197957);
+    shooterMotorL.config_kF(0, 0.047197957);
     shooterMotorL.config_kP(0, 0.225);
     // shooterMotorL.config_kP(0, 0.12997);
     shooterMotorL.config_kI(0, 0.00001);
     // shooterMotorL.config_kI(0, 0.0);
     shooterMotorL.config_kD(0, 0.0);
 
-    shooterMotorR.config_kF(0, 0.087197957);
+    shooterMotorR.config_kF(0, 0.047197957);
     shooterMotorR.config_kP(0, 0.225);
     // shooterMotorR.config_kP(0, 0.12997);
     shooterMotorR.config_kI(0, 0.00001);
@@ -197,7 +197,7 @@ public class Shooter extends SubsystemBase {
   public boolean isShooterReady(){
     // System.out.println("1:  " + (Math.abs(getShooterRpm()) > 200) + "    2:  " + (Math.abs(getShooterRpm() - targetRPM/3.454545457) < RPMAcceptableDiff) + "   3:   " + (Math.abs(targetTurretPos) < turretAcceptableDiff) + "   4:  " + (Math.abs(getHoodPos() - targetHoodPos) < hoodAcceptableDiff));
     return 
-      Math.abs(getShooterRpm()) > 200 &&
+      Math.abs(getShooterRpm()) > 2000 &&
       Math.abs(getShooterRpm() - targetRPM) < RPMAcceptableDiff &&
       Math.abs(getTurretPosDegrees() - targetTurretPos) < turretAcceptableDiff &&
       Math.abs(getHoodPos() - targetHoodPos) < hoodAcceptableDiff;

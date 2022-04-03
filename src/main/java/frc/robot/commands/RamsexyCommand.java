@@ -6,9 +6,7 @@ package frc.robot.commands;
 
 import static edu.wpi.first.wpilibj.util.ErrorMessages.requireNonNullParam;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
@@ -17,11 +15,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.utility.AutoWrapper;
 import frc.robot.utility.AutoWrapperInterface;
-import frc.robot.utility.AutoWrapperPathWeaver;
-import frc.robot.utility.StraightRamseteGen;
 
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;

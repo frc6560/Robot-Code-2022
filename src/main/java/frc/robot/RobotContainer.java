@@ -4,29 +4,21 @@
 
 package frc.robot;
 
-import com.fasterxml.jackson.databind.util.Converter;
 import com.revrobotics.ColorSensorV3;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.RobotIds;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.ConveyorCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterCommand;
-import frc.robot.commands.autonomous.AutonomousController;
-import frc.robot.commands.autonomous.InplaceTurn;
-import frc.robot.commands.autonomous.paths.CommandGroupInterface;
 import frc.robot.commands.autonomous.paths.FourBallCommandGroup;
 import frc.robot.commands.autonomous.paths.NewFourBallCommandGroup;
 import frc.robot.commands.autonomous.paths.OneBallCommandGroup;
@@ -38,15 +30,10 @@ import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.RGBLighting;
 import frc.robot.subsystems.Shooter;
-import frc.robot.utility.AutoUtil;
-import frc.robot.utility.AutoWrapper;
-import frc.robot.utility.AutoWrapperPathWeaver;
-import frc.robot.utility.StraightRamseteGen;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -118,6 +105,8 @@ public class RobotContainer {
   private final FourBallCommandGroup fourBallCommandGroup;
   private final NewFourBallCommandGroup newFourBallCommandGroup;
 
+  private final RGBLighting rgbLighting;
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -149,6 +138,7 @@ public class RobotContainer {
     fourBallCommandGroup = new FourBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
     newFourBallCommandGroup = new NewFourBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
 
+    rgbLighting = new RGBLighting();
 
     // Add commands to the autonomous command chooser
     m_chooser.setDefaultOption("New Four Ball", newFourBallCommandGroup.getCommand());
