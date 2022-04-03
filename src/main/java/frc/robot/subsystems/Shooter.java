@@ -65,20 +65,20 @@ public class Shooter extends SubsystemBase {
     shooterMotorR.configFactoryDefault();
 
     //get PID
-    shooterMotorL.config_kF(0, 0.047197957);
-    // shooterMotorL.config_kP(0, 0.225);
-    shooterMotorL.config_kP(0, 0.12997);
-    shooterMotorL.config_kI(0, 0.00005);
+    shooterMotorL.config_kF(0, 0.087197957);
+    shooterMotorL.config_kP(0, 0.225);
+    // shooterMotorL.config_kP(0, 0.12997);
+    shooterMotorL.config_kI(0, 0.00001);
     // shooterMotorL.config_kI(0, 0.0);
     shooterMotorL.config_kD(0, 0.0);
 
-    shooterMotorR.config_kF(0, 0.047197957);
-    // shooterMotorR.config_kP(0, 0.225);
-    shooterMotorR.config_kP(0, 0.12997);
-    shooterMotorR.config_kI(0, 0.00005);
+    shooterMotorR.config_kF(0, 0.087197957);
+    shooterMotorR.config_kP(0, 0.225);
+    // shooterMotorR.config_kP(0, 0.12997);
+    shooterMotorR.config_kI(0, 0.00001);
     // shooterMotorR.config_kI(0, 0.0);
     shooterMotorR.config_kD(0, 0.0);
-
+    
     
 
     shooterMotorL.setInverted(false);
@@ -142,6 +142,11 @@ public class Shooter extends SubsystemBase {
       turretMotor.set(speed);
       // turretMotor.set(0.0);
     }
+
+    if (ntTable.getEntry("Left Climb Pos").getDouble(0.0) / 23.5 > 0.3 || ntTable.getEntry("Right Climb Pos").getDouble(0.0) / 23.5 > 0.3) {
+      setTurretPos(0.0);
+    }
+
   }
 
   public void setHoodPos(double pos) {

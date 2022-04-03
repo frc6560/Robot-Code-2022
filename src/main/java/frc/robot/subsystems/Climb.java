@@ -28,10 +28,10 @@ public class Climb extends SubsystemBase {
   private final TalonFX rightExtensionMotor = new TalonFX(RobotIds.CLIMB_RIGHT_EXTENSION_MOTOR);
 
   private final double minPos = 0;
-  private final double maxPos = 23.8;
+  private final double maxPos = 23.5;
 
-  private final double proximityThresholdTop = 1.0;
-  private final double proximityThresholdBottom = 2.0;
+  private final double proximityThresholdTop = 1.5;
+  private final double proximityThresholdBottom = 1.25;
   private final double proximitySlow = 0.3;
 
   private double rightComp = 1;
@@ -64,8 +64,8 @@ public class Climb extends SubsystemBase {
     
 
     NtValueDisplay.ntDispTab("Climb")
-        .add("Left Pos", this::getLeftPositionInches)
-        .add("Right Pos", this::getRightPositionInches);
+        .add("Left Climb Pos", this::getLeftPositionInches)
+        .add("Right Climb Pos", this::getRightPositionInches);
 
   }
 
