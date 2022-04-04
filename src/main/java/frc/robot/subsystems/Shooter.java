@@ -20,6 +20,7 @@ import frc.robot.Constants;
 import static frc.robot.Constants.*;
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
+
 public class Shooter extends SubsystemBase {
   private final double RPMAcceptableDiff = 60;
   private final double turretAcceptableDiff = 3;

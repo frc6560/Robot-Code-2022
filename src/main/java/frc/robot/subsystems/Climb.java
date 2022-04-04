@@ -28,11 +28,11 @@ public class Climb extends SubsystemBase {
   private final TalonFX rightExtensionMotor = new TalonFX(RobotIds.CLIMB_RIGHT_EXTENSION_MOTOR);
 
   private final double minPos = 0;
-  private final double maxPos = 23.5;
+  private final double maxPos = 22.5;
 
   private final double proximityThresholdTop = 1.5;
-  private final double proximityThresholdBottom = 1.25;
-  private final double proximitySlow = 0.3;
+  private final double proximityThresholdBottom = 1;
+  private final double proximitySlow = 0.2;
 
   private double rightComp = 1;
   private double leftComp = 1;
