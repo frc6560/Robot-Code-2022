@@ -11,8 +11,11 @@ import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.RobotIds;
+
+import java.awt.Color;
 
 public class RGBLighting extends SubsystemBase {
   // a dictionary of all the colors
@@ -23,7 +26,7 @@ public class RGBLighting extends SubsystemBase {
 
   NetworkTableInstance ntInst = NetworkTableInstance.getDefault();
 
-  Debouncer climbStopDebouncer = new Debouncer(3.0, DebounceType.kBoth);
+  Debouncer climbStopDebouncer = new Debouncer(6.0, DebounceType.kBoth);
   Debouncer shooterReadyDebouncer = new Debouncer(0.3, DebounceType.kRising);
 
   /** Creates a new RGBLighting. */
@@ -51,11 +54,11 @@ public class RGBLighting extends SubsystemBase {
 
     
 
-    
+
     if(climb && climbStopDebouncer.calculate(climbVelocity < 2)) {
-      blinkColor("cyan", 1.0);
+      setColor("rainbow");
     } else if(climb){
-      blinkColor("purple", 0.5);
+      setColor("purple");
     } else if (shooterReadyDebouncer.calculate(shooterReady)) {
       setColor("green");
     } else {
@@ -70,12 +73,37 @@ public class RGBLighting extends SubsystemBase {
 
   public void setColor(String color) {
     // set the color of the lights
-    boolean[] colorArray = colorsDict.get(color);
-    if (colorArray != null) {
-      ledLights[0].set(colorArray[0]);
-      ledLights[1].set(colorArray[1]);
-      ledLights[2].set(colorArray[2]);
+    if (color.toLowerCase().equals("rainbow")) {
+      rainbow(60.0);
+    } else {
+      boolean[] colorArray = colorsDict.get(color);
+      if (colorArray != null) {
+        ledLights[0].set(colorArray[0]);
+        ledLights[1].set(colorArray[1]);
+        ledLights[2].set(colorArray[2]);
+      }
     }
+  }
+
+  private double lastTime = Timer.getFPGATimestamp();
+  public void rainbow(double length) {
+    double initTime = Timer.getFPGATimestamp();
+    if (Timer.getFPGATimestamp() - initTime < length) {
+      double delta = Timer.getFPGATimestamp() - lastTime;
+      if (delta > 0.5) {
+        lastTime = Timer.getFPGATimestamp();
+        double hue = (Timer.getFPGATimestamp() % 1.0) * 360;
+        int[] rgb = convertRGB(Color.HSBtoRGB((float) hue, (float) 1.0, (float) 1.0));
+        ledLights[0].set((rgb[0] > 0.5));
+        ledLights[1].set((rgb[1] > 0.5));
+        ledLights[2].set((rgb[2] > 0.5));
+      }
+    }
+  }
+
+  public int[] convertRGB(int in) {
+    Color color = new Color(in);
+    return new int[] {color.getRed(), color.getGreen(), color.getBlue()};
   }
 
   public void blinkColor(String color, double frequency) {

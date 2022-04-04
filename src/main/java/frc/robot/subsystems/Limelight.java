@@ -31,6 +31,7 @@ public class Limelight extends SubsystemBase {
     .add("Distance",()->(-0.376023*getDistance() + 11.0681))
     .add("Horizontal Angle", this::getHorizontalAngle)
     .add("Vertical Angle", this::getVertAngle)
+    .add("Has Target", this::hasTarget);
     ;
   }
 

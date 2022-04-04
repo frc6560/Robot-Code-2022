@@ -1,5 +1,8 @@
 {
   "NetworkTables": {
+    "DriverStation": {
+      "open": true
+    },
     "Shooter": {
       "open": true
     },
@@ -67,8 +70,7 @@
   },
   "NetworkTables Settings": {
     "mode": "Client",
-    "serverTeam": "6560",
-    "visible": false
+    "serverTeam": "6560"
   },
   "Plots": {
     "Plot <0>": {
@@ -136,7 +138,23 @@
     "Plot <2>": {
       "plots": [
         {
-          "height": 332
+          "axis": [
+            {
+              "autoFit": true
+            }
+          ],
+          "height": 332,
+          "series": [
+            {
+              "color": [
+                0.2980392277240753,
+                0.44705885648727417,
+                0.6901960968971252,
+                1.0
+              ],
+              "id": "NT:/DriverStation/Battery Voltage"
+            }
+          ]
         }
       ]
     }

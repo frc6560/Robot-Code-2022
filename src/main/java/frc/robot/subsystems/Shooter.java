@@ -35,13 +35,14 @@ public class Shooter extends SubsystemBase {
   private final PWM hoodServoL;
   private final PWM hoodServoR;
 
-  private double startAngle = 0;
+  private double startAngle = 90;
 
   private double targetRPM;
   private double targetHoodPos;
   private double targetTurretPos;
 
   private NetworkTable ntTable;
+  private NetworkTable ntTableLimelight;
   private NetworkTableEntry ntShooterReady;
 
   private int ballShotCount = 0;
@@ -93,7 +94,7 @@ public class Shooter extends SubsystemBase {
     hoodServoR.setBounds(2.0, 1.6, 1.5, 1.4, 1.0);
 
     ntTable = NetworkTableInstance.getDefault().getTable("Shooter");
-
+    ntTableLimelight = NetworkTableInstance.getDefault().getTable("Limelight");
     ntShooterReady = ntTable.getEntry("Shooter Ready");
     ntShooterReady.setBoolean(false);
 
@@ -196,7 +197,8 @@ public class Shooter extends SubsystemBase {
 
   public boolean isShooterReady(){
     // System.out.println("1:  " + (Math.abs(getShooterRpm()) > 200) + "    2:  " + (Math.abs(getShooterRpm() - targetRPM/3.454545457) < RPMAcceptableDiff) + "   3:   " + (Math.abs(targetTurretPos) < turretAcceptableDiff) + "   4:  " + (Math.abs(getHoodPos() - targetHoodPos) < hoodAcceptableDiff));
-    return 
+    return
+      ntTableLimelight.getEntry("Has Target").getBoolean(false) &&
       Math.abs(getShooterRpm()) > 2000 &&
       Math.abs(getShooterRpm() - targetRPM) < RPMAcceptableDiff &&
       Math.abs(getTurretPosDegrees() - targetTurretPos) < turretAcceptableDiff &&
