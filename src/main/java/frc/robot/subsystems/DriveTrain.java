@@ -17,7 +17,6 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -29,17 +28,15 @@ import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.Constants;
-import frc.robot.Constants.ConversionConstants;
 import frc.robot.Constants.PhysicalConstants;
 import frc.robot.Constants.RobotIds;
 import frc.robot.utility.NetworkTable.NtValueDisplay;
@@ -73,7 +70,7 @@ public class DriveTrain extends SubsystemBase {
   private final AHRS gyro = new AHRS(SerialPort.Port.kMXP, SerialDataType.kProcessedData, (byte) 100);
 
   private final SlewRateLimiter forwardLimiter = new SlewRateLimiter(PhysicalConstants.MAX_ACCELERATION);
-  private final SlewRateLimiter turnLimiter = new SlewRateLimiter(PhysicalConstants.MAX_ACCELERATION);
+  private final SlewRateLimiter turnLimiter = new SlewRateLimiter(PhysicalConstants.MAX_TURN_ACCELERATION);
 
   private final SimpleMotorFeedforward simpleFF = new SimpleMotorFeedforward(PhysicalConstants.KS, PhysicalConstants.KV, PhysicalConstants.KA);
 
@@ -104,7 +101,6 @@ public class DriveTrain extends SubsystemBase {
     .add("Degrees", this::getAngleContinuous)
     .add("Left Position", this::getLeftEnocoder)
     .add("Right Position", this::getRightEncoder);
-
 
 
     kP = 0; 
@@ -141,7 +137,8 @@ public class DriveTrain extends SubsystemBase {
     .add("Actual I", () -> leftMotors[0].getPIDController().getI())
     .add("Actual D", () -> leftMotors[0].getPIDController().getD());
 
-
+    NtValueDisplay.ntDispTab("DriverStation")
+      .add("Battery Voltage", () -> RobotController.getBatteryVoltage());
 
   }
 

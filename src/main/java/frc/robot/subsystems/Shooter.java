@@ -36,13 +36,14 @@ public class Shooter extends SubsystemBase {
   private final PWM hoodServoL;
   private final PWM hoodServoR;
 
-  private double startAngle = 0;
+  private double startAngle = 90;
 
   private double targetRPM;
   private double targetHoodPos;
   private double targetTurretPos;
 
   private NetworkTable ntTable;
+  private NetworkTable ntTableLimelight;
   private NetworkTableEntry ntShooterReady;
 
   private int ballShotCount = 0;
@@ -66,14 +67,14 @@ public class Shooter extends SubsystemBase {
     shooterMotorR.configFactoryDefault();
 
     //get PID
-    shooterMotorL.config_kF(0, 0.087197957);
+    shooterMotorL.config_kF(0, 0.047197957);
     shooterMotorL.config_kP(0, 0.225);
     // shooterMotorL.config_kP(0, 0.12997);
     shooterMotorL.config_kI(0, 0.00001);
     // shooterMotorL.config_kI(0, 0.0);
     shooterMotorL.config_kD(0, 0.0);
 
-    shooterMotorR.config_kF(0, 0.087197957);
+    shooterMotorR.config_kF(0, 0.047197957);
     shooterMotorR.config_kP(0, 0.225);
     // shooterMotorR.config_kP(0, 0.12997);
     shooterMotorR.config_kI(0, 0.00001);
@@ -94,7 +95,7 @@ public class Shooter extends SubsystemBase {
     hoodServoR.setBounds(2.0, 1.6, 1.5, 1.4, 1.0);
 
     ntTable = NetworkTableInstance.getDefault().getTable("Shooter");
-
+    ntTableLimelight = NetworkTableInstance.getDefault().getTable("Limelight");
     ntShooterReady = ntTable.getEntry("Shooter Ready");
     ntShooterReady.setBoolean(false);
 
@@ -142,10 +143,6 @@ public class Shooter extends SubsystemBase {
       //changed
       turretMotor.set(speed);
       // turretMotor.set(0.0);
-    }
-
-    if (ntTable.getEntry("Left Climb Pos").getDouble(0.0) / 23.5 > 0.3 || ntTable.getEntry("Right Climb Pos").getDouble(0.0) / 23.5 > 0.3) {
-      setTurretPos(0.0);
     }
 
   }
@@ -201,8 +198,9 @@ public class Shooter extends SubsystemBase {
 
   public boolean isShooterReady(){
     // System.out.println("1:  " + (Math.abs(getShooterRpm()) > 200) + "    2:  " + (Math.abs(getShooterRpm() - targetRPM/3.454545457) < RPMAcceptableDiff) + "   3:   " + (Math.abs(targetTurretPos) < turretAcceptableDiff) + "   4:  " + (Math.abs(getHoodPos() - targetHoodPos) < hoodAcceptableDiff));
-    return 
-      Math.abs(getShooterRpm()) > 200 &&
+    return
+      ntTableLimelight.getEntry("Has Target").getBoolean(false) &&
+      Math.abs(getShooterRpm()) > 2000 &&
       Math.abs(getShooterRpm() - targetRPM) < RPMAcceptableDiff &&
       Math.abs(getTurretPosDegrees() - targetTurretPos) < turretAcceptableDiff &&
       Math.abs(getHoodPos() - targetHoodPos) < hoodAcceptableDiff;

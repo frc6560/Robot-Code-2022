@@ -1,5 +1,8 @@
 {
   "NetworkTables": {
+    "DriverStation": {
+      "open": true
+    },
     "Shooter": {
       "open": true
     },
@@ -135,6 +138,11 @@
     "Plot <2>": {
       "plots": [
         {
+          "axis": [
+            {
+              "autoFit": true
+            }
+          ],
           "height": 332,
           "series": [
             {
@@ -144,14 +152,11 @@
                 0.6901960968971252,
                 1.0
               ],
-              "id": "NT:/Shooter/Target RPM"
+              "id": "NT:/DriverStation/Battery Voltage"
             }
           ]
         }
-      ],
-      "window": {
-        "visible": false
-      }
+      ]
     }
   }
 }

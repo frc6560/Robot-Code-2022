@@ -4,11 +4,8 @@
 
 package frc.robot.commands.autonomous;
 
-import org.opencv.core.Mat;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.utility.Util;
 
 public class InplaceTurn extends CommandBase {
   /** Creates a new InplaceTurn. */
