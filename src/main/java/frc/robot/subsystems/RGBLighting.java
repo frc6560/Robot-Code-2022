@@ -56,7 +56,8 @@ public class RGBLighting extends SubsystemBase {
 
 
     if(climb && climbStopDebouncer.calculate(climbVelocity < 2)) {
-      setColor("rainbow");
+      // setColor("rainbow");
+      setColor("cyan");
     } else if(climb){
       setColor("purple");
     } else if (shooterReadyDebouncer.calculate(shooterReady)) {
