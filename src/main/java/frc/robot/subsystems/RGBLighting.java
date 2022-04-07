@@ -28,6 +28,10 @@ public class RGBLighting extends SubsystemBase {
 
   Debouncer climbStopDebouncer = new Debouncer(6.0, DebounceType.kBoth);
   Debouncer shooterReadyDebouncer = new Debouncer(0.3, DebounceType.kRising);
+  
+  Debouncer debouncerRedBlink = new Debouncer(0.5, DebounceType.kBoth);
+  Debouncer debouncerGreenBlink = new Debouncer(0.5, DebounceType.kBoth);
+  Debouncer debouncerBlueBlink = new Debouncer(0.5, DebounceType.kBoth);
 
   /** Creates a new RGBLighting. */
   public RGBLighting() {
@@ -52,14 +56,11 @@ public class RGBLighting extends SubsystemBase {
     double climbExtension = ntInst.getTable("Climb").getEntry("Left Climb Pos").getDouble(0.0);
     double climbVelocity = ntInst.getTable("Climb").getEntry("Left Climb Vel").getDouble(0.0);
 
-    
-
-
     if(climb && climbStopDebouncer.calculate(Math.abs(climbVelocity) < 2)) {
       // setColor("rainbow");
       setColor("cyan");
     } else if(climb){
-      setColor("purple");
+      blinkColor("purple");
     } else if (shooterReadyDebouncer.calculate(shooterReady)) {
       setColor("green");
     } else {
@@ -107,20 +108,16 @@ public class RGBLighting extends SubsystemBase {
     return new int[] {color.getRed(), color.getGreen(), color.getBlue()};
   }
 
-  public void blinkColor(String color, double frequency) {
+  public void blinkColor(String color) {
     // set the color of the lights
     boolean[] colorArray = colorsDict.get(color);
     Solenoid ledRed = ledLights[0];
     Solenoid ledGreen = ledLights[1];
     Solenoid ledBlue = ledLights[2];
-    
-    Debouncer debouncerRed = new Debouncer(frequency, DebounceType.kBoth);
-    Debouncer debouncerGreen = new Debouncer(frequency, DebounceType.kBoth);
-    Debouncer debouncerBlue = new Debouncer(frequency, DebounceType.kBoth);
 
     // blink the lights
-    if(colorArray[0]) ledRed.set(debouncerRed.calculate(!ledRed.get()));
-    if(colorArray[1]) ledGreen.set(debouncerGreen.calculate(!ledGreen.get()));
-    if(colorArray[2]) ledBlue.set(debouncerBlue.calculate(!ledBlue.get()));
+    if(colorArray[0]) ledRed.set(debouncerRedBlink.calculate(!ledRed.get()));
+    if(colorArray[1]) ledGreen.set(debouncerGreenBlink.calculate(!ledGreen.get()));
+    if(colorArray[2]) ledBlue.set(debouncerBlueBlink.calculate(!ledBlue.get()));
   }
 }
