@@ -16,9 +16,10 @@ public class AutoClimbCommand extends CommandBase {
   int cycles = 0;
   double pauseTime = -1;
   
-  private final double UPPER_HEIGHT = 23;
+  private final double UPPER_HEIGHT = 23.25;
   private final double LOWER_HEIGHT = 0.025;
-  private final double WAIT_DURATION = 0.5;
+  private final double DOWN_WAIT_DURATION = 0.5;
+  private final double UP_WAIT_DURATION = 0.25;
 
   double extensionSpeed = 1;
 
@@ -40,16 +41,21 @@ public class AutoClimbCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // climb.setExtensionMotors(0.1);
+    double leftPos = climb.getLeftPositionInches();
+    double rightPos = climb.getRightPositionInches();
 
     if(autoClimbPhase == 0){
-      climb.setExtensionMotors(0.5);
+      climb.setExtensionMotors(extensionSpeed);
 
-      if(climb.getLeftPositionInches() > 4){
+      if(leftPos > 4){
         climb.setRotatorPiston(true);
       }
 
-      if(climb.getLeftPositionInches() > UPPER_HEIGHT - (cycles == 0 ? 2 : 0) || climb.getRightPositionInches() > UPPER_HEIGHT - (cycles == 0 ? 2 : 0)){
+      if(leftPos > 22){
+        climb.setRotatorPiston(false);
+      }
+
+      if(leftPos > UPPER_HEIGHT - (cycles == 0 ? 4 : 0) || rightPos > UPPER_HEIGHT - (cycles == 0 ? 4 : 0)){
         autoClimbPhase ++;
         
         System.out.println("\n\n\n\n1: Phase: " + autoClimbPhase);
@@ -63,7 +69,7 @@ public class AutoClimbCommand extends CommandBase {
       }
       double curTime = Timer.getFPGATimestamp();
 
-      if(curTime - pauseTime > WAIT_DURATION){
+      if(curTime - pauseTime > DOWN_WAIT_DURATION){
         pauseTime = -1;
         autoClimbPhase++;
         
@@ -73,7 +79,7 @@ public class AutoClimbCommand extends CommandBase {
       climb.setRotatorPiston(false);
       climb.setExtensionMotors(-extensionSpeed);
       
-      if(climb.getLeftPositionInches() < LOWER_HEIGHT || climb.getRightPositionInches() < LOWER_HEIGHT){
+      if(leftPos < LOWER_HEIGHT || rightPos < LOWER_HEIGHT){
         autoClimbPhase ++;
         
         System.out.println("\n\n\n\n2: Phase: " + autoClimbPhase);
@@ -86,7 +92,7 @@ public class AutoClimbCommand extends CommandBase {
       }
       double curTime = Timer.getFPGATimestamp();
 
-      if(curTime - pauseTime > WAIT_DURATION){
+      if(curTime - pauseTime > UP_WAIT_DURATION){
         pauseTime = -1;
         autoClimbPhase++;
         cycles++;
