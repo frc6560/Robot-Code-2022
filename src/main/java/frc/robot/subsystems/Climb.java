@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.PhysicalConstants;
 import frc.robot.Constants.RobotIds;
+import frc.robot.utility.Util;
 import frc.robot.utility.NetworkTable.NtValueDisplay;
 
 public class Climb extends SubsystemBase {
@@ -25,11 +26,11 @@ public class Climb extends SubsystemBase {
   private final TalonFX leftExtensionMotor = new TalonFX(RobotIds.CLIMB_LEFT_EXTENSION_MOTOR);
   private final TalonFX rightExtensionMotor = new TalonFX(RobotIds.CLIMB_RIGHT_EXTENSION_MOTOR);
 
-  private final double minPos = 0;
-  private final double maxPos = 22.5;
+  private final double minPos = 0.02;
+  private final double maxPos = 23.25;
 
   private final double proximityThresholdTop = 1.5;
-  private final double proximityThresholdBottom = 1;
+  private final double proximityThresholdBottom = 1.5;
   private final double proximitySlow = 0.2;
 
   private double rightComp = 1;
@@ -85,12 +86,12 @@ public class Climb extends SubsystemBase {
   }
 
   public void setExtensionMotors(double output) {
+    output = Math.abs(output) < 0.1 ? 0 : output;
+    output = Util.getLimited(output, 1);
+
     double rightPos = getRightPositionInches();
     double leftPos = getLeftPositionInches();
 
-    if (Math.abs(output) != 1) {
-      output = 0;
-    }
 
     double extensionSpeed = ntExtensionSpeed.getDouble(0.5);
 
@@ -103,13 +104,15 @@ public class Climb extends SubsystemBase {
         leftSpeed = (output * extensionSpeed);
 
         if (leftPos > maxPos - proximityThresholdTop){
-          leftSpeed *= leftPos > maxPos ? 0 : proximitySlow;
+          if(leftPos > maxPos) leftSpeed = 0;
+          else leftSpeed = Util.getLimited(leftSpeed, proximitySlow);
         }
 
         rightSpeed = (output * extensionSpeed);
     
         if (rightPos > maxPos - proximityThresholdTop) {
-          rightSpeed *=  rightPos > maxPos ? 0 : proximitySlow;
+          if(rightPos > maxPos) rightSpeed = 0;
+          else rightSpeed = Util.getLimited(rightSpeed, proximitySlow);
         }
         
       }else{
@@ -118,13 +121,15 @@ public class Climb extends SubsystemBase {
         leftSpeed = (output * extensionSpeed);
 
         if (leftPos < minPos + proximityThresholdBottom) {
-          leftSpeed *=  leftPos < minPos ? 0 : proximitySlow;
+          if(leftPos < minPos) leftSpeed = 0;
+          else leftSpeed = Util.getLimited(leftSpeed, proximitySlow);
         }
         
         rightSpeed = (output * extensionSpeed);
     
         if (rightPos < (minPos + proximityThresholdBottom)) {
-          rightSpeed *= rightPos < minPos ? 0 : proximitySlow;
+          if(rightPos < minPos) rightSpeed = 0;
+          else rightSpeed = Util.getLimited(rightSpeed, proximitySlow);
         }
         
       }

@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.Joystick;
 
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
+import java.util.ResourceBundle.Control;
 
 import static frc.robot.Constants.*;
 
@@ -78,7 +79,7 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
     @Override
     public boolean getIntakeOut() {
-        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_BUTTON_1) || controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_1);
+        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_BUTTON_1); //|| controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_1);
     }
 
     @Override
@@ -157,7 +158,7 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
     }
 
     @Override
-    public boolean getClimbLockEngaged() {
-        return !controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_4);
+    public boolean getAutoClimbEnabled(){
+        return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_1);
     }
 }

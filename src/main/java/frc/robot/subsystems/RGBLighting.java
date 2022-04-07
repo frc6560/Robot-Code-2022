@@ -56,8 +56,9 @@ public class RGBLighting extends SubsystemBase {
     double climbExtension = ntInst.getTable("Climb").getEntry("Left Climb Pos").getDouble(0.0);
     double climbVelocity = ntInst.getTable("Climb").getEntry("Left Climb Vel").getDouble(0.0);
 
-    if(climb && climbStopDebouncer.calculate(climbVelocity < 2)) {
-      setColor("rainbow");
+    if(climb && climbStopDebouncer.calculate(Math.abs(climbVelocity) < 2)) {
+      // setColor("rainbow");
+      setColor("cyan");
     } else if(climb){
       blinkColor("purple");
     } else if (shooterReadyDebouncer.calculate(shooterReady)) {

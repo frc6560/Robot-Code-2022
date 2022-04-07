@@ -19,6 +19,7 @@ import frc.robot.commands.ConveyorCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.autonomous.AutoClimbCommand;
 import frc.robot.commands.autonomous.paths.FourBallCommandGroup;
 import frc.robot.commands.autonomous.paths.NewFourBallCommandGroup;
 import frc.robot.commands.autonomous.paths.OneBallCommandGroup;
@@ -98,6 +99,8 @@ public class RobotContainer {
   private ManualControls controls;
   // private AutonomousController autonomousController;
 
+  private final AutoClimbCommand autoClimb = new AutoClimbCommand(climb);
+
   private final RamseteCommand nullCommand = null;
   private final OneBallCommandGroup oneBallCommandGroup;
   private final TwoBallCommandGroup twoBallCommandGroup;
@@ -129,7 +132,7 @@ public class RobotContainer {
     manualConveyor = new ConveyorCommand(conveyor, controls, shooter);
     conveyor.setDefaultCommand(manualConveyor);
 
-    manualClimb = new ClimbCommand(climb, controls);
+    manualClimb = new ClimbCommand(climb, controls, autoClimb);
     climb.setDefaultCommand(manualClimb);
 
     oneBallCommandGroup =  new OneBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
@@ -147,6 +150,7 @@ public class RobotContainer {
     m_chooser.addOption("Two Ball", twoBallCommandGroup.getCommand());
     m_chooser.addOption("Three Ball", threeBallCommandGroup.getCommand());
     m_chooser.addOption("Nothing", nullCommand);
+
 
     // Put the chooser on the dashboard
     Shuffleboard.getTab("Auto Choose").add(m_chooser);
@@ -169,10 +173,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-
-    return m_chooser.getSelected();  
-    // return new StraightRamseteGen(driveTrain, 7.62).getCommand();
-    // return new AutoWrapper("New Path", driveTrain).getCommand();
-    // return newFourBallCommandGroup.getCommand();
+    return m_chooser.getSelected();
   }
 }
