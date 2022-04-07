@@ -33,8 +33,6 @@ public class AutoClimbCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // climb.setExtensionMotors(0);
-    // climb.setRotatorPiston(false);
     autoClimbPhase = 0;
   }
 
@@ -108,7 +106,7 @@ public class AutoClimbCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    initialize();
+    climb.reset();
   }
 
   // Returns true when the command should end.

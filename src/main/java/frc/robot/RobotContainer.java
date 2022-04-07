@@ -132,7 +132,7 @@ public class RobotContainer {
     manualConveyor = new ConveyorCommand(conveyor, controls, shooter);
     conveyor.setDefaultCommand(manualConveyor);
 
-    manualClimb = new ClimbCommand(climb, controls);
+    manualClimb = new ClimbCommand(climb, controls, autoClimb);
     climb.setDefaultCommand(manualClimb);
 
     oneBallCommandGroup =  new OneBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
@@ -173,8 +173,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoClimb;
-
-    // return m_chooser.getSelected();
+    return m_chooser.getSelected();
   }
 }
