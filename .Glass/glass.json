@@ -13,6 +13,7 @@
       "/LiveWindow/DriveTrain": "Subsystem",
       "/LiveWindow/Intake": "Subsystem",
       "/LiveWindow/Limelight": "Subsystem",
+      "/LiveWindow/RGBLighting": "Subsystem",
       "/LiveWindow/Shooter": "Subsystem",
       "/LiveWindow/Ungrouped/DifferentialDrive[1]": "DifferentialDrive",
       "/LiveWindow/Ungrouped/DigitalInput[0]": "Digital Input",

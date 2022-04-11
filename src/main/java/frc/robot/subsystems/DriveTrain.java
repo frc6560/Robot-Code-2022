@@ -139,7 +139,8 @@ public class DriveTrain extends SubsystemBase {
 
     NtValueDisplay.ntDispTab("DriverStation")
       .add("Battery Voltage", () -> RobotController.getBatteryVoltage());
-
+    NtValueDisplay.ntDispTab("DriverStation")
+      .add("FPGA Timestamp", () -> RobotController.getFPGATime());
   }
 
   public double getLeftEnocoder(){
