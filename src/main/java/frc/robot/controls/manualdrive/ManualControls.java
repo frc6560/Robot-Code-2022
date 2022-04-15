@@ -133,12 +133,12 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
     }
 
     @Override
-    public boolean getHotRPMChange(){
+    public boolean getHotRPMAddition(){
         return xbox.getRawButton(ControllerIds.XBOX_A_BUTTON);
     }
 
     @Override
-    public boolean getHotHoodChange(){
+    public boolean getHotRPMReduction(){
         return xbox.getRawButton(ControllerIds.XBOX_B_BUTTON);
     }
     

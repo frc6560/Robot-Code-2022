@@ -85,12 +85,12 @@ public class AutonomousController implements IntakeCommand.Controls, ShooterComm
     
 
     @Override
-    public boolean getHotRPMChange(){
+    public boolean getHotRPMAddition(){
         return false;
     }
 
     @Override
-    public boolean getHotHoodChange(){
+    public boolean getHotRPMReduction(){
         return false;
     }
     

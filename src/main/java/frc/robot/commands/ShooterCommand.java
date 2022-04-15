@@ -27,8 +27,8 @@ public class ShooterCommand extends CommandBase {
     boolean overrideTurretCenter();
     boolean getConstantAiming();
 
-    boolean getHotRPMChange();
-    boolean getHotHoodChange();
+    boolean getHotRPMAddition();
+    boolean getHotRPMReduction();
   }
 
   private Shooter shooter;
@@ -40,6 +40,7 @@ public class ShooterCommand extends CommandBase {
   private final Color redColor = new Color(255, 0, 0);
 
   private final boolean isRedAlliance;
+  private boolean isAuto = false;
 
   private boolean missBall = false;
   private final double ballMissRPM = 300;
@@ -52,11 +53,13 @@ public class ShooterCommand extends CommandBase {
   private NetworkTableEntry ntUseCalibrationMap;
 
   private NetworkTableEntry hotRPMAddition;
-  private NetworkTableEntry hotHoodAddition;
+  private NetworkTableEntry hotRPMReduction;
+
+  private NetworkTableEntry ntTeleopBuff;
 
   private final double IDLE_RPM = 1000;
-
-  private boolean isAuto = false;
+  private final double AutoBaseRPMBuff = 0;
+  private double TeleOpBaseRPMBuff = 0;
 
   private double targetHoodPos = 0.0;
   
@@ -90,8 +93,8 @@ public class ShooterCommand extends CommandBase {
     hotRPMAddition = ntTable.getEntry("hot RPM Addition");
     hotRPMAddition.setDouble(35.0);
 
-    hotHoodAddition = ntTable.getEntry("hot Hood Addition");
-    hotHoodAddition.setDouble(0.05);
+    ntTeleopBuff = ntTable.getEntry("Teleop RPM Buff");
+    ntTeleopBuff.setDouble(0);
     
 
     isRedAlliance =  NetworkTableInstance.getDefault().getTable("FMSInfo").getEntry("IsRedAlliance").getBoolean(false);
@@ -132,8 +135,17 @@ public class ShooterCommand extends CommandBase {
     if(controls.getAimShooter() || controls.getConstantAiming()) {
       
       if (controls.getAimShooter()) {
-        double flatBuff = isAuto ? -95 : -75;
-        shooter.setShooterRpm(getShooterRpm(dist) + (controls.getHotRPMChange() ? hotRPMAddition.getDouble(0.0) : (controls.getHotHoodChange() ? -hotRPMAddition.getDouble(0.0):0)) + flatBuff );
+        TeleOpBaseRPMBuff = ntTeleopBuff.getDouble(0.0);
+
+        double rpmBuff = isAuto ? AutoBaseRPMBuff : TeleOpBaseRPMBuff;
+
+        if(controls.getHotRPMAddition()){
+          rpmBuff += hotRPMAddition.getDouble(0.0);
+        } else if (controls.getHotRPMReduction()){
+          rpmBuff += -hotRPMAddition.getDouble(0.0);          
+        }
+
+        shooter.setShooterRpm( getShooterRpm(dist) + rpmBuff );
       }
       else{
         shooter.setShooterRpm(IDLE_RPM);
