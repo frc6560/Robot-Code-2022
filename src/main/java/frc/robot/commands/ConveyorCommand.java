@@ -65,8 +65,8 @@ public class ConveyorCommand extends CommandBase {
 
     } else if (controls.getConveyorMotor() || controls.isIntakeEngaged() || (controls.getFeedShooter() && shooter.isShooterReady())){  // if ballchain, intake, or shooter_feeding is on, run transfer
 
-      if(!conveyor.getSensor() || (controls.getFeedShooter() && shooter.isShooterReady())){
-        conveyor.setConveyor(conveyorSpeed);
+      if(!conveyor.getSensor() || (controls.getFeedShooter() && shooter.isShooterReady()) || controls.getBallChainReverse()){
+        conveyor.setConveyor(conveyorSpeed * (shooter.isShooterReady() ? 1.5 : 1));
 
       }else{
         conveyor.setConveyor(0.0);

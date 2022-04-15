@@ -60,6 +60,8 @@ public class ShooterCommand extends CommandBase {
 
   private final double IDLE_RPM = 1000;
 
+  private boolean isAuto = false;
+
   private double targetHoodPos = 0.0;
   
   private int targetBallCount = -1;
@@ -93,19 +95,22 @@ public class ShooterCommand extends CommandBase {
     ntUseCalibrationMap.setBoolean(true);
 
     hotRPMAddition = ntTable.getEntry("hot RPM Addition");
-    hotRPMAddition.setDouble(50.0);
+    hotRPMAddition.setDouble(35.0);
 
     hotHoodAddition = ntTable.getEntry("hot Hood Addition");
     hotHoodAddition.setDouble(0.05);
     
 
     isRedAlliance =  NetworkTableInstance.getDefault().getTable("FMSInfo").getEntry("IsRedAlliance").getBoolean(false);
+
+    this.isAuto = false;
   }
   
 
   public ShooterCommand(Shooter shooter, Limelight limelight, boolean shootingFar, int ballCount){ // Autonomouse
     this(shooter, new AutonomousController(shootingFar, "Shooter", "conveyor", "Intake"), limelight);
     this.targetBallCount = ballCount;
+    this.isAuto = true;
   }
 
   // Called when the command is initially scheduled.
@@ -134,18 +139,19 @@ public class ShooterCommand extends CommandBase {
     if(controls.getAimShooter() || controls.getConstantAiming()) {
       
       if (controls.getAimShooter()) {
-        shooter.setShooterRpm(getShooterRpm(dist) + (controls.getHotRPMChange() ? hotRPMAddition.getDouble(0.0) : 0.0) );
+        double flatBuff = isAuto ? -95 : -75;
+        shooter.setShooterRpm(getShooterRpm(dist) + (controls.getHotRPMChange() ? hotRPMAddition.getDouble(0.0) : (controls.getHotHoodChange() ? -hotRPMAddition.getDouble(0.0):0)) + flatBuff );
       }
       else{
         shooter.setShooterRpm(IDLE_RPM);
       }
 
-      Debouncer debouncer = new Debouncer(2, DebounceType.kFalling);
-      targetHoodPos = debouncer.calculate(limelight.hasTarget()) ? getShooterHoodAngle(dist) : 0.0;
+      // Debouncer debouncer = new Debouncer(2, DebounceType.kFalling);
+      targetHoodPos = getShooterHoodAngle(dist);
       
       
       if(targetHoodPos >= -1){
-        shooter.setHoodPos(targetHoodPos - (controls.getHotHoodChange() ? hotHoodAddition.getDouble(0.0) : 0.0) );
+        shooter.setHoodPos(targetHoodPos);// - (controls.getHotHoodChange() ? hotHoodAddition.getDouble(0.0) : 0.0) );
       }
 
       // shooter.setTurretPos(shooter.getTurretPos() + controls.shooterTurretTest()); // manual control of turret using climb joystick (button board);
