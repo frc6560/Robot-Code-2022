@@ -7,8 +7,6 @@ package frc.robot.commands;
 
 import com.revrobotics.ColorMatch;
 
-import edu.wpi.first.math.filter.Debouncer;
-import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -44,15 +42,13 @@ public class ShooterCommand extends CommandBase {
   private final boolean isRedAlliance;
 
   private boolean missBall = false;
-  private final double ballMissAngle = 10;
+  private final double ballMissRPM = 300;
 
   private NetworkTable ntTable;
   private NetworkTable ntTableClimb;
   private NetworkTableEntry ntTestRPM;
   private NetworkTableEntry ntTestHood;
 
-  private NetworkTableEntry ntAddCalibrateButton;
-  private boolean prevCalibButton = false;
   private NetworkTableEntry ntUseCalibrationMap;
 
   private NetworkTableEntry hotRPMAddition;
@@ -87,9 +83,6 @@ public class ShooterCommand extends CommandBase {
 
     ntTestRPM = ntTable.getEntry("Target Cal RPM");
     ntTestRPM.setDouble(0.0);
-
-    ntAddCalibrateButton = ntTable.getEntry("Save point on map");
-    ntAddCalibrateButton.setBoolean(false);
 
     ntUseCalibrationMap = ntTable.getEntry("Use calibration map?");
     ntUseCalibrationMap.setBoolean(true);

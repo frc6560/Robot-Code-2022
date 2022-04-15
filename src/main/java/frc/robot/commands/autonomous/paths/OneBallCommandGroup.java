@@ -9,7 +9,6 @@ import frc.robot.commands.ConveyorCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utility.StraightRamseteGen;
