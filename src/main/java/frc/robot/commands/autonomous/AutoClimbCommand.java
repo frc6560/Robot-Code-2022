@@ -45,12 +45,10 @@ public class AutoClimbCommand extends CommandBase {
     if(autoClimbPhase == 0){
       climb.setExtensionMotors(extensionSpeed);
 
-      if(leftPos > 4){
-        climb.setRotatorPiston(true);
-      }
-
       if(leftPos > 22){
         climb.setRotatorPiston(false);
+      } else if(leftPos > 4){
+        climb.setRotatorPiston(true);
       }
 
       if(leftPos > UPPER_HEIGHT - (cycles == 0 ? 4 : 0) || rightPos > UPPER_HEIGHT - (cycles == 0 ? 4 : 0)){

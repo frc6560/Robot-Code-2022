@@ -26,7 +26,7 @@ public class RGBLighting extends SubsystemBase {
 
   NetworkTableInstance ntInst = NetworkTableInstance.getDefault();
 
-  Debouncer climbStopDebouncer = new Debouncer(6.0, DebounceType.kBoth);
+  Debouncer climbStopDebouncer = new Debouncer(5.0, DebounceType.kRising);
   Debouncer shooterReadyDebouncer = new Debouncer(0.3, DebounceType.kRising);
   
   Debouncer debouncerRedBlink = new Debouncer(0.5, DebounceType.kBoth);
@@ -57,7 +57,6 @@ public class RGBLighting extends SubsystemBase {
     double climbVelocity = ntInst.getTable("Climb").getEntry("Left Climb Vel").getDouble(0.0);
 
     if(climb && climbStopDebouncer.calculate(Math.abs(climbVelocity) < 2)) {
-      // setColor("rainbow");
       setColor("cyan");
     } else if(climb){
       blinkColor("purple");

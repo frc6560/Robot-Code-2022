@@ -42,7 +42,7 @@ public class ClimbCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(autoClimbCommand != null && controls.getClimbExtensionMotors() == 0 && controls.getAutoClimbEnabled()){
+    if(autoClimbCommand != null && (Math.abs(controls.getClimbExtensionMotors()) <= 0.5) && controls.getAutoClimbEnabled()){
       autoClimbCommand.execute();
     }else{
       climb.setRotatorPiston(controls.getClimbRotatorEngaged());
