@@ -17,8 +17,6 @@ import edu.wpi.first.wpilibj.Joystick;
 
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
-import java.util.ResourceBundle.Control;
-
 import static frc.robot.Constants.*;
 
 
@@ -27,17 +25,14 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
     private final Joystick xbox;
     private final Joystick controlStation;
-    
-    private final Joystick backupXbox;
 
     private final PovNumberStepper speed;
     private final PovNumberStepper turnSpeed;
     
 
-    public ManualControls(Joystick xbox, Joystick controlStation, Joystick backupXbox) {
+    public ManualControls(Joystick xbox, Joystick controlStation) {
         this.xbox = xbox;
         this.controlStation = controlStation;
-        this.backupXbox = backupXbox;
 
         this.speed = new PovNumberStepper(
             new NumberStepper(0.5, 0.2, PhysicalConstants.MAX_SPEED, 0.1),
