@@ -35,11 +35,9 @@ public class Climb extends SubsystemBase {
 
   private double rightComp = 1;
   private double leftComp = 1;
-  private final double comp_beta = 1.05;
 
   private NetworkTable nTable;
   private NetworkTableEntry ntOverideSoftLimit;
-  private NetworkTableEntry rightCompensationConstant;
   private NetworkTableEntry ntExtensionSpeed;
   private NetworkTableEntry rightTestSpeed;
   private NetworkTableEntry leftTestSpeed;
@@ -149,17 +147,6 @@ public class Climb extends SubsystemBase {
       rightComp = Math.min(2, Math.max(1 + diff/0.5, 0));
     }
 
-
-
-    // if(diff > 0){
-      // leftComp = Math.min(2, Math.max(1 + diff/100, 0));
-    //   rightComp = 1.0;
-    // } else{
-      // rightComp = 1 + diff/10;
-    //   leftComp = 1.0;
-    // }
-
-
     setLeftExtensionMotor(leftSpeed * leftComp);
     setRightExtensionMotor(rightSpeed * rightComp);
   }
@@ -182,9 +169,6 @@ public class Climb extends SubsystemBase {
     motor.setInverted(inverted);
     motor.setSelectedSensorPosition(0.0);
     motor.setNeutralMode(NeutralMode.Brake);
-
-    // motor.configForwardSoftLimitThreshold(100);
-    // motor.configForwardSoftLimitEnable(true);
   }
 
   public double getRightPosition() {
@@ -210,13 +194,4 @@ public class Climb extends SubsystemBase {
   public double getleftVelocity() {
     return leftExtensionMotor.getSelectedSensorVelocity();
   }
-
-  // public double getRightVelocityInches() {
-  //   return getRightVelocity() * PhysicalConstants.CLIMB_EXTENSION_INCHES_PER_ROTATION;
-  // }
-
-  // public double getLeftVelocityInches() {
-  //   return getRightVelocity() * PhysicalConstants.CLIMB_EXTENSION_INCHES_PER_ROTATION;
-  // }
-
 }
