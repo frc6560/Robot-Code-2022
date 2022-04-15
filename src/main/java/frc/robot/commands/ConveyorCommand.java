@@ -4,8 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.autonomous.AutonomousController;
 import frc.robot.subsystems.Conveyor;
@@ -23,8 +21,6 @@ public class ConveyorCommand extends CommandBase {
   private final Controls controls;
   private final Shooter shooter;
 
-  private final NetworkTable ntTable;
-
   private final double conveyorSpeed = 0.45;
   private final double overHeadSpeed = 0.7;
 
@@ -40,8 +36,6 @@ public class ConveyorCommand extends CommandBase {
     this.controls = controls;
 
     this.shooter = shooter; // this is to be able to read wether or not the shooter is ready to shoot.
-
-    ntTable = NetworkTableInstance.getDefault().getTable("Transfer");
   }
 
   public ConveyorCommand(Conveyor conveyor, Shooter shooter, Boolean shoot){ // Autonomouse

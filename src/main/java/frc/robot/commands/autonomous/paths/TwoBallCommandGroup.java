@@ -33,7 +33,7 @@ public class TwoBallCommandGroup implements CommandGroupInterface {
         this.shooter = shooter;
         this.limelight = limelight;
 
-        threeBall1 = new AutoWrapper("Threeball_1", driveTrain);
+        threeBall1 = new AutoWrapper("Threeball_1", this.driveTrain);
     }
     @Override
     public Command getCommand() {

@@ -73,7 +73,6 @@ public class RobotContainer {
 
   private final Joystick xbox = new Joystick(0);
   private final Joystick controlStation = new Joystick(1);
-  private final Joystick xbox2 = new Joystick(2);
 
   // A chooser for autonomous commands
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -116,7 +115,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    controls = new ManualControls(xbox, controlStation, xbox2);
+    controls = new ManualControls(xbox, controlStation);
 
     manualDrive = new DriveCommand(driveTrain, controls);
     driveTrain.setDefaultCommand(manualDrive);
@@ -135,7 +134,7 @@ public class RobotContainer {
     manualClimb = new ClimbCommand(climb, controls, autoClimb);
     climb.setDefaultCommand(manualClimb);
 
-    oneBallCommandGroup =  new OneBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
+    oneBallCommandGroup =  new OneBallCommandGroup(driveTrain, conveyor, shooter, limelight);
     twoBallCommandGroup = new TwoBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
     threeBallCommandGroup = new ThreeBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
     fourBallCommandGroup = new FourBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);

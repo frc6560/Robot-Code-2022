@@ -17,23 +17,19 @@ import frc.robot.utility.StraightRamseteGen;
 /** Add your docs here. */
 public class OneBallCommandGroup implements CommandGroupInterface {
 
-    private final Intake intake;
     private final Conveyor conveyor;
     private final Shooter shooter;
     private final Limelight limelight;
 
     private StraightRamseteGen path1;
-    private StraightRamseteGen path2;
 
 
-    public OneBallCommandGroup(DriveTrain driveTrain, Intake intake, Conveyor conveyor, Shooter shooter, Limelight limelight){
-        this.intake = intake;
+    public OneBallCommandGroup(DriveTrain driveTrain, Conveyor conveyor, Shooter shooter, Limelight limelight){
         this.conveyor = conveyor;
         this.shooter = shooter;
         this.limelight = limelight;
 
         path1 = new StraightRamseteGen(driveTrain, 1.5);
-        path2 = new StraightRamseteGen(driveTrain, -2);
     }
     @Override
     public Command getCommand() {
