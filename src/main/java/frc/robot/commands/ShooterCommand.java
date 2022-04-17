@@ -7,6 +7,8 @@ package frc.robot.commands;
 
 import com.revrobotics.ColorMatch;
 
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -65,6 +67,8 @@ public class ShooterCommand extends CommandBase {
   
   private int targetBallCount = -1;
   private double doneShootingFrames = 0;
+
+  private Debouncer debouncer = new Debouncer(2, DebounceType.kFalling);
 
   public ShooterCommand(Shooter shooter, Controls controls, Limelight limelight) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -141,7 +145,7 @@ public class ShooterCommand extends CommandBase {
 
         if(controls.getHotRPMAddition()){
           rpmBuff += hotRPMAddition.getDouble(0.0);
-        } else if (controls.getHotRPMReduction()){
+        } else if(controls.getHotRPMReduction()) {
           rpmBuff += -hotRPMAddition.getDouble(0.0);          
         }
 
@@ -151,11 +155,10 @@ public class ShooterCommand extends CommandBase {
         shooter.setShooterRpm(IDLE_RPM);
       }
 
-      // Debouncer debouncer = new Debouncer(2, DebounceType.kFalling);
-      targetHoodPos = getShooterHoodAngle(dist);
+      targetHoodPos = debouncer.calculate(limelight.hasTarget()) ? limelight.getHorizontalAngle() : 0.0;
       
       
-      if(targetHoodPos >= -1){
+      if(targetHoodPos >= -1) {
         shooter.setHoodPos(targetHoodPos);// - (controls.getHotHoodChange() ? hotHoodAddition.getDouble(0.0) : 0.0) );
       }
 
