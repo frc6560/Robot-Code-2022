@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import frc.robot.subsystems.Limelight;
+
 /**
  * Add your docs here.
  */
@@ -84,6 +86,16 @@ public class ShootCalibrationMap {
         double hoodPos = minHoodPos * (1.0-weightFactor) + maxHoodPos * (weightFactor);
 
         return new Trajectory(shooterRpm, hoodPos);
+    }
+
+    public Trajectory getWithRpmAdjustment(double distance, double delta, double zeta) throws OutOfBoundsException {
+        Trajectory original = get(distance);
+        
+        
+        // double slope = (highPoint.trajectory.shooterRpm - lowPoint.trajectory.shooterRpm) / (highPoint.distance - lowPoint.distance);
+        double adjustment = delta + (delta / 100) * zeta * (distance - Limelight.convertAngleToDistance(points.get(1).distance));
+
+        return new Trajectory(original.shooterRpm + adjustment, original.hoodPos);
     }
 
     public void add(double distance, Trajectory trajectory) {

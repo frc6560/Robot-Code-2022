@@ -70,6 +70,9 @@ public class ShooterCommand extends CommandBase {
 
   private Debouncer debouncer = new Debouncer(2, DebounceType.kFalling);
 
+  private double rpmBuff;
+  private final double rpmBuffZeta = 10;
+
   public ShooterCommand(Shooter shooter, Controls controls, Limelight limelight) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
@@ -141,7 +144,7 @@ public class ShooterCommand extends CommandBase {
       if (controls.getAimShooter()) {
         TeleOpBaseRPMBuff = ntTeleopBuff.getDouble(0.0);
 
-        double rpmBuff = isAuto ? AutoBaseRPMBuff : TeleOpBaseRPMBuff;
+        rpmBuff = isAuto ? AutoBaseRPMBuff : TeleOpBaseRPMBuff;
 
         if(controls.getHotRPMAddition()){
           rpmBuff += hotRPMAddition.getDouble(0.0);
@@ -205,7 +208,8 @@ public class ShooterCommand extends CommandBase {
     if(ntUseCalibrationMap.getBoolean(false)){
       ShootCalibrationMap.Trajectory traj;
       try {
-        traj = Constants.ShooterCalibrations.SHOOT_CALIBRATION_MAP.get(distance);
+        // traj = Constants.ShooterCalibrations.SHOOT_CALIBRATION_MAP.get(distance);
+        traj = Constants.ShooterCalibrations.SHOOT_CALIBRATION_MAP.getWithRpmAdjustment(distance, rpmBuff, rpmBuffZeta);
         
       } catch (ShootCalibrationMap.OutOfBoundsException e) {
         return 0.0;

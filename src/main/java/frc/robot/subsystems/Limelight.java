@@ -28,7 +28,7 @@ public class Limelight extends SubsystemBase {
     setForceOff(false);
 
     ntDispTab("Limelight")
-    .add("Distance",()->(-0.376023*getDistance() + 11.0681))
+    .add("Distance", () -> convertAngleToDistance(getVertAngle()))
     .add("Horizontal Angle", this::getHorizontalAngle)
     .add("Vertical Angle", this::getVertAngle)
     .add("Has Target", this::hasTarget);
@@ -56,6 +56,10 @@ public class Limelight extends SubsystemBase {
   //   }
   //   return  limelightDist * multiplyer;//TODO: FIX THIS LATER!!!!!
   // }
+
+  public static double convertAngleToDistance(double angle) {
+    return -0.376023*angle + 11.0681;
+  }
 
   public double getDistance() {
     // return -0.376023*ntY.getDouble(0.0) + 11.0681;
