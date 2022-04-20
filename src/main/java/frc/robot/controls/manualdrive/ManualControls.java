@@ -141,6 +141,11 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
     public boolean getHotRPMReduction(){
         return xbox.getRawButton(ControllerIds.XBOX_B_BUTTON);
     }
+
+    @Override
+    public boolean getManualMiss(){
+        return xbox.getRawButton(ControllerIds.XBOX_Y_BUTTON);
+    }
     
     @Override
     public boolean getClimbRotatorEngaged() {

@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 
 import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorMatchResult;
 
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utility.ShootCalibrationMap;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.commands.autonomous.AutonomousController;
 import frc.robot.subsystems.Limelight;
 
@@ -31,6 +33,8 @@ public class ShooterCommand extends CommandBase {
 
     boolean getHotRPMAddition();
     boolean getHotRPMReduction();
+
+    boolean getManualMiss();
   }
 
   private Shooter shooter;
@@ -45,8 +49,8 @@ public class ShooterCommand extends CommandBase {
   private boolean isAuto = false;
 
   private boolean missBall = false;
-  private final double ballMissRPM = 300;
-
+  private final double ballMissRPM = 500;
+ 
   private NetworkTable ntTable;
   private NetworkTable ntTableClimb;
   private NetworkTableEntry ntTestRPM;
@@ -130,10 +134,16 @@ public class ShooterCommand extends CommandBase {
   public void execute() {
     
     // if(!RobotContainer.conveyorSensor.get()){
-    //   if(colorMatch.matchClosestColor(RobotContainer.colorSensor.getColor()).color == blueColor && isRedAlliance)
-    //     missBall = true;
-    //   else
-    //     missBall = false;
+    //   ColorMatchResult closestColor = colorMatch.matchClosestColor(RobotContainer.colorSensor.getColor());
+    //   // System.out.println("Ball Color Detected: (" + closestColor.color.red + ", " +closestColor.color.green + ", " + closestColor.color.blue +")");
+
+    //   // if(closestColor.color.blue > 0.8){ //&& isRedAlliance){
+    //   //   missBall = true;
+    //   //   System.out.println("ITS A BLUE BALL");
+    //   // } else{
+    //   //   missBall = false;
+    //   //   System.out.println("R: " + closestColor.color.red+ "G: " + closestColor.color.green+ "B: " + closestColor.color.blue);
+    //   // }
     // }
 
     limelight.setForceOff(!(controls.getAimShooter() || controls.getConstantAiming()));
@@ -150,6 +160,10 @@ public class ShooterCommand extends CommandBase {
           rpmBuff += hotRPMAddition.getDouble(0.0);
         } else if(controls.getHotRPMReduction()) {
           rpmBuff += -hotRPMAddition.getDouble(0.0);          
+        }
+
+        if(missBall || controls.getManualMiss()) {
+          rpmBuff += ballMissRPM;
         }
 
         shooter.setShooterRpm( getShooterRpm(dist) + rpmBuff );

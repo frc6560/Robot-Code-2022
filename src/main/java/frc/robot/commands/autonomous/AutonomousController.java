@@ -93,6 +93,11 @@ public class AutonomousController implements IntakeCommand.Controls, ShooterComm
     public boolean getHotRPMReduction(){
         return false;
     }
+
+    @Override
+    public boolean getManualMiss(){
+        return false;
+    }
     
 
     @Override
