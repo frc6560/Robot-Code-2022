@@ -46,31 +46,9 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
             PovNumberStepper.PovDirection.HORIZONTAL
         );
 
-        ntDispTab("Driver")
-            .add("DEV: xbox X Position", this::getX)
-            .add("DEV: xbox Y Position", this::getY);
+        
     }
 
-
-    @Override
-    public double getX() {
-        return xbox.getRawAxis(ControllerIds.XBOX_R_JOY_X);
-    }
-
-    @Override
-    public double getY() {
-        return -xbox.getRawAxis(ControllerIds.XBOX_L_JOY_Y);
-    }
-
-    @Override
-    public double getSpeed() {
-        return speed.get();
-    }
-
-    @Override
-    public double getTurnSpeed() {
-        return turnSpeed.get();
-    }
 
     @Override
     public boolean getIntakeOut() {
@@ -155,5 +133,23 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
     @Override
     public boolean getAutoClimbEnabled(){
         return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_1);
+    }
+
+
+    @Override
+    public double driveGetX() {
+        return xbox.getRawAxis(ControllerIds.XBOX_L_JOY_X);
+    }
+
+
+    @Override
+    public double driveGetY() {
+        return xbox.getRawAxis(ControllerIds.XBOX_L_JOY_Y);
+    }
+
+
+    @Override
+    public double driveGetRotation() {
+        return xbox.getRawAxis(ControllerIds.XBOX_R_JOY_X);
     }
 }

@@ -4,91 +4,44 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
-
-import edu.wpi.first.wpilibj.DriverStation;
-
-
-
+/** An example command that uses an example subsystem. */
 public class DriveCommand extends CommandBase {
-  /** Creates a new ManualDrive. */
-
-  public static interface Controls {
-    double getX();
-    double getY();
-    double getSpeed();
-    double getTurnSpeed();
-  }
   
+  public interface Controls {
+    double driveGetX();
+    double driveGetY();
+    double driveGetRotation();
+  }
 
-  private final DriveTrain driveTrain;
-
+  private final DriveTrain drivetrain;
   private final Controls controls;
-
-  public DriveCommand(DriveTrain driveTrain, Controls controls) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(driveTrain);
-    this.driveTrain = driveTrain;
-
-    this.controls = controls;
-    
-
-    ntDispTab("Joystick")
-      .add("X Joystick", () -> controls.getX())
-      .add("Y Joystick", () -> controls.getY())
-      .add("Speed", () -> controls.getSpeed())
-      .add("Turn Speed", () -> controls.getTurnSpeed());
-  }
-
   
+
+  public DriveCommand(DriveTrain drivetrain, Controls controls) {
+    this.drivetrain = drivetrain;
+    this.controls = controls;
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(drivetrain);
+
+    
+  }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    driveTrain.getDifferentialDrive().stopMotor();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // System.out.println(driveTrain.getCurrentPose().getRotation());
-    double speed = controls.getSpeed();
-    double turnSpeed = controls.getTurnSpeed();
-
-    double x = controls.getX();
-    double y = controls.getY();
-
-    if (Math.abs(x) < 0.1) {
-      x = 0;
-      // driveTrain.setLVelocity(0);
-      // driveTrain.setRVelocity(0);
-    }
-
-    if (Math.abs(y) < 0.1) {
-      y = 0;
-      // driveTrain.setLVelocity(0);
-      // driveTrain.setRVelocity(0);
-    }
-
-    x *= turnSpeed;
-
-    y *= speed;
-
-    if(!DriverStation.isAutonomous()){
-      driveTrain.setVelocity(y, x);
-    }
-
-    //System.out.println(driveTrain.getCurrentPose());
+    drivetrain.drive(controls.driveGetX(), controls.driveGetY(), controls.driveGetRotation(), true);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    driveTrain.getDifferentialDrive().stopMotor();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

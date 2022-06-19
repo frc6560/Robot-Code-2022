@@ -104,7 +104,7 @@ public class Shooter extends SubsystemBase {
       .add("Target RPM", ()->(targetRPM))
 
       .add("Target Turret", () -> targetTurretPos)
-      .add("Actual Turret", this::getTurretPosDegrees)
+      .add("Actual Turret", this::getTurretPosDegrees) // Don't change name
 
       .add("Target Hood", () -> targetHoodPos)
       .add("Actual Hood", this::getHoodPos)

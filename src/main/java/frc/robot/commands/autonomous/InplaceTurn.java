@@ -29,14 +29,14 @@ public class InplaceTurn extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(!isFinished()) driveTrain.setVelocity(0, 0.4 * Math.copySign(1, degreesToTurn));
-    else driveTrain.setVelocity(0, 0);
+    if(!isFinished()) driveTrain.drive(0, 0, 0.4 * Math.copySign(1, degreesToTurn), false);
+    else driveTrain.drive(0, 0, 0, false);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driveTrain.setVelocity(0, 0);
+    driveTrain.drive(0, 0, 0, false);
   }
 
   // Returns true when the command should end.

@@ -20,11 +20,6 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.autonomous.AutoClimbCommand;
-import frc.robot.commands.autonomous.paths.FourBallCommandGroup;
-import frc.robot.commands.autonomous.paths.NewFourBallCommandGroup;
-import frc.robot.commands.autonomous.paths.OneBallCommandGroup;
-import frc.robot.commands.autonomous.paths.ThreeBallCommandGroup;
-import frc.robot.commands.autonomous.paths.TwoBallCommandGroup;
 import frc.robot.controls.manualdrive.ManualControls;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Conveyor;
@@ -101,11 +96,6 @@ public class RobotContainer {
   private final AutoClimbCommand autoClimb = new AutoClimbCommand(climb);
 
   private final RamseteCommand nullCommand = null;
-  private final OneBallCommandGroup oneBallCommandGroup;
-  private final TwoBallCommandGroup twoBallCommandGroup;
-  private final ThreeBallCommandGroup threeBallCommandGroup;
-  private final FourBallCommandGroup fourBallCommandGroup;
-  private final NewFourBallCommandGroup newFourBallCommandGroup;
 
   private final RGBLighting rgbLighting;
 
@@ -134,21 +124,11 @@ public class RobotContainer {
     manualClimb = new ClimbCommand(climb, controls, autoClimb);
     climb.setDefaultCommand(manualClimb);
 
-    oneBallCommandGroup =  new OneBallCommandGroup(driveTrain, conveyor, shooter, limelight);
-    twoBallCommandGroup = new TwoBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
-    threeBallCommandGroup = new ThreeBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
-    fourBallCommandGroup = new FourBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
-    newFourBallCommandGroup = new NewFourBallCommandGroup(driveTrain, intake, conveyor, shooter, limelight);
-
     rgbLighting = new RGBLighting();
 
     // Add commands to the autonomous command chooser
-    m_chooser.setDefaultOption("New Four Ball", newFourBallCommandGroup.getCommand());
 
-    m_chooser.addOption("One Ball", oneBallCommandGroup.getCommand());
-    m_chooser.addOption("Two Ball", twoBallCommandGroup.getCommand());
-    m_chooser.addOption("Three Ball", threeBallCommandGroup.getCommand());
-    m_chooser.addOption("Nothing", nullCommand);
+    m_chooser.setDefaultOption("Nothing", nullCommand);
 
 
     // Put the chooser on the dashboard

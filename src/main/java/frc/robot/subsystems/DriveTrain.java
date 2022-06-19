@@ -4,363 +4,141 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 import com.kauailabs.navx.frc.AHRS.SerialDataType;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax.ControlType;
-import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
-import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.math.MatBuilder;
-import edu.wpi.first.math.Nat;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
-import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.Constants.PhysicalConstants;
-import frc.robot.Constants.RobotIds;
-import frc.robot.utility.NetworkTable.NtValueDisplay;
-
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveTrain extends SubsystemBase {
-  
-  private final CANSparkMax[] leftMotors = new CANSparkMax[] {
-    new CANSparkMax(RobotIds.DRIVETRAIN_L_FRONT_MOTOR, MotorType.kBrushless),
-    new CANSparkMax(RobotIds.DRIVETRAIN_L_BACK_MOTOR, MotorType.kBrushless)
-  };
+  /** Creates a new ExampleSubsystem. */
 
-  private final CANSparkMax[] rightMotors = new CANSparkMax[]{
-    new CANSparkMax(RobotIds.DRIVETRAIN_R_FRONT_MOTOR, MotorType.kBrushless),
-    new CANSparkMax(RobotIds.DRIVETRAIN_R_BACK_MOTOR, MotorType.kBrushless)
-  };
-
-  private final MotorControllerGroup leftMotorGroup = new MotorControllerGroup(leftMotors);
-  private final MotorControllerGroup rightMotorGroup = new MotorControllerGroup(rightMotors);
+  private final double kMaxSpeed = 3.0; // m/s
 
 
-  private final DifferentialDrive m_drive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
+  private final Translation2d m_frontLeftLocation = new Translation2d(0.69, 0.69);
+  private final Translation2d m_frontRightLocation = new Translation2d(0.69, -0.69);
+  private final Translation2d m_backLeftLocation = new Translation2d(-0.69, 0.69);
+  private final Translation2d m_backRightLocation = new Translation2d(-0.69, -0.69);
 
-  private final RelativeEncoder leftEncoder = leftMotors[0].getEncoder();
-  private final RelativeEncoder rightEncoder = rightMotors[0].getEncoder();
+  private SwerveModule m_frontLeft;
+  private SwerveModule m_frontRight;
+  private SwerveModule m_backLeft;
+  private SwerveModule m_backRight;
 
-  private final DifferentialDriveOdometry m_odometry;
-  
-
-  //check
-  private final AHRS gyro = new AHRS(SerialPort.Port.kMXP, SerialDataType.kProcessedData, (byte) 100);
-
-  private final SlewRateLimiter forwardLimiter = new SlewRateLimiter(PhysicalConstants.MAX_ACCELERATION);
-  private final SlewRateLimiter turnLimiter = new SlewRateLimiter(PhysicalConstants.MAX_TURN_ACCELERATION);
-
-  private final SimpleMotorFeedforward simpleFF = new SimpleMotorFeedforward(PhysicalConstants.KS, PhysicalConstants.KV, PhysicalConstants.KA);
-
-  private double kP, kI, kD, kFF;
-
-  private NetworkTable ntTable;
-  private NetworkTableEntry ntPosition, ntspeed, ntP, ntI, ntD, ntFF, ntifTestingVelocity, ntifTestingRotation;
-
-  private DifferentialDrivePoseEstimator estimator = new DifferentialDrivePoseEstimator(new Rotation2d(), new Pose2d(),
-        new MatBuilder<>(Nat.N5(), Nat.N1()).fill(0.02, 0.02, 0.01, 0.02, 0.02), // State measurement standard deviations. X, Y, theta.
-        new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.02, 0.02, 0.01), // Local measurement standard deviations. Left encoder, right encoder, gyro.
-        new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.1, 0.1, 0.01)); // Global measurement standard deviations. X, Y, and theta.
+  private AHRS gyro;
 
 
-  private final Field2d m_field = new Field2d();
+  private SwerveDriveKinematics m_kinematics;
+  private SwerveDriveOdometry m_odometry;
 
-  /** Creates a new DriveTrainLeoGood. */
+  private SwerveDrivePoseEstimator poseEstimator;
+
+  private final NetworkTableEntry ntL = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tL");
+  private final NetworkTableEntry ntX = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx");
+  private final NetworkTableEntry ntTurret = NetworkTableInstance.getDefault().getTable("Shooter").getEntry("Actual Turret");
+
+
   public DriveTrain() {
-    SmartDashboard.putData("Field", m_field);
-    m_drive.setSafetyEnabled(false);
-
-    setupAllMotors();
-    setupEncoders();
-    // gyro.calibrate();
-
-    m_odometry = new DifferentialDriveOdometry(new Rotation2d());
-    NtValueDisplay.ntDispTab("Drivetrain")
-    .add("Degrees", this::getAngleContinuous)
-    .add("Left Position", this::getLeftEnocoder)
-    .add("Right Position", this::getRightEncoder);
-
-
-    kP = 0; 
-    kI = 0;
-    kD = 0; 
-    kFF = 0;
-
-    this.ntTable = NetworkTableInstance.getDefault().getTable("Drivetrain");
-
-    ntP = ntTable.getEntry("P");
-    ntP.setDouble(0.0);
-    ntI = ntTable.getEntry("I");
-    ntI.setDouble(0.0);
-    ntD = ntTable.getEntry("D");
-    ntD.setDouble(0.0);
-    ntFF = ntTable.getEntry("FF");
-    ntFF.setDouble(0.0);
-    ntspeed = ntTable.getEntry("Target Speed");
-    ntspeed.setDouble(0.0);
-
-    ntPosition = ntTable.getEntry("Target Position");
-    ntPosition.setDouble(0.0);
     
-    ntifTestingVelocity = ntTable.getEntry("If testing Postion");
-    ntifTestingVelocity.setBoolean(false);
+    m_frontLeft = new SwerveModule(new TalonFX(69), new CANSparkMax(69, MotorType.kBrushless));
+    m_frontRight = new SwerveModule(new TalonFX(69), new CANSparkMax(69, MotorType.kBrushless));
+    m_backLeft = new SwerveModule(new TalonFX(69), new CANSparkMax(69, MotorType.kBrushless));
+    m_backRight = new SwerveModule(new TalonFX(69), new CANSparkMax(69, MotorType.kBrushless));
 
-    ntifTestingRotation = ntTable.getEntry("If testing Rotation");
-    ntifTestingRotation.setBoolean(false);
-
-    NtValueDisplay.ntDispTab("Drivetrain").add("L Actual Speed", this::getLVelocity).add("R Actual Speed", this::getRVelocity);
-    NtValueDisplay.ntDispTab("Drivetrain")
-    .add("Actual FF", () -> leftMotors[0].getPIDController().getFF())
-    .add("Actual P", () -> leftMotors[0].getPIDController().getP())
-    .add("Actual I", () -> leftMotors[0].getPIDController().getI())
-    .add("Actual D", () -> leftMotors[0].getPIDController().getD());
-
-    NtValueDisplay.ntDispTab("DriverStation")
-      .add("Battery Voltage", () -> RobotController.getBatteryVoltage());
-    NtValueDisplay.ntDispTab("DriverStation")
-      .add("FPGA Timestamp", () -> RobotController.getFPGATime());
-  }
-
-  public double getLeftEnocoder(){
-    return leftEncoder.getPosition();
-  }
-
-  public double getRightEncoder(){
-    return rightEncoder.getPosition();
-  }
-
-  @Override
-  public void periodic() {
-
-
-    // System.out.println(gyro.isCalibrating());
-    if(!gyro.isConnected())
-      DriverStation.reportError("gryo is off", false);
-    // System.out.println("hi");
-    // This method will be called once per scheduler run
-    m_odometry.update(getGyroAngle(), leftEncoder.getPosition(), rightEncoder.getPosition());
-
-
-    double speed = ntspeed.getDouble(0.0);
-
-    if(ntifTestingVelocity.getBoolean(false)){
-      setWheelVelocity(speed, speed);
-
-      updatePID();
-    }
-
-    if(ntifTestingRotation.getBoolean(false)){
-      double targetPostion = ntPosition.getDouble(0.0);
-      setWheelPosition(new double[]{targetPostion, 0.2}, new double[]{-targetPostion, 0.2});
-    }
-    estimator.updateWithTime(Timer.getFPGATimestamp(), getGyroAngle(), new DifferentialDriveWheelSpeeds(getLVelocity(), getRVelocity()), leftEncoder.getPosition(), rightEncoder.getPosition());
-
-    m_field.setRobotPose(estimator.getEstimatedPosition());
-  }
-
-  public void setRobotEstimatedPosition(double magnitude, double deltaTheta) {
-    Pose2d prevPose = estimator.getEstimatedPosition();
+    gyro = new AHRS(SerialPort.Port.kMXP, SerialDataType.kProcessedData, (byte) 100);
     
-    Rotation2d direction = prevPose.getRotation().plus(new Rotation2d(deltaTheta));
-    //Translation2d t = new Translation2d(magnitude, direction);
+    gyro.calibrate();
+    gyro.reset();
 
-    estimator.addVisionMeasurement(new Pose2d(magnitude, magnitude, direction), Timer.getFPGATimestamp());
+    m_kinematics = new SwerveDriveKinematics(m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
+    m_odometry = new SwerveDriveOdometry(m_kinematics, gyro.getRotation2d());
+
+    // TODO: robot specific constants: update values
+    poseEstimator = new SwerveDrivePoseEstimator(
+      gyro.getRotation2d(),
+      new Pose2d(),
+      m_kinematics,
+      VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
+      VecBuilder.fill(Units.degreesToRadians(0.01)),
+      VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));      
   }
 
-  private void updatePID(){
-    if(kP != ntP.getDouble(0.0) || kI != ntI.getDouble(0.0) || kD != ntD.getDouble(0.0)){
-      System.out.println("Changed!!!!");
-      kP = ntP.getDouble(0.0);
-      kI = ntI.getDouble(0.0);
-      kD = ntD.getDouble(0.0);
-      kFF = ntFF.getDouble(0.0);
-      setupPID(leftMotors, new PIDController(kP, kI, kD), kFF);
-      setupPID(rightMotors, new PIDController(kP, kI, kD), kFF);
-    }
+  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    SwerveModuleState[] swerveModuleStates =
+        m_kinematics.toSwerveModuleStates(
+            fieldRelative
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, gyro.getRotation2d())
+                : new ChassisSpeeds(xSpeed, ySpeed, rot));
+    
+    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, kMaxSpeed);
 
+    m_frontLeft.setDesiredState(swerveModuleStates[0]);
+    m_frontRight.setDesiredState(swerveModuleStates[1]);
+    m_backLeft.setDesiredState(swerveModuleStates[2]);
+    m_backRight.setDesiredState(swerveModuleStates[3]);
   }
 
-  private void setupPID(CANSparkMax[] motors, PIDController newPid, double FF){
-    for (CANSparkMax motor : motors) {
-      SparkMaxPIDController pidController = motor.getPIDController();
+  /** Updates the field relative position of the robot. */
+  public void updateOdometry() {
+    m_odometry.update(
+      gyro.getRotation2d(),
+      m_frontLeft.getState(),
+      m_frontRight.getState(),
+      m_backLeft.getState(),
+      m_backRight.getState());
 
-      pidController.setD(newPid.getD());
-      pidController.setI(newPid.getI());
-      pidController.setP(newPid.getP()); // 1E-5
-      pidController.setFF(FF);
-      pidController.setIZone(0);
-      pidController.setOutputRange(-1.0, 1.0);
-      pidController.setIMaxAccum(0, 0);
-    }
+      poseEstimator.addVisionMeasurement(
+        getUpdatedGlobalPos(poseEstimator.getEstimatedPosition()),
+        Timer.getFPGATimestamp() - getLimelightLatency());
   }
 
+  private Pose2d getUpdatedGlobalPos(Pose2d estimatedPosition) {
+    Rotation2d initialRot = estimatedPosition.getRotation();
+    Rotation2d limelightRot = Rotation2d.fromDegrees(ntX.getDouble(0.0));
+    Rotation2d hoodRot = Rotation2d.fromDegrees(ntTurret.getDouble(0.0));
 
-  private void setupAllMotors() {
-    // inversion tbd
-    setupMotors(leftMotors, false);
-    setupMotors(rightMotors, true);
+    Rotation2d newRotation = initialRot.plus(limelightRot).plus(hoodRot);
+
+    return new Pose2d(estimatedPosition.getTranslation(), newRotation);
   }
 
-  private void setupMotors(CANSparkMax[] motors, boolean inverted) {
-    for (CANSparkMax motor : motors) {
-      motor.restoreFactoryDefaults();
-      motor.setInverted(inverted);
-      motor.getEncoder().setPosition(0);
-      motor.setClosedLoopRampRate(0.0);
-      motor.setIdleMode(IdleMode.kBrake);
-
-      SparkMaxPIDController pidController = motor.getPIDController();
-      pidController.setP(PhysicalConstants.KP);
-      pidController.setI(PhysicalConstants.KI);
-      pidController.setD(PhysicalConstants.KD);
-      pidController.setFF(0);
-      pidController.setIZone(0);
-      pidController.setOutputRange(-1.0, 1.0);
-      pidController.setIMaxAccum(0, 0);
-    }
-
-    motors[0].setPeriodicFramePeriod(PeriodicFrame.kStatus2, 10);
-
-
-    // Changes default motor controller "send speed" from 20ms to 10ms
-    // Add if having issues with accuracy
-    //motors[0].setPeriodicFramePeriod(PeriodicFrame.kStatus2, 10);
-
+  private double getLimelightLatency() {
+    return ntL.getDouble(0.0) + 11; // >11 ms is constant recommended by limelight accounting for extra latency
   }
 
-  private void setupEncoders(){
-
-    leftEncoder.setPosition(0);
-    rightEncoder.setPosition(0);
-
-    leftEncoder.setPositionConversionFactor(PhysicalConstants.ROTATIONSTOMETERS);
-    rightEncoder.setPositionConversionFactor(PhysicalConstants.ROTATIONSTOMETERS);
-
-    leftEncoder.setVelocityConversionFactor(PhysicalConstants.RPMTOMETERSPERSEC);
-    rightEncoder.setVelocityConversionFactor(PhysicalConstants.RPMTOMETERSPERSEC);
+  public double getAngleContinuous() {
+    return gyro.getRotation2d().getDegrees() * 1.039956786329005;
   }
 
-  private Rotation2d getGyroAngle(){
-    return new Rotation2d(Math.toRadians(gyro.getRotation2d().getDegrees() * 1.039956786329005));
-    // return gyro.getRotation2d();
-  }
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
   }
 
-  public double getXdistance(){
-    return m_odometry.getPoseMeters().getX();
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
   }
 
-  public double getYdistance(){
-    return m_odometry.getPoseMeters().getY();
+  @Override
+  public void simulationPeriodic() {
+    // This method will be called once per scheduler run during simulation
   }
 
-  public void tankDriveVolts(double leftVolts, double rightVolts) {
-
-    leftMotorGroup.setVoltage(leftVolts);
-
-    rightMotorGroup.setVoltage(rightVolts);
-
-    m_drive.feed();
-
-  }
-
-  public DifferentialDrive getDifferentialDrive(){
-    return m_drive;
-  }
-
-  public DifferentialDriveWheelSpeeds getWheelSpeeds(){
-    return new DifferentialDriveWheelSpeeds(leftEncoder.getVelocity(), rightEncoder.getVelocity());
-  }
-
-  public void setVelocity(double forward, double turn) {
-    if(!ntifTestingVelocity.getBoolean(false) && !ntifTestingRotation.getBoolean(false)){
-      m_drive.arcadeDrive(forwardLimiter.calculate(forward), turnLimiter.calculate(turn));    //differentialDrive.arcadeDrive(forward, turn);
-    }
-  }
-
-  public void setWheelVelocity(double left, double right){
-    setWheelVelocity(new double[]{left, 0.0}, new double[]{right, 0.0});
-  }
-
-  public void setWheelVelocity(double[] left, double[] right){
-    setLVelocityMeters(left[0], left[1]);
-    setRVelocityMeters(right[0], right[1]);
-    // setLVelocityMeters(left[0], 0);
-    // setRVelocityMeters(right[0], 0);
-    System.out.println("Actual Left Speed: " + getLVelocity());
-    System.out.println("Actual right Speed: " + getRVelocity());
-
-
-    m_drive.feed();
-
-  }
-
-  public void setWheelPosition(double[] left, double[] right){
-    setLPositionMeters(left[0], left[1]);
-    setRPositionMeters(right[0], right[1]);
-
-    m_drive.feed();
-
-  }
-
-
-  public void setLVelocityMeters(double velocity, double accel){
-    for (CANSparkMax motor : leftMotors) {
-      motor.getPIDController().setReference(velocity, ControlType.kVelocity, 0, simpleFF.calculate(velocity, accel), ArbFFUnits.kVoltage);
-    }
-  }
-  public void setRVelocityMeters(double velocity, double accel){
-    for (CANSparkMax motor : rightMotors) {
-      motor.getPIDController().setReference(velocity, ControlType.kVelocity, 0, simpleFF.calculate(velocity, accel), ArbFFUnits.kVoltage);
-    }
-  }
-
-  public void setLPositionMeters(double position, double accel){
-    for (CANSparkMax motor : leftMotors) {
-      motor.getPIDController().setReference(position, ControlType.kPosition, 0, simpleFF.calculate(position, accel), ArbFFUnits.kVoltage);
-    }
-  }
-
-  public void setRPositionMeters(double position, double accel){
-    for (CANSparkMax motor : rightMotors) {
-      motor.getPIDController().setReference(position, ControlType.kPosition, 0, simpleFF.calculate(position, accel), ArbFFUnits.kVoltage);
-    }
-  }
-
-  public double getAngleContinuous(){
-    return gyro.getRotation2d().getDegrees() * 1.039956786329005;
-  }
-
-  public double getLVelocity(){
-    return leftEncoder.getVelocity();
-  }
-
-  public double getRVelocity(){
-    return rightEncoder.getVelocity();
-  }
-  
 }
