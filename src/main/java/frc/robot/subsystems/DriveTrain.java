@@ -80,7 +80,7 @@ public class DriveTrain extends SubsystemBase {
       VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));      
   }
 
-  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rotationIsPosition) {
     SwerveModuleState[] swerveModuleStates =
         m_kinematics.toSwerveModuleStates(
             fieldRelative
@@ -88,6 +88,12 @@ public class DriveTrain extends SubsystemBase {
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, kMaxSpeed);
+
+    if (rotationIsPosition) {
+      for (SwerveModuleState i : swerveModuleStates) {
+        i.angle = new Rotation2d(rot);
+      }
+    }
 
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
     m_frontRight.setDesiredState(swerveModuleStates[1]);
