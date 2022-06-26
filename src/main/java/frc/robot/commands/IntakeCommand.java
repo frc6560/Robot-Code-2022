@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.commands.autonomous.AutonomousController;
 import frc.robot.subsystems.Intake;
 
 public class IntakeCommand extends CommandBase {
@@ -27,10 +26,6 @@ public class IntakeCommand extends CommandBase {
     this.controls = controls;
   }
 
-  public IntakeCommand(Intake intake){ // Autonomouse
-    this(intake, new AutonomousController(false, "Intake"));
-  }
-
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
@@ -45,6 +40,25 @@ public class IntakeCommand extends CommandBase {
       intake.setReversed(true);
     } else {
       intake.setReversed(false);
+    }
+  }
+
+  public enum intakeState {
+    IN, OUT, OUT_REVERSED
+  }
+
+  public synchronized void setIntakeState(intakeState state) {
+    switch (state) {
+      case IN:
+        intake.setPiston(false);
+        break;
+      case OUT:
+        intake.setReversed(false);
+        intake.setPiston(true);
+        break;
+      case OUT_REVERSED:
+        intake.setReversed(true);
+        intake.setPiston(true);
     }
   }
 

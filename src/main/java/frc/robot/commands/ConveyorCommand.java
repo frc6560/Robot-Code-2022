@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.commands.autonomous.AutonomousController;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Shooter;
 
@@ -38,11 +37,6 @@ public class ConveyorCommand extends CommandBase {
     this.shooter = shooter; // this is to be able to read wether or not the shooter is ready to shoot.
   }
 
-  public ConveyorCommand(Conveyor conveyor, Shooter shooter, Boolean shoot){ // Autonomouse
-    this(conveyor, new AutonomousController(false,"conveyor", (shoot ? "shooter" : "")), shooter);
-
-  }
-
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
@@ -50,34 +44,62 @@ public class ConveyorCommand extends CommandBase {
     conveyorTopSensorLast = conveyor.getSensor();
   }
 
+  public enum ConveyorState {
+    REVERSE, INTAKE, SHOOT, CHILLING
+  }
+
+  public synchronized void setConveyorState(ConveyorState state) {
+    switch (state) {
+      case REVERSE:
+        conveyor.setConveyor(-conveyorSpeed);
+        conveyor.setOverHead(-overHeadSpeed);
+        break;
+      case INTAKE:
+        if (!conveyor.getSensor())
+          conveyor.setOverHead(overHeadSpeed);
+
+        conveyor.setConveyor(conveyorSpeed * (shooter.isShooterReady() ? 1.5 : 1));
+
+        if(conveyorTopSensorLast && !conveyor.getSensor()){
+          shooter.increaseBallCount();
+        }
+
+        break;
+      case SHOOT:
+        conveyor.setOverHead(overHeadSpeed);
+        if (shooter.isShooterReady())
+          conveyor.setConveyor(conveyorSpeed * (shooter.isShooterReady() ? 1.5 : 1));
+
+        if(conveyorTopSensorLast && !conveyor.getSensor()){
+          shooter.increaseBallCount();
+        }
+
+        break;
+      case CHILLING:
+        conveyor.setConveyor(0.0);
+        conveyor.setOverHead(0.0);
+        break;
+    }
+    conveyorTopSensorLast = conveyor.getSensor();
+  }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     if (controls.getBallChainReverse()){
-      conveyor.setConveyor(-conveyorSpeed);
-      conveyor.setOverHead(-overHeadSpeed);
+      setConveyorState(ConveyorState.REVERSE);
+    } else if (controls.getConveyorMotor() || controls.isIntakeEngaged()){  // if ballchain, intake, or shooter_feeding is on, run transfer
 
-    } else if (controls.getConveyorMotor() || controls.isIntakeEngaged() || (controls.getFeedShooter() && shooter.isShooterReady())){  // if ballchain, intake, or shooter_feeding is on, run transfer
+      setConveyorState(ConveyorState.INTAKE);
 
-      if(!conveyor.getSensor() || (controls.getFeedShooter() && shooter.isShooterReady()) || controls.getBallChainReverse()){
-        conveyor.setConveyor(conveyorSpeed * (shooter.isShooterReady() ? 1.5 : 1));
-
-      }else{
-        conveyor.setConveyor(0.0);
-      }
-
-      conveyor.setOverHead(overHeadSpeed);
-
-      if(conveyorTopSensorLast && !conveyor.getSensor()){
-        shooter.increaseBallCount();
-      }
+    } else if (controls.getFeedShooter() || controls.getBallChainReverse()){
+      setConveyorState(ConveyorState.SHOOT);
 
     } else {
-      conveyor.setConveyor(0.0);
-      conveyor.setOverHead(0.0);
+      setConveyorState(ConveyorState.CHILLING);
     }
 
-    conveyorTopSensorLast = conveyor.getSensor();
+    
   }
 
   // Called once the command ends or is interrupted.

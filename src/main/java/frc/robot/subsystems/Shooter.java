@@ -36,7 +36,7 @@ public class Shooter extends SubsystemBase {
   private final PWM hoodServoL;
   private final PWM hoodServoR;
 
-  private double startAngle = 90;
+  private double startAngle = 0;
 
   private double targetRPM;
   private double targetHoodPos;

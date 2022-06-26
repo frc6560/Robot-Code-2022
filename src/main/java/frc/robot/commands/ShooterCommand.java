@@ -19,7 +19,6 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.utility.ShootCalibrationMap;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
-import frc.robot.commands.autonomous.AutonomousController;
 import frc.robot.subsystems.Limelight;
 
 public class ShooterCommand extends CommandBase {
@@ -114,12 +113,6 @@ public class ShooterCommand extends CommandBase {
   }
   
 
-  public ShooterCommand(Shooter shooter, Limelight limelight, boolean shootingFar, int ballCount){ // Autonomouse
-    this(shooter, new AutonomousController(shootingFar, "Shooter", "conveyor", "Intake"), limelight);
-    this.targetBallCount = ballCount;
-    this.isAuto = true;
-  }
-
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
@@ -127,6 +120,45 @@ public class ShooterCommand extends CommandBase {
     shooter.setShooterRpm(0.0);
     shooter.resetBallCount();
     
+  }
+
+  public enum ShooterState {
+    SHOOTING, AIMING, CHILLING
+  }
+
+  public synchronized void setShooterState(ShooterState state) {
+    switch (state) {
+      case SHOOTING:
+        double dist = limelight.getDistance();
+        TeleOpBaseRPMBuff = ntTeleopBuff.getDouble(0.0);
+
+        rpmBuff = isAuto ? AutoBaseRPMBuff : TeleOpBaseRPMBuff;
+
+        shooter.setShooterRpm( getShooterRpm(dist) + rpmBuff );
+        break;
+
+      case AIMING:
+        shooter.setShooterRpm(IDLE_RPM);
+        targetHoodPos = debouncer.calculate(limelight.hasTarget()) ? limelight.getHorizontalAngle() : 0.0;
+        if(targetHoodPos >= -1) {
+          shooter.setHoodPos(targetHoodPos);// - (controls.getHotHoodChange() ? hotHoodAddition.getDouble(0.0) : 0.0) );
+        }
+        double turrTarget = limelight.getHorizontalAngle();
+      
+        if((shooter.getTurretPosDegrees() > 85 && turrTarget > 0) || (shooter.getTurretPosDegrees() < -85 && turrTarget < 0))
+          turrTarget = 0;
+        shooter.setTurretDeltaPos(turrTarget); // limelight controlled turret pos;
+        break;
+      case CHILLING:
+        shooter.setShooterRpm(0.0);
+        break;
+    }
+    if(targetBallCount != -1 && shooter.getBallShotCount() >= targetBallCount) doneShootingFrames++;
+
+    
+    if (ntTableClimb.getEntry("Left Climb Pos").getDouble(0.0) > 8.0 && ntTableClimb.getEntry("Right Climb Pos").getDouble(0.0) > 8.0) {
+      shooter.setTurretPos(90.0); // turret is at 90 degrees when both climb arms are extended
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -148,74 +180,18 @@ public class ShooterCommand extends CommandBase {
 
     limelight.setForceOff(!(controls.getAimShooter() || controls.getConstantAiming()));
 
-    double dist = limelight.getDistance();
+    
     if(controls.getAimShooter() || controls.getConstantAiming()) {
       
       if (controls.getAimShooter()) {
-        TeleOpBaseRPMBuff = ntTeleopBuff.getDouble(0.0);
-
-        rpmBuff = isAuto ? AutoBaseRPMBuff : TeleOpBaseRPMBuff;
-
-        if(controls.getHotRPMAddition()){
-          rpmBuff += hotRPMAddition.getDouble(0.0);
-        } else if(controls.getHotRPMReduction()) {
-          rpmBuff += -hotRPMAddition.getDouble(0.0);          
-        }
-
-        if(missBall || controls.getManualMiss()) {
-          rpmBuff += ballMissRPM;
-        }
-
-        shooter.setShooterRpm( getShooterRpm(dist) + rpmBuff );
+        setShooterState(ShooterState.SHOOTING);
       }
       else{
-        shooter.setShooterRpm(IDLE_RPM);
+        setShooterState(ShooterState.AIMING);
       }
-
-      targetHoodPos = debouncer.calculate(limelight.hasTarget()) ? limelight.getHorizontalAngle() : 0.0;
-      
-      
-      if(targetHoodPos >= -1) {
-        shooter.setHoodPos(targetHoodPos);// - (controls.getHotHoodChange() ? hotHoodAddition.getDouble(0.0) : 0.0) );
-      }
-
-      // shooter.setTurretPos(shooter.getTurretPos() + controls.shooterTurretTest()); // manual control of turret using climb joystick (button board);
-      double turrTarget = limelight.getHorizontalAngle();
-
-      // if(missBall){
-      //   if(turrTarget > 0){
-      //     turrTarget -= ballMissAngle;
-      //   } else{
-      //     turrTarget += ballMissAngle;
-      //   }
-      // }
-      
-      if((shooter.getTurretPosDegrees() > 85 && turrTarget > 0) || (shooter.getTurretPosDegrees() < -85 && turrTarget < 0))
-        turrTarget = 0;
-      
-      else if (controls.overrideTurretCenter()) shooter.setTurretPos(0); // override controlled turret pos
-      else shooter.setTurretDeltaPos(turrTarget); // limelight controlled turret pos;
-
-      // ntTestHood.setDouble(targetHoodPos);
     }else{
-      // shooter.setTurretPos(0);
-      shooter.setShooterRpm(0);
+      setShooterState(ShooterState.CHILLING);
     }
-
-    if(targetBallCount != -1 && shooter.getBallShotCount() >= targetBallCount) doneShootingFrames++;
-
-    
-    if (ntTableClimb.getEntry("Left Climb Pos").getDouble(0.0) > 8.0 && ntTableClimb.getEntry("Right Climb Pos").getDouble(0.0) > 8.0) {
-      shooter.setTurretPos(90.0); // turret is at 90 degrees when both climb arms are extended
-    }
-
-    // if(!prevCalibButton && ntAddCalibrateButton.getBoolean(false)){
-    //   ShooterCalibrations.NEW_SHOOT_CALIBRATION_MAP.add(dist, new ShootCalibrationMap.Trajectory(ntTestRPM.getDouble(0.0), ntTestHood.getDouble(0.0)));
-    //   saveNewCalibrationMap();
-    //   System.out.println("added a point");
-    //   System.out.println(ShooterCalibrations.NEW_SHOOT_CALIBRATION_MAP.toString());
-    // }
-    // prevCalibButton = ntAddCalibrateButton.getBoolean(false);
   }
 
   public double getShooterRpm(double distance) {

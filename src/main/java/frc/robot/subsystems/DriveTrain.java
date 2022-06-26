@@ -143,6 +143,10 @@ public class DriveTrain extends SubsystemBase {
       .add("FPGA Timestamp", () -> RobotController.getFPGATime());
   }
 
+  public void stop() {
+    setWheelVelocity(0, 0);
+  }
+
   public double getLeftEnocoder(){
     return leftEncoder.getPosition();
   }
@@ -151,9 +155,16 @@ public class DriveTrain extends SubsystemBase {
     return rightEncoder.getPosition();
   }
 
+  public void resetOdometry(Pose2d pose, Rotation2d gyroAngle) {
+    m_odometry.resetPosition(pose, gyroAngle);
+  }
+
+  public void resetOdometry(Pose2d pose) {
+    resetOdometry(pose, gyro.getRotation2d());
+  }
+
   @Override
   public void periodic() {
-
 
     // System.out.println(gyro.isCalibrating());
     if(!gyro.isConnected())
@@ -311,8 +322,6 @@ public class DriveTrain extends SubsystemBase {
     setRVelocityMeters(right[0], right[1]);
     // setLVelocityMeters(left[0], 0);
     // setRVelocityMeters(right[0], 0);
-    System.out.println("Actual Left Speed: " + getLVelocity());
-    System.out.println("Actual right Speed: " + getRVelocity());
 
 
     m_drive.feed();
