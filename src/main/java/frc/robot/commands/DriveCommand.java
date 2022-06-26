@@ -42,7 +42,7 @@ public class DriveCommand extends CommandBase {
 
   // for auto
   private volatile @NotNull Trajectory currentTrajectory;
-  private volatile RamseteCommand currentRamseteCommand;
+  private volatile @NotNull RamseteCommand currentRamseteCommand;
 
   private double autoStartTime;
 
