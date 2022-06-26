@@ -42,11 +42,11 @@ public class Robot extends TimedRobot {
     driveCommand = m_robotContainer.getDriveCommand();
 
     AutonomousContainer.getInstance().initialize(
-      false,
+      true,
       new CommandTranslator(
         driveCommand::setTrajectory,
-        driveCommand::stopRobot,
-        null,
+        driveCommand::stopMovement,
+        driveCommand::setAutoRotation,
         driveCommand::isTrajectoryDone,
         driveCommand::getTrajectoryElapsedTime,
         driveCommand.getDriveTrain()::resetOdometry,

@@ -51,6 +51,7 @@ public class DriveTrain extends SubsystemBase {
 
   private final NetworkTableEntry ntL = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tL");
   private final NetworkTableEntry ntX = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx");
+  private final NetworkTableEntry ntV = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv");
   private final NetworkTableEntry ntTurret = NetworkTableInstance.getDefault().getTable("Shooter").getEntry("Actual Turret");
 
 
@@ -94,10 +95,22 @@ public class DriveTrain extends SubsystemBase {
       }
     }
 
-    m_frontLeft.setDesiredState(swerveModuleStates[0]);
-    m_frontRight.setDesiredState(swerveModuleStates[1]);
-    m_backLeft.setDesiredState(swerveModuleStates[2]);
-    m_backRight.setDesiredState(swerveModuleStates[3]);
+    setModuleStates(swerveModuleStates);
+  }
+
+  public void drive(ChassisSpeeds chassisSpeeds, boolean fieldRelative, boolean rotationIsPosition) {
+    drive(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond, fieldRelative, rotationIsPosition);
+  }
+
+  public void setModuleStates(SwerveModuleState[] states) {
+    m_frontLeft.setDesiredState(states[0]);
+    m_frontRight.setDesiredState(states[1]);
+    m_backLeft.setDesiredState(states[2]);
+    m_backRight.setDesiredState(states[3]);
+  }
+
+  public void stop() {
+    drive(0.0, 0.0, 0.0, false, false);
   }
 
   /** Updates the field relative position of the robot. */
@@ -107,21 +120,27 @@ public class DriveTrain extends SubsystemBase {
       m_frontLeft.getState(),
       m_frontRight.getState(),
       m_backLeft.getState(),
-      m_backRight.getState());
+      m_backRight.getState()
+    );
 
-      poseEstimator.addVisionMeasurement(
-        getUpdatedGlobalPos(poseEstimator.getEstimatedPosition()),
-        Timer.getFPGATimestamp() - getLimelightLatency());
+    resetOdometryWithVision();
+
+    poseEstimator.addVisionMeasurement(
+      m_odometry.getPoseMeters(),
+      Timer.getFPGATimestamp() - getLimelightLatency()
+    );
   }
 
-  private Pose2d getUpdatedGlobalPos(Pose2d estimatedPosition) {
-    Rotation2d initialRot = estimatedPosition.getRotation();
-    Rotation2d limelightRot = Rotation2d.fromDegrees(ntX.getDouble(0.0));
-    Rotation2d hoodRot = Rotation2d.fromDegrees(ntTurret.getDouble(0.0));
+  public void resetOdometryWithVision() {
+    if (ntV.getDouble(0.0) > 0) {
+      Rotation2d initialRot = m_odometry.getPoseMeters().getRotation();
+      Rotation2d limelightRot = Rotation2d.fromDegrees(ntX.getDouble(0.0));
+      Rotation2d hoodRot = Rotation2d.fromDegrees(ntTurret.getDouble(0.0));
 
-    Rotation2d newRotation = initialRot.plus(limelightRot).plus(hoodRot);
+      Rotation2d newRotation = initialRot.plus(limelightRot).plus(hoodRot);
 
-    return new Pose2d(estimatedPosition.getTranslation(), newRotation);
+      m_odometry.resetPosition(new Pose2d(m_odometry.getPoseMeters().getTranslation(), newRotation), gyro.getRotation2d());
+    }
   }
 
   private double getLimelightLatency() {
@@ -136,9 +155,18 @@ public class DriveTrain extends SubsystemBase {
     return m_odometry.getPoseMeters();
   }
 
+  public void resetOdometry(Pose2d pose, Rotation2d gyroAngle) {
+    m_odometry.resetPosition(pose, gyroAngle);
+  }
+
+  public void resetOdometry(Pose2d pose) {
+    m_odometry.resetPosition(pose, this.gyro.getRotation2d());
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    updateOdometry();
   }
 
   @Override
