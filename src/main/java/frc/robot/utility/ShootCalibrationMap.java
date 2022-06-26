@@ -54,37 +54,11 @@ public class ShootCalibrationMap {
 
     private final List<Point> points = new ArrayList<>();
 
-    public Trajectory get(double distance) throws OutOfBoundsException {
-        int highIndex = -1;
+    public Trajectory get(double x) throws OutOfBoundsException {
         
-        for(int i = 0; i < points.size(); i++){
-            if(distance <= points.get(i).distance){
-                highIndex = i;
-                break;
-            }
-        }
-
-        int lowIndex = highIndex - 1;
-
-        if (lowIndex < 0 || highIndex >= points.size()) {
-            throw new OutOfBoundsException();
-        }
-
-        Point lowPoint = points.get(lowIndex);
-        Point highPoint = points.get(highIndex);
-
-        double stepDiff = highPoint.distance - lowPoint.distance;
-        double weightFactor = (distance - lowPoint.distance) / stepDiff;
-
-        double minHoodPos = lowPoint.trajectory.hoodPos;
-        double maxHoodPos = highPoint.trajectory.hoodPos;
-
-        double minShooterRpm = lowPoint.trajectory.shooterRpm;
-        double maxShooterRpm = highPoint.trajectory.shooterRpm;
-
-        double shooterRpm = minShooterRpm * (1.0-weightFactor) + maxShooterRpm * (weightFactor);
-        double hoodPos = minHoodPos * (1.0-weightFactor) + maxHoodPos * (weightFactor);
-
+        double hoodPos = -0.00002*Math.pow(x,4) - 0.0006*Math.pow(x,3) - 0.0028*x*x - 0.0128*x - 0.1396;
+        double shooterRpm = 0.1678*Math.pow(x,3) + 2.4261*x*x - 27.021*x + 3256.3;
+        System.out.println(shooterRpm +":"+hoodPos);
         return new Trajectory(shooterRpm, hoodPos);
     }
 

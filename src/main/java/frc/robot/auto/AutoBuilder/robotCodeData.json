@@ -1,0 +1,1435 @@
+{
+  "reflectionClassData" : [ {
+    "fullName" : "frc.robot.utility.ShootCalibrationMap$OutOfBoundsException",
+    "fieldNames" : [ "serialVersionUID" ],
+    "fieldTypes" : [ "long" ],
+    "methods" : [ ],
+    "modifiers" : 9,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.commands.ClimbCommand$Controls",
+    "fieldNames" : [ ],
+    "fieldTypes" : [ ],
+    "methods" : [ {
+      "methodName" : "getClimbRotatorEngaged",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1025
+    }, {
+      "methodName" : "getClimbExtensionMotors",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1025
+    }, {
+      "methodName" : "getAutoClimbEnabled",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1025
+    } ],
+    "modifiers" : 1545,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.commands.IntakeCommand$intakeState",
+    "fieldNames" : [ "IN", "OUT", "OUT_REVERSED", "ENUM$VALUES" ],
+    "fieldTypes" : [ "frc.robot.commands.IntakeCommand$intakeState", "frc.robot.commands.IntakeCommand$intakeState", "frc.robot.commands.IntakeCommand$intakeState", "[Lfrc.robot.commands.IntakeCommand$intakeState;" ],
+    "methods" : [ {
+      "methodName" : "values",
+      "parameterTypes" : [ ],
+      "returnType" : "frc.robot.commands.IntakeCommand$intakeState[]",
+      "modifiers" : 9
+    }, {
+      "methodName" : "valueOf",
+      "parameterTypes" : [ "java.lang.String" ],
+      "returnType" : "frc.robot.commands.IntakeCommand$intakeState",
+      "modifiers" : 9
+    } ],
+    "modifiers" : 16409,
+    "isEnum" : true
+  }, {
+    "fullName" : "frc.robot.commands.ShooterCommand$Controls",
+    "fieldNames" : [ ],
+    "fieldTypes" : [ ],
+    "methods" : [ {
+      "methodName" : "overrideTurretCenter",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1025
+    }, {
+      "methodName" : "shooterHoodTest",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1025
+    }, {
+      "methodName" : "shooterTurretTest",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1025
+    }, {
+      "methodName" : "getHotRPMAddition",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1025
+    }, {
+      "methodName" : "getHotRPMReduction",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1025
+    }, {
+      "methodName" : "getConstantAiming",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1025
+    }, {
+      "methodName" : "getManualMiss",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1025
+    }, {
+      "methodName" : "getAimShooter",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1025
+    } ],
+    "modifiers" : 1545,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.utility.NumberStepper",
+    "fieldNames" : [ "min", "max", "step", "current" ],
+    "fieldTypes" : [ "double", "double", "double", "double" ],
+    "methods" : [ {
+      "methodName" : "stepDown",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getClamped",
+      "parameterTypes" : [ "double", "double", "double" ],
+      "returnType" : "double",
+      "modifiers" : 10
+    }, {
+      "methodName" : "stepUp",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "get",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "limit",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 2
+    }, {
+      "methodName" : "set",
+      "parameterTypes" : [ "double" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    } ],
+    "modifiers" : 1,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.commands.IntakeCommand$Controls",
+    "fieldNames" : [ ],
+    "fieldTypes" : [ ],
+    "methods" : [ {
+      "methodName" : "getBallChainReverse",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1025
+    }, {
+      "methodName" : "getIntakeOut",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1025
+    }, {
+      "methodName" : "isIntakeEngaged",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1025
+    } ],
+    "modifiers" : 1545,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.Constants$PhysicalConstants",
+    "fieldNames" : [ "KS", "KV", "KA", "KP", "KI", "KD", "MAXSPEEDMETERS", "MAXACCELERATIONMETERS", "kRamseteB", "kRamseteZeta", "RAMSETE_CONTROLLER", "DIFFERENTIAL_DRIVE_KINEMATICS", "ROTATIONSTOMETERS", "RPMTOMETERSPERSEC", "RPM_PER_FALCON_UNIT", "MAX_HOOD_ENCODER_DISTANCE", "DRIVETRAIN_ROTS_PER_FOOT", "CLIMB_EXTENSION_INCHES_PER_ROTATION", "MAX_SPEED", "MAX_TURN_SPEED", "MAX_ACCELERATION", "MAX_TURN_ACCELERATION", "trackWidthMeters" ],
+    "fieldTypes" : [ "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "edu.wpi.first.math.controller.RamseteController", "edu.wpi.first.math.kinematics.DifferentialDriveKinematics", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double", "double" ],
+    "methods" : [ ],
+    "modifiers" : 25,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.Constants$RobotIds",
+    "fieldNames" : [ "DRIVETRAIN_R_FRONT_MOTOR", "DRIVETRAIN_R_BACK_MOTOR", "DRIVETRAIN_L_FRONT_MOTOR", "DRIVETRAIN_L_BACK_MOTOR", "CONVEYOR_MOTOR_TOP", "CONVEYOR_MOTOR_BOTTOM", "CONVEYOR_SENSOR", "SHOOTER_MOTOR_LEFT", "SHOOTER_MOTOR_RIGHT", "SHOOTER_HOOD_ACTUATOR_LEFT", "SHOOTER_HOOD_ACTUATOR_RIGHT", "SHOOTER_HOOD_ENCODER_A", "SHOOTER_HOOD_ENCODER_B", "SHOOTER_TURRET_MOTOR", "INTAKE_MOTOR", "INTAKE_OVERHEAD_MOTOR", "INTAKE_SOLENOID", "CLIMB_PISTON", "CLIMB_ROTATOR_PISTON", "CLIMB_LEFT_EXTENSION_MOTOR", "CLIMB_RIGHT_EXTENSION_MOTOR", "LED_LIGHT_RED", "LED_LIGHT_GREEN", "LED_LIGHT_BLUE" ],
+    "fieldTypes" : [ "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int" ],
+    "methods" : [ ],
+    "modifiers" : 25,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.controls.manualdrive.ManualControls",
+    "fieldNames" : [ "xbox", "controlStation", "speed", "turnSpeed" ],
+    "fieldTypes" : [ "edu.wpi.first.wpilibj.Joystick", "edu.wpi.first.wpilibj.Joystick", "frc.robot.utility.PovNumberStepper", "frc.robot.utility.PovNumberStepper" ],
+    "methods" : [ {
+      "methodName" : "getLimelightPipeline",
+      "parameterTypes" : [ ],
+      "returnType" : "int",
+      "modifiers" : 1
+    }, {
+      "methodName" : "overrideTurretCenter",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getBallChainReverse",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getClimbRotatorEngaged",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getClimbExtensionMotors",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getAutoClimbEnabled",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getY",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getX",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "shooterHoodTest",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "shooterTurretTest",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getHotRPMAddition",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getHotRPMReduction",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getIntakeOut",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getTurnSpeed",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getSpeed",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getConstantAiming",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getManualMiss",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getAimShooter",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    }, {
+      "methodName" : "isIntakeEngaged",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getConveyorMotor",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getFeedShooter",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    } ],
+    "modifiers" : 1,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.Constants",
+    "fieldNames" : [ ],
+    "fieldTypes" : [ ],
+    "methods" : [ ],
+    "modifiers" : 17,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.commands.ShooterCommand$ShooterState",
+    "fieldNames" : [ "SHOOTING", "AIMING", "CHILLING", "ENUM$VALUES" ],
+    "fieldTypes" : [ "frc.robot.commands.ShooterCommand$ShooterState", "frc.robot.commands.ShooterCommand$ShooterState", "frc.robot.commands.ShooterCommand$ShooterState", "[Lfrc.robot.commands.ShooterCommand$ShooterState;" ],
+    "methods" : [ {
+      "methodName" : "values",
+      "parameterTypes" : [ ],
+      "returnType" : "frc.robot.commands.ShooterCommand$ShooterState[]",
+      "modifiers" : 9
+    }, {
+      "methodName" : "valueOf",
+      "parameterTypes" : [ "java.lang.String" ],
+      "returnType" : "frc.robot.commands.ShooterCommand$ShooterState",
+      "modifiers" : 9
+    } ],
+    "modifiers" : 16409,
+    "isEnum" : true
+  }, {
+    "fullName" : "frc.robot.commands.DriveCommand$Controls",
+    "fieldNames" : [ ],
+    "fieldTypes" : [ ],
+    "methods" : [ {
+      "methodName" : "getY",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1025
+    }, {
+      "methodName" : "getX",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1025
+    }, {
+      "methodName" : "getTurnSpeed",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1025
+    }, {
+      "methodName" : "getSpeed",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1025
+    } ],
+    "modifiers" : 1545,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.Constants$ControllerIds",
+    "fieldNames" : [ "FIRST_DRIVER_CONTROLLER", "SECOND_DRIVER_CONTROL_STATION", "SECOND_DRIVER_CONTROLLER", "XBOX_L_JOY_X", "XBOX_L_JOY_Y", "XBOX_R_JOY_X", "XBOX_R_JOY_Y", "XBOX_L_BUMPER", "XBOX_R_BUMPER", "XBOX_L_TRIGGER", "XBOX_R_TRIGGER", "XBOX_Y_BUTTON", "XBOX_X_BUTTON", "XBOX_B_BUTTON", "XBOX_A_BUTTON", "DRIVER_STATION_TOGGLE_1", "DRIVER_STATION_TOGGLE_2", "DRIVER_STATION_TOGGLE_3", "DRIVER_STATION_TOGGLE_4", "DRIVER_STATION_BUTTON_1", "DRIVER_STATION_BUTTON_2", "DRIVER_STATION_BUTTON_3", "DRIVER_STATION_X_AXIS", "DRIVER_STATION_Y_AXIS" ],
+    "fieldTypes" : [ "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int", "int" ],
+    "methods" : [ ],
+    "modifiers" : 25,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.commands.IntakeCommand",
+    "fieldNames" : [ "intake", "controls", "$SWITCH_TABLE$frc$robot$commands$IntakeCommand$intakeState" ],
+    "fieldTypes" : [ "frc.robot.subsystems.Intake", "frc.robot.commands.IntakeCommand$Controls", "[I" ],
+    "methods" : [ {
+      "methodName" : "isFinished",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    }, {
+      "methodName" : "setIntakeState",
+      "parameterTypes" : [ "frc.robot.commands.IntakeCommand$intakeState" ],
+      "returnType" : "void",
+      "modifiers" : 33
+    }, {
+      "methodName" : "$SWITCH_TABLE$frc$robot$commands$IntakeCommand$intakeState",
+      "parameterTypes" : [ ],
+      "returnType" : "int[]",
+      "modifiers" : 4104
+    }, {
+      "methodName" : "end",
+      "parameterTypes" : [ "boolean" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "initialize",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "execute",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    } ],
+    "modifiers" : 1,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.utility.NetworkTable.NtValueDisplay$DispHelper",
+    "fieldNames" : [ ],
+    "fieldTypes" : [ ],
+    "methods" : [ {
+      "methodName" : "add",
+      "parameterTypes" : [ "java.lang.String", "java.util.function.Supplier" ],
+      "returnType" : "frc.robot.utility.NetworkTable.NtValueDisplay$DispHelper",
+      "modifiers" : 1025
+    } ],
+    "modifiers" : 1545,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.commands.ConveyorCommand",
+    "fieldNames" : [ "conveyor", "controls", "shooter", "conveyorSpeed", "overHeadSpeed", "conveyorTopSensorLast", "$SWITCH_TABLE$frc$robot$commands$ConveyorCommand$ConveyorState" ],
+    "fieldTypes" : [ "frc.robot.subsystems.Conveyor", "frc.robot.commands.ConveyorCommand$Controls", "frc.robot.subsystems.Shooter", "double", "double", "boolean", "[I" ],
+    "methods" : [ {
+      "methodName" : "isFinished",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    }, {
+      "methodName" : "setConveyorState",
+      "parameterTypes" : [ "frc.robot.commands.ConveyorCommand$ConveyorState" ],
+      "returnType" : "void",
+      "modifiers" : 33
+    }, {
+      "methodName" : "$SWITCH_TABLE$frc$robot$commands$ConveyorCommand$ConveyorState",
+      "parameterTypes" : [ ],
+      "returnType" : "int[]",
+      "modifiers" : 4104
+    }, {
+      "methodName" : "end",
+      "parameterTypes" : [ "boolean" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "initialize",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "execute",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    } ],
+    "modifiers" : 1,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.commands.DriveCommand",
+    "fieldNames" : [ "driveTrain", "controls", "currentTrajectory", "currentRamseteCommand", "autoStartTime", "isAutoDone" ],
+    "fieldTypes" : [ "frc.robot.subsystems.DriveTrain", "frc.robot.commands.DriveCommand$Controls", "edu.wpi.first.math.trajectory.Trajectory", "edu.wpi.first.wpilibj2.command.RamseteCommand", "double", "boolean" ],
+    "methods" : [ {
+      "methodName" : "getTrajectoryElapsedTime",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getDriveTrain",
+      "parameterTypes" : [ ],
+      "returnType" : "frc.robot.subsystems.DriveTrain",
+      "modifiers" : 1
+    }, {
+      "methodName" : "setAutoPath",
+      "parameterTypes" : [ "edu.wpi.first.math.trajectory.Trajectory" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "isAutoDone",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    }, {
+      "methodName" : "stopRobot",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "isFinished",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    }, {
+      "methodName" : "lambda$6",
+      "parameterTypes" : [ "java.lang.Double", "java.lang.Double" ],
+      "returnType" : "void",
+      "modifiers" : 4098
+    }, {
+      "methodName" : "updateRamsete",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 2
+    }, {
+      "methodName" : "lambda$4",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 4098
+    }, {
+      "methodName" : "end",
+      "parameterTypes" : [ "boolean" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "initialize",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "execute",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    } ],
+    "modifiers" : 1,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.subsystems.Limelight",
+    "fieldNames" : [ "ntX", "ntY", "ntV", "ntPipeline", "controls", "forceOff" ],
+    "fieldTypes" : [ "edu.wpi.first.networktables.NetworkTableEntry", "edu.wpi.first.networktables.NetworkTableEntry", "edu.wpi.first.networktables.NetworkTableEntry", "edu.wpi.first.networktables.NetworkTableEntry", "frc.robot.subsystems.Limelight$Controls", "boolean" ],
+    "methods" : [ {
+      "methodName" : "periodic",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getDistance",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "convertAngleToDistance",
+      "parameterTypes" : [ "double" ],
+      "returnType" : "double",
+      "modifiers" : 9
+    }, {
+      "methodName" : "setForceOff",
+      "parameterTypes" : [ "boolean" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getHorizontalAngle",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "hasTarget",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getVertAngle",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "lambda$0",
+      "parameterTypes" : [ ],
+      "returnType" : "java.lang.Object",
+      "modifiers" : 4098
+    } ],
+    "modifiers" : 1,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.utility.Util",
+    "fieldNames" : [ ],
+    "fieldTypes" : [ ],
+    "methods" : [ {
+      "methodName" : "getLimited",
+      "parameterTypes" : [ "double", "double" ],
+      "returnType" : "double",
+      "modifiers" : 9
+    }, {
+      "methodName" : "getHeadingDiff",
+      "parameterTypes" : [ "double", "double" ],
+      "returnType" : "double",
+      "modifiers" : 9
+    } ],
+    "modifiers" : 1,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.Constants$ShooterCalibrations",
+    "fieldNames" : [ "SHOOT_CALIBRATION_MAP", "NEW_SHOOT_CALIBRATION_MAP" ],
+    "fieldTypes" : [ "frc.robot.utility.ShootCalibrationMap", "frc.robot.utility.ShootCalibrationMap" ],
+    "methods" : [ ],
+    "modifiers" : 25,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.utility.PovNumberStepper",
+    "fieldNames" : [ "stepper", "joystick", "direction", "lastPov" ],
+    "fieldTypes" : [ "frc.robot.utility.NumberStepper", "edu.wpi.first.wpilibj.Joystick", "frc.robot.utility.PovNumberStepper$PovDirection", "int" ],
+    "methods" : [ {
+      "methodName" : "get",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "update",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 2
+    }, {
+      "methodName" : "set",
+      "parameterTypes" : [ "double" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    } ],
+    "modifiers" : 1,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.utility.ShootCalibrationMap$Point",
+    "fieldNames" : [ "distance", "trajectory" ],
+    "fieldTypes" : [ "double", "frc.robot.utility.ShootCalibrationMap$Trajectory" ],
+    "methods" : [ {
+      "methodName" : "toString",
+      "parameterTypes" : [ ],
+      "returnType" : "java.lang.String",
+      "modifiers" : 1
+    } ],
+    "modifiers" : 10,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.utility.ShootCalibrationMap$Trajectory",
+    "fieldNames" : [ "shooterRpm", "hoodPos" ],
+    "fieldTypes" : [ "double", "double" ],
+    "methods" : [ {
+      "methodName" : "toString",
+      "parameterTypes" : [ ],
+      "returnType" : "java.lang.String",
+      "modifiers" : 1
+    } ],
+    "modifiers" : 9,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.Main",
+    "fieldNames" : [ ],
+    "fieldTypes" : [ ],
+    "methods" : [ {
+      "methodName" : "main",
+      "parameterTypes" : [ "[Ljava.lang.String;" ],
+      "returnType" : "void",
+      "modifiers" : 137
+    } ],
+    "modifiers" : 17,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.utility.ShootCalibrationMap",
+    "fieldNames" : [ "points" ],
+    "fieldTypes" : [ "java.util.List" ],
+    "methods" : [ {
+      "methodName" : "getWithRpmAdjustment",
+      "parameterTypes" : [ "double", "double", "double" ],
+      "returnType" : "frc.robot.utility.ShootCalibrationMap$Trajectory",
+      "modifiers" : 1
+    }, {
+      "methodName" : "lambda$2",
+      "parameterTypes" : [ "int" ],
+      "returnType" : "java.lang.String[]",
+      "modifiers" : 4106
+    }, {
+      "methodName" : "lambda$0",
+      "parameterTypes" : [ "frc.robot.utility.ShootCalibrationMap$Point", "frc.robot.utility.ShootCalibrationMap$Point" ],
+      "returnType" : "int",
+      "modifiers" : 4106
+    }, {
+      "methodName" : "convertKey",
+      "parameterTypes" : [ "java.lang.String" ],
+      "returnType" : "java.util.ArrayList",
+      "modifiers" : 9
+    }, {
+      "methodName" : "updateMap",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "lambda$3",
+      "parameterTypes" : [ "double", "double", "frc.robot.utility.ShootCalibrationMap$Point" ],
+      "returnType" : "frc.robot.utility.ShootCalibrationMap$Point",
+      "modifiers" : 4106
+    }, {
+      "methodName" : "add",
+      "parameterTypes" : [ "double", "frc.robot.utility.ShootCalibrationMap$Trajectory" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "get",
+      "parameterTypes" : [ "double" ],
+      "returnType" : "frc.robot.utility.ShootCalibrationMap$Trajectory",
+      "modifiers" : 1
+    }, {
+      "methodName" : "toString",
+      "parameterTypes" : [ ],
+      "returnType" : "java.lang.String",
+      "modifiers" : 1
+    } ],
+    "modifiers" : 1,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.subsystems.Climb",
+    "fieldNames" : [ "rotatorPiston", "leftExtensionMotor", "rightExtensionMotor", "minPos", "maxPos", "proximityThresholdTop", "proximityThresholdBottom", "proximitySlow", "rightComp", "leftComp", "nTable", "ntOverideSoftLimit", "ntExtensionSpeed", "rightTestSpeed", "leftTestSpeed" ],
+    "fieldTypes" : [ "edu.wpi.first.wpilibj.Solenoid", "com.ctre.phoenix.motorcontrol.can.TalonFX", "com.ctre.phoenix.motorcontrol.can.TalonFX", "double", "double", "double", "double", "double", "double", "double", "edu.wpi.first.networktables.NetworkTable", "edu.wpi.first.networktables.NetworkTableEntry", "edu.wpi.first.networktables.NetworkTableEntry", "edu.wpi.first.networktables.NetworkTableEntry", "edu.wpi.first.networktables.NetworkTableEntry" ],
+    "methods" : [ {
+      "methodName" : "setupAllMotors",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 2
+    }, {
+      "methodName" : "periodic",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "setRotatorPiston",
+      "parameterTypes" : [ "boolean" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getRightPosition",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "setupMotor",
+      "parameterTypes" : [ "com.ctre.phoenix.motorcontrol.can.TalonFX", "boolean" ],
+      "returnType" : "void",
+      "modifiers" : 2
+    }, {
+      "methodName" : "setExtensionMotors",
+      "parameterTypes" : [ "double" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getleftVelocity",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getRightVelocity",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getLeftPosition",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getLeftPositionInches",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getRightPositionInches",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "setRightExtensionMotor",
+      "parameterTypes" : [ "double" ],
+      "returnType" : "void",
+      "modifiers" : 2
+    }, {
+      "methodName" : "setLeftExtensionMotor",
+      "parameterTypes" : [ "double" ],
+      "returnType" : "void",
+      "modifiers" : 2
+    }, {
+      "methodName" : "reset",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    } ],
+    "modifiers" : 1,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.utility.PovNumberStepper$PovDirection",
+    "fieldNames" : [ "HORIZONTAL", "VERTICAL", "ENUM$VALUES" ],
+    "fieldTypes" : [ "frc.robot.utility.PovNumberStepper$PovDirection", "frc.robot.utility.PovNumberStepper$PovDirection", "[Lfrc.robot.utility.PovNumberStepper$PovDirection;" ],
+    "methods" : [ {
+      "methodName" : "values",
+      "parameterTypes" : [ ],
+      "returnType" : "frc.robot.utility.PovNumberStepper$PovDirection[]",
+      "modifiers" : 9
+    }, {
+      "methodName" : "valueOf",
+      "parameterTypes" : [ "java.lang.String" ],
+      "returnType" : "frc.robot.utility.PovNumberStepper$PovDirection",
+      "modifiers" : 9
+    } ],
+    "modifiers" : 16409,
+    "isEnum" : true
+  }, {
+    "fullName" : "frc.robot.commands.ConveyorCommand$ConveyorState",
+    "fieldNames" : [ "REVERSE", "INTAKE", "SHOOT", "CHILLING", "ENUM$VALUES" ],
+    "fieldTypes" : [ "frc.robot.commands.ConveyorCommand$ConveyorState", "frc.robot.commands.ConveyorCommand$ConveyorState", "frc.robot.commands.ConveyorCommand$ConveyorState", "frc.robot.commands.ConveyorCommand$ConveyorState", "[Lfrc.robot.commands.ConveyorCommand$ConveyorState;" ],
+    "methods" : [ {
+      "methodName" : "values",
+      "parameterTypes" : [ ],
+      "returnType" : "frc.robot.commands.ConveyorCommand$ConveyorState[]",
+      "modifiers" : 9
+    }, {
+      "methodName" : "valueOf",
+      "parameterTypes" : [ "java.lang.String" ],
+      "returnType" : "frc.robot.commands.ConveyorCommand$ConveyorState",
+      "modifiers" : 9
+    } ],
+    "modifiers" : 16409,
+    "isEnum" : true
+  }, {
+    "fullName" : "frc.robot.Constants$ConversionConstants",
+    "fieldNames" : [ "SECONDS_PER_MINUTE", "FEET_TO_METER", "METERS_TO_FEET" ],
+    "fieldTypes" : [ "double", "double", "double" ],
+    "methods" : [ ],
+    "modifiers" : 25,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.commands.ClimbCommand",
+    "fieldNames" : [ "climb", "controls", "autoClimbCommand" ],
+    "fieldTypes" : [ "frc.robot.subsystems.Climb", "frc.robot.commands.ClimbCommand$Controls", "frc.robot.commands.autonomous.AutoClimbCommand" ],
+    "methods" : [ {
+      "methodName" : "isFinished",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    }, {
+      "methodName" : "end",
+      "parameterTypes" : [ "boolean" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "initialize",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "execute",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    } ],
+    "modifiers" : 1,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.subsystems.Intake",
+    "fieldNames" : [ "intakeMotor", "intakePiston", "minFramesDown", "targetIntakeMotorOutput", "reversed", "downFrames" ],
+    "fieldTypes" : [ "com.revrobotics.CANSparkMax", "edu.wpi.first.wpilibj.Solenoid", "int", "double", "boolean", "int" ],
+    "methods" : [ {
+      "methodName" : "periodic",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "canRunIntakeMotor",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 2
+    }, {
+      "methodName" : "setPiston",
+      "parameterTypes" : [ "boolean" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "setReversed",
+      "parameterTypes" : [ "boolean" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getIntakeSpeed",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getTargetIntakeSpeed",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    } ],
+    "modifiers" : 1,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.commands.ConveyorCommand$Controls",
+    "fieldNames" : [ ],
+    "fieldTypes" : [ ],
+    "methods" : [ {
+      "methodName" : "getBallChainReverse",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1025
+    }, {
+      "methodName" : "isIntakeEngaged",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1025
+    }, {
+      "methodName" : "getConveyorMotor",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1025
+    }, {
+      "methodName" : "getFeedShooter",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1025
+    } ],
+    "modifiers" : 1545,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.subsystems.Shooter",
+    "fieldNames" : [ "RPMAcceptableDiff", "turretAcceptableDiff", "hoodAcceptableDiff", "turretTurnSpeed", "shooterMotorL", "shooterMotorR", "turretMotor", "hoodServoL", "hoodServoR", "startAngle", "targetRPM", "targetHoodPos", "targetTurretPos", "ntTable", "ntTableLimelight", "ntShooterReady", "ballShotCount" ],
+    "fieldTypes" : [ "double", "double", "double", "double", "com.ctre.phoenix.motorcontrol.can.TalonFX", "com.ctre.phoenix.motorcontrol.can.TalonFX", "com.revrobotics.CANSparkMax", "edu.wpi.first.wpilibj.PWM", "edu.wpi.first.wpilibj.PWM", "double", "double", "double", "double", "edu.wpi.first.networktables.NetworkTable", "edu.wpi.first.networktables.NetworkTable", "edu.wpi.first.networktables.NetworkTableEntry", "int" ],
+    "methods" : [ {
+      "methodName" : "periodic",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getTurretPosDegrees",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getHoodPos",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "isShooterReady",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getBallShotCount",
+      "parameterTypes" : [ ],
+      "returnType" : "int",
+      "modifiers" : 1
+    }, {
+      "methodName" : "lambda$2",
+      "parameterTypes" : [ ],
+      "returnType" : "java.lang.Object",
+      "modifiers" : 4098
+    }, {
+      "methodName" : "setShooterRpm",
+      "parameterTypes" : [ "double" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getShooterRpm",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "setTurretPos",
+      "parameterTypes" : [ "double" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getTurretPos",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "setTurretDeltaPos",
+      "parameterTypes" : [ "double" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "lambda$1",
+      "parameterTypes" : [ ],
+      "returnType" : "java.lang.Object",
+      "modifiers" : 4098
+    }, {
+      "methodName" : "increaseBallCount",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "lambda$4",
+      "parameterTypes" : [ ],
+      "returnType" : "java.lang.Object",
+      "modifiers" : 4098
+    }, {
+      "methodName" : "resetBallCount",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "setHoodPos",
+      "parameterTypes" : [ "double" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getTurretSpeed",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    } ],
+    "modifiers" : 1,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.subsystems.Limelight$Controls",
+    "fieldNames" : [ ],
+    "fieldTypes" : [ ],
+    "methods" : [ {
+      "methodName" : "getLimelightPipeline",
+      "parameterTypes" : [ ],
+      "returnType" : "int",
+      "modifiers" : 1025
+    } ],
+    "modifiers" : 1545,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.utility.AlwaysRunCommand",
+    "fieldNames" : [ ],
+    "fieldTypes" : [ ],
+    "methods" : [ {
+      "methodName" : "runsWhenDisabled",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    } ],
+    "modifiers" : 1,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.RobotContainer",
+    "fieldNames" : [ "colorSensorPort", "colorSensor", "conveyorSensor", "driveTrain", "manualDrive", "limelight", "shooter", "manualShooter", "intake", "manualIntake", "conveyor", "manualConveyor", "climb", "manualClimb", "xbox", "controlStation", "controls", "autoClimb", "rgbLighting" ],
+    "fieldTypes" : [ "edu.wpi.first.wpilibj.I2C$Port", "com.revrobotics.ColorSensorV3", "edu.wpi.first.wpilibj.DigitalInput", "frc.robot.subsystems.DriveTrain", "frc.robot.commands.DriveCommand", "frc.robot.subsystems.Limelight", "frc.robot.subsystems.Shooter", "frc.robot.commands.ShooterCommand", "frc.robot.subsystems.Intake", "frc.robot.commands.IntakeCommand", "frc.robot.subsystems.Conveyor", "frc.robot.commands.ConveyorCommand", "frc.robot.subsystems.Climb", "frc.robot.commands.ClimbCommand", "edu.wpi.first.wpilibj.Joystick", "edu.wpi.first.wpilibj.Joystick", "frc.robot.controls.manualdrive.ManualControls", "frc.robot.commands.autonomous.AutoClimbCommand", "frc.robot.subsystems.RGBLighting" ],
+    "methods" : [ {
+      "methodName" : "getDriveCommand",
+      "parameterTypes" : [ ],
+      "returnType" : "frc.robot.commands.DriveCommand",
+      "modifiers" : 1
+    }, {
+      "methodName" : "configureButtonBindings",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 2
+    } ],
+    "modifiers" : 1,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.subsystems.Conveyor",
+    "fieldNames" : [ "conveyorMotorTop", "conveyorMotorBottom", "overHeadMotor" ],
+    "fieldTypes" : [ "com.revrobotics.CANSparkMax", "com.revrobotics.CANSparkMax", "com.revrobotics.CANSparkMax" ],
+    "methods" : [ {
+      "methodName" : "periodic",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "setConveyor",
+      "parameterTypes" : [ "double" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "setOverHead",
+      "parameterTypes" : [ "double" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getSensor",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    } ],
+    "modifiers" : 1,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.subsystems.DriveTrain",
+    "fieldNames" : [ "leftMotors", "rightMotors", "leftMotorGroup", "rightMotorGroup", "m_drive", "leftEncoder", "rightEncoder", "m_odometry", "gyro", "forwardLimiter", "turnLimiter", "simpleFF", "kP", "kI", "kD", "kFF", "ntTable", "ntPosition", "ntspeed", "ntP", "ntI", "ntD", "ntFF", "ntifTestingVelocity", "ntifTestingRotation", "estimator", "m_field" ],
+    "fieldTypes" : [ "[Lcom.revrobotics.CANSparkMax;", "[Lcom.revrobotics.CANSparkMax;", "edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup", "edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup", "edu.wpi.first.wpilibj.drive.DifferentialDrive", "com.revrobotics.RelativeEncoder", "com.revrobotics.RelativeEncoder", "edu.wpi.first.math.kinematics.DifferentialDriveOdometry", "com.kauailabs.navx.frc.AHRS", "edu.wpi.first.math.filter.SlewRateLimiter", "edu.wpi.first.math.filter.SlewRateLimiter", "edu.wpi.first.math.controller.SimpleMotorFeedforward", "double", "double", "double", "double", "edu.wpi.first.networktables.NetworkTable", "edu.wpi.first.networktables.NetworkTableEntry", "edu.wpi.first.networktables.NetworkTableEntry", "edu.wpi.first.networktables.NetworkTableEntry", "edu.wpi.first.networktables.NetworkTableEntry", "edu.wpi.first.networktables.NetworkTableEntry", "edu.wpi.first.networktables.NetworkTableEntry", "edu.wpi.first.networktables.NetworkTableEntry", "edu.wpi.first.networktables.NetworkTableEntry", "edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator", "edu.wpi.first.wpilibj.smartdashboard.Field2d" ],
+    "methods" : [ {
+      "methodName" : "resetOdometry",
+      "parameterTypes" : [ "edu.wpi.first.math.geometry.Pose2d" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "resetOdometry",
+      "parameterTypes" : [ "edu.wpi.first.math.geometry.Pose2d", "edu.wpi.first.math.geometry.Rotation2d" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "lambda$5",
+      "parameterTypes" : [ ],
+      "returnType" : "java.lang.Object",
+      "modifiers" : 4098
+    }, {
+      "methodName" : "setupAllMotors",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 2
+    }, {
+      "methodName" : "setupEncoders",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 2
+    }, {
+      "methodName" : "setupPID",
+      "parameterTypes" : [ "[Lcom.revrobotics.CANSparkMax;", "edu.wpi.first.math.controller.PIDController", "double" ],
+      "returnType" : "void",
+      "modifiers" : 2
+    }, {
+      "methodName" : "setupMotors",
+      "parameterTypes" : [ "[Lcom.revrobotics.CANSparkMax;", "boolean" ],
+      "returnType" : "void",
+      "modifiers" : 2
+    }, {
+      "methodName" : "getWheelSpeeds",
+      "parameterTypes" : [ ],
+      "returnType" : "edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds",
+      "modifiers" : 1
+    }, {
+      "methodName" : "tankDriveVolts",
+      "parameterTypes" : [ "double", "double" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getXdistance",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getLVelocity",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getLeftEnocoder",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getYdistance",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "periodic",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getPose",
+      "parameterTypes" : [ ],
+      "returnType" : "edu.wpi.first.math.geometry.Pose2d",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getGyroAngle",
+      "parameterTypes" : [ ],
+      "returnType" : "edu.wpi.first.math.geometry.Rotation2d",
+      "modifiers" : 2
+    }, {
+      "methodName" : "setWheelVelocity",
+      "parameterTypes" : [ "[D", "[D" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "setWheelVelocity",
+      "parameterTypes" : [ "double", "double" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "updatePID",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 2
+    }, {
+      "methodName" : "getRVelocity",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "setWheelPosition",
+      "parameterTypes" : [ "[D", "[D" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "getRightEncoder",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "setVelocity",
+      "parameterTypes" : [ "double", "double" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "setLPositionMeters",
+      "parameterTypes" : [ "double", "double" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "setRPositionMeters",
+      "parameterTypes" : [ "double", "double" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "setLVelocityMeters",
+      "parameterTypes" : [ "double", "double" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "lambda$6",
+      "parameterTypes" : [ ],
+      "returnType" : "java.lang.Object",
+      "modifiers" : 4098
+    }, {
+      "methodName" : "lambda$8",
+      "parameterTypes" : [ ],
+      "returnType" : "java.lang.Object",
+      "modifiers" : 4098
+    }, {
+      "methodName" : "lambda$10",
+      "parameterTypes" : [ ],
+      "returnType" : "java.lang.Object",
+      "modifiers" : 4106
+    }, {
+      "methodName" : "getAngleContinuous",
+      "parameterTypes" : [ ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "lambda$9",
+      "parameterTypes" : [ ],
+      "returnType" : "java.lang.Object",
+      "modifiers" : 4106
+    }, {
+      "methodName" : "setRVelocityMeters",
+      "parameterTypes" : [ "double", "double" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "lambda$7",
+      "parameterTypes" : [ ],
+      "returnType" : "java.lang.Object",
+      "modifiers" : 4098
+    }, {
+      "methodName" : "getDifferentialDrive",
+      "parameterTypes" : [ ],
+      "returnType" : "edu.wpi.first.wpilibj.drive.DifferentialDrive",
+      "modifiers" : 1
+    }, {
+      "methodName" : "setRobotEstimatedPosition",
+      "parameterTypes" : [ "double", "double" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    } ],
+    "modifiers" : 1,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.commands.autonomous.AutoClimbCommand",
+    "fieldNames" : [ "climb", "autoClimbPhase", "cycles", "pauseTime", "UPPER_HEIGHT", "LOWER_HEIGHT", "DOWN_WAIT_DURATION", "UP_WAIT_DURATION", "extensionSpeed" ],
+    "fieldTypes" : [ "frc.robot.subsystems.Climb", "int", "int", "double", "double", "double", "double", "double", "double" ],
+    "methods" : [ {
+      "methodName" : "isFinished",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    }, {
+      "methodName" : "end",
+      "parameterTypes" : [ "boolean" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "initialize",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "execute",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    } ],
+    "modifiers" : 1,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.Robot",
+    "fieldNames" : [ "m_autonomousCommand", "m_robotContainer", "autoChooser", "sideChooser" ],
+    "fieldTypes" : [ "edu.wpi.first.wpilibj2.command.Command", "frc.robot.RobotContainer", "edu.wpi.first.wpilibj.smartdashboard.SendableChooser", "edu.wpi.first.wpilibj.smartdashboard.SendableChooser" ],
+    "methods" : [ {
+      "methodName" : "robotPeriodic",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "disabledInit",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "disabledPeriodic",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "autonomousInit",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "robotInit",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "testPeriodic",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "testInit",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "simulationInit",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "teleopInit",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "teleopPeriodic",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "autonomousPeriodic",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "lambda$5",
+      "parameterTypes" : [ "java.lang.String" ],
+      "returnType" : "void",
+      "modifiers" : 4098
+    } ],
+    "modifiers" : 1,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.utility.NetworkTable.NtValueDisplay",
+    "fieldNames" : [ "ntTable", "entry", "value" ],
+    "fieldTypes" : [ "edu.wpi.first.networktables.NetworkTable", "edu.wpi.first.networktables.NetworkTableEntry", "java.util.function.Supplier" ],
+    "methods" : [ {
+      "methodName" : "ntDispTab",
+      "parameterTypes" : [ "java.lang.String" ],
+      "returnType" : "frc.robot.utility.NetworkTable.NtValueDisplay$DispHelper",
+      "modifiers" : 9
+    }, {
+      "methodName" : "ntDisp",
+      "parameterTypes" : [ "java.lang.String", "java.util.function.Supplier" ],
+      "returnType" : "void",
+      "modifiers" : 9
+    }, {
+      "methodName" : "ntDisp",
+      "parameterTypes" : [ "java.lang.String", "java.lang.String", "java.util.function.Supplier" ],
+      "returnType" : "void",
+      "modifiers" : 9
+    }, {
+      "methodName" : "lambda$0",
+      "parameterTypes" : [ "frc.robot.utility.NetworkTable.NtValueDisplay", "java.util.function.Supplier" ],
+      "returnType" : "void",
+      "modifiers" : 4106
+    }, {
+      "methodName" : "update",
+      "parameterTypes" : [ "java.lang.Object" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    } ],
+    "modifiers" : 1,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.commands.ShooterCommand",
+    "fieldNames" : [ "shooter", "controls", "limelight", "colorMatch", "blueColor", "redColor", "isRedAlliance", "isAuto", "missBall", "ballMissRPM", "ntTable", "ntTableClimb", "ntTestRPM", "ntTestHood", "ntUseCalibrationMap", "hotRPMAddition", "hotRPMReduction", "ntTeleopBuff", "IDLE_RPM", "AutoBaseRPMBuff", "TeleOpBaseRPMBuff", "targetHoodPos", "targetBallCount", "doneShootingFrames", "debouncer", "rpmBuff", "rpmBuffZeta", "$SWITCH_TABLE$frc$robot$commands$ShooterCommand$ShooterState" ],
+    "fieldTypes" : [ "frc.robot.subsystems.Shooter", "frc.robot.commands.ShooterCommand$Controls", "frc.robot.subsystems.Limelight", "com.revrobotics.ColorMatch", "edu.wpi.first.wpilibj.util.Color", "edu.wpi.first.wpilibj.util.Color", "boolean", "boolean", "boolean", "double", "edu.wpi.first.networktables.NetworkTable", "edu.wpi.first.networktables.NetworkTable", "edu.wpi.first.networktables.NetworkTableEntry", "edu.wpi.first.networktables.NetworkTableEntry", "edu.wpi.first.networktables.NetworkTableEntry", "edu.wpi.first.networktables.NetworkTableEntry", "edu.wpi.first.networktables.NetworkTableEntry", "edu.wpi.first.networktables.NetworkTableEntry", "double", "double", "double", "double", "int", "double", "edu.wpi.first.math.filter.Debouncer", "double", "double", "[I" ],
+    "methods" : [ {
+      "methodName" : "isFinished",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    }, {
+      "methodName" : "$SWITCH_TABLE$frc$robot$commands$ShooterCommand$ShooterState",
+      "parameterTypes" : [ ],
+      "returnType" : "int[]",
+      "modifiers" : 4104
+    }, {
+      "methodName" : "getShooterHoodAngle",
+      "parameterTypes" : [ "double" ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "doneShooting",
+      "parameterTypes" : [ ],
+      "returnType" : "boolean",
+      "modifiers" : 1
+    }, {
+      "methodName" : "setShooterState",
+      "parameterTypes" : [ "frc.robot.commands.ShooterCommand$ShooterState" ],
+      "returnType" : "void",
+      "modifiers" : 33
+    }, {
+      "methodName" : "getShooterRpm",
+      "parameterTypes" : [ "double" ],
+      "returnType" : "double",
+      "modifiers" : 1
+    }, {
+      "methodName" : "end",
+      "parameterTypes" : [ "boolean" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "initialize",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "execute",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    } ],
+    "modifiers" : 1,
+    "isEnum" : false
+  }, {
+    "fullName" : "frc.robot.subsystems.RGBLighting",
+    "fieldNames" : [ "colorsDict", "ledLights", "climb", "ntInst", "climbStopDebouncer", "shooterReadyDebouncer", "debouncerRedBlink", "debouncerGreenBlink", "debouncerBlueBlink", "lastTime" ],
+    "fieldTypes" : [ "java.util.HashMap", "[Ledu.wpi.first.wpilibj.Solenoid;", "boolean", "edu.wpi.first.networktables.NetworkTableInstance", "edu.wpi.first.math.filter.Debouncer", "edu.wpi.first.math.filter.Debouncer", "edu.wpi.first.math.filter.Debouncer", "edu.wpi.first.math.filter.Debouncer", "edu.wpi.first.math.filter.Debouncer", "double" ],
+    "methods" : [ {
+      "methodName" : "periodic",
+      "parameterTypes" : [ ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "setColor",
+      "parameterTypes" : [ "java.lang.String" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "convertRGB",
+      "parameterTypes" : [ "int" ],
+      "returnType" : "int[]",
+      "modifiers" : 1
+    }, {
+      "methodName" : "rainbow",
+      "parameterTypes" : [ "double" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    }, {
+      "methodName" : "blinkColor",
+      "parameterTypes" : [ "java.lang.String" ],
+      "returnType" : "void",
+      "modifiers" : 1
+    } ],
+    "modifiers" : 1,
+    "isEnum" : false
+  } ],
+  "instanceLocations" : [ "frc.robot.commands.ConveyorCommand", "frc.robot.commands.DriveCommand", "frc.robot.commands.IntakeCommand", "frc.robot.commands.ClimbCommand", "frc.robot.commands.ShooterCommand" ]
+}

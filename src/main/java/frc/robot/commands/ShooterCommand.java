@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 
 import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorMatchResult;
 
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
@@ -17,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utility.ShootCalibrationMap;
 import frc.robot.Constants;
-import frc.robot.commands.autonomous.AutonomousController;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Limelight;
 
 public class ShooterCommand extends CommandBase {
@@ -31,6 +32,8 @@ public class ShooterCommand extends CommandBase {
 
     boolean getHotRPMAddition();
     boolean getHotRPMReduction();
+
+    boolean getManualMiss();
   }
 
   private Shooter shooter;
@@ -45,8 +48,8 @@ public class ShooterCommand extends CommandBase {
   private boolean isAuto = false;
 
   private boolean missBall = false;
-  private final double ballMissRPM = 300;
-
+  private final double ballMissRPM = 500;
+ 
   private NetworkTable ntTable;
   private NetworkTable ntTableClimb;
   private NetworkTableEntry ntTestRPM;
@@ -60,8 +63,8 @@ public class ShooterCommand extends CommandBase {
   private NetworkTableEntry ntTeleopBuff;
 
   private final double IDLE_RPM = 1000;
-  private final double AutoBaseRPMBuff = 0;
-  private double TeleOpBaseRPMBuff = 0;
+  private final double AutoBaseRPMBuff = 100;
+  private double TeleOpBaseRPMBuff = 100;
 
   private double targetHoodPos = 0.0;
   
@@ -71,7 +74,7 @@ public class ShooterCommand extends CommandBase {
   private Debouncer debouncer = new Debouncer(2, DebounceType.kFalling);
 
   private double rpmBuff;
-  private final double rpmBuffZeta = 10;
+  private final double rpmBuffZeta = 1;
 
   public ShooterCommand(Shooter shooter, Controls controls, Limelight limelight) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -110,12 +113,6 @@ public class ShooterCommand extends CommandBase {
   }
   
 
-  public ShooterCommand(Shooter shooter, Limelight limelight, boolean shootingFar, int ballCount){ // Autonomouse
-    this(shooter, new AutonomousController(shootingFar, "Shooter", "conveyor", "Intake"), limelight);
-    this.targetBallCount = ballCount;
-    this.isAuto = true;
-  }
-
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
@@ -125,83 +122,76 @@ public class ShooterCommand extends CommandBase {
     
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    
-    // if(!RobotContainer.conveyorSensor.get()){
-    //   if(colorMatch.matchClosestColor(RobotContainer.colorSensor.getColor()).color == blueColor && isRedAlliance)
-    //     missBall = true;
-    //   else
-    //     missBall = false;
-    // }
+  public enum ShooterState {
+    SHOOTING, AIMING, CHILLING
+  }
 
-    limelight.setForceOff(!(controls.getAimShooter() || controls.getConstantAiming()));
-
-    double dist = limelight.getDistance();
-    if(controls.getAimShooter() || controls.getConstantAiming()) {
-      
-      if (controls.getAimShooter()) {
+  public synchronized void setShooterState(ShooterState state) {
+    switch (state) {
+      case SHOOTING:
+        double dist = limelight.getDistance();
         TeleOpBaseRPMBuff = ntTeleopBuff.getDouble(0.0);
 
         rpmBuff = isAuto ? AutoBaseRPMBuff : TeleOpBaseRPMBuff;
 
-        if(controls.getHotRPMAddition()){
-          rpmBuff += hotRPMAddition.getDouble(0.0);
-        } else if(controls.getHotRPMReduction()) {
-          rpmBuff += -hotRPMAddition.getDouble(0.0);          
-        }
-
         shooter.setShooterRpm( getShooterRpm(dist) + rpmBuff );
-      }
-      else{
+        break;
+
+      case AIMING:
         shooter.setShooterRpm(IDLE_RPM);
-      }
-
-      targetHoodPos = debouncer.calculate(limelight.hasTarget()) ? limelight.getHorizontalAngle() : 0.0;
+        targetHoodPos = debouncer.calculate(limelight.hasTarget()) ? limelight.getHorizontalAngle() : 0.0;
+        if(targetHoodPos >= -1) {
+          shooter.setHoodPos(targetHoodPos);// - (controls.getHotHoodChange() ? hotHoodAddition.getDouble(0.0) : 0.0) );
+        }
+        double turrTarget = limelight.getHorizontalAngle();
       
-      
-      if(targetHoodPos >= -1) {
-        shooter.setHoodPos(targetHoodPos);// - (controls.getHotHoodChange() ? hotHoodAddition.getDouble(0.0) : 0.0) );
-      }
-
-      // shooter.setTurretPos(shooter.getTurretPos() + controls.shooterTurretTest()); // manual control of turret using climb joystick (button board);
-      double turrTarget = limelight.getHorizontalAngle();
-
-      // if(missBall){
-      //   if(turrTarget > 0){
-      //     turrTarget -= ballMissAngle;
-      //   } else{
-      //     turrTarget += ballMissAngle;
-      //   }
-      // }
-      
-      if((shooter.getTurretPosDegrees() > 85 && turrTarget > 0) || (shooter.getTurretPosDegrees() < -85 && turrTarget < 0))
-        turrTarget = 0;
-      
-      else if (controls.overrideTurretCenter()) shooter.setTurretPos(0); // override controlled turret pos
-      else shooter.setTurretDeltaPos(turrTarget); // limelight controlled turret pos;
-
-      // ntTestHood.setDouble(targetHoodPos);
-    }else{
-      // shooter.setTurretPos(0);
-      shooter.setShooterRpm(0);
+        if((shooter.getTurretPosDegrees() > 85 && turrTarget > 0) || (shooter.getTurretPosDegrees() < -85 && turrTarget < 0))
+          turrTarget = 0;
+        shooter.setTurretDeltaPos(turrTarget); // limelight controlled turret pos;
+        break;
+      case CHILLING:
+        shooter.setShooterRpm(0.0);
+        break;
     }
-
     if(targetBallCount != -1 && shooter.getBallShotCount() >= targetBallCount) doneShootingFrames++;
 
     
     if (ntTableClimb.getEntry("Left Climb Pos").getDouble(0.0) > 8.0 && ntTableClimb.getEntry("Right Climb Pos").getDouble(0.0) > 8.0) {
       shooter.setTurretPos(90.0); // turret is at 90 degrees when both climb arms are extended
     }
+  }
 
-    // if(!prevCalibButton && ntAddCalibrateButton.getBoolean(false)){
-    //   ShooterCalibrations.NEW_SHOOT_CALIBRATION_MAP.add(dist, new ShootCalibrationMap.Trajectory(ntTestRPM.getDouble(0.0), ntTestHood.getDouble(0.0)));
-    //   saveNewCalibrationMap();
-    //   System.out.println("added a point");
-    //   System.out.println(ShooterCalibrations.NEW_SHOOT_CALIBRATION_MAP.toString());
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+    
+    // if(!RobotContainer.conveyorSensor.get()){
+    //   ColorMatchResult closestColor = colorMatch.matchClosestColor(RobotContainer.colorSensor.getColor());
+    //   // System.out.println("Ball Color Detected: (" + closestColor.color.red + ", " +closestColor.color.green + ", " + closestColor.color.blue +")");
+
+    //   // if(closestColor.color.blue > 0.8){ //&& isRedAlliance){
+    //   //   missBall = true;
+    //   //   System.out.println("ITS A BLUE BALL");
+    //   // } else{
+    //   //   missBall = false;
+    //   //   System.out.println("R: " + closestColor.color.red+ "G: " + closestColor.color.green+ "B: " + closestColor.color.blue);
+    //   // }
     // }
-    // prevCalibButton = ntAddCalibrateButton.getBoolean(false);
+
+    limelight.setForceOff(!(controls.getAimShooter() || controls.getConstantAiming()));
+
+    
+    if(controls.getAimShooter() || controls.getConstantAiming()) {
+      
+      if (controls.getAimShooter()) {
+        setShooterState(ShooterState.SHOOTING);
+      }
+      else{
+        setShooterState(ShooterState.AIMING);
+      }
+    }else{
+      setShooterState(ShooterState.CHILLING);
+    }
   }
 
   public double getShooterRpm(double distance) {
