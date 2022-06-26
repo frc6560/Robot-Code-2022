@@ -6,6 +6,9 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.DriveTrain;
 
+import com.dacubeking.AutoBuilder.robot.sender.pathpreview.RobotPositionSender;
+import com.dacubeking.AutoBuilder.robot.sender.pathpreview.RobotState;
+
 import org.jetbrains.annotations.NotNull;
 
 import edu.wpi.first.math.controller.HolonomicDriveController;
@@ -15,6 +18,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -87,7 +91,7 @@ public class DriveCommand extends CommandBase {
       goal,
       targetHeading);
     
-    drivetrain.drive(adjustedSpeeds, false, false);
+    drivetrain.setModuleStates(drivetrain.getKinematics().toSwerveModuleStates(adjustedSpeeds));
 
     if (autoController.atReference() && (Timer.getFPGATimestamp() - trajectoryStartTime) >= currentTrajectory.getTotalTimeSeconds()) {
       currentState = DriveState.DONE;
@@ -103,6 +107,11 @@ public class DriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    // TODO: Do something about this:
+    if (DriverStation.isAutonomous()) currentState = DriveState.AUTO;
+    if (DriverStation.isTeleop()) currentState = DriveState.TELEOP;
+
     switch (currentState) {
       case TELEOP:
         drivetrain.drive(controls.driveGetX(), controls.driveGetY(), controls.driveGetRotation(), true, false);
@@ -112,6 +121,15 @@ public class DriveCommand extends CommandBase {
       case DONE:
         trajectoryFinished = true;
     }
+
+    RobotPositionSender.addRobotPosition(
+      new RobotState(
+        drivetrain.getPose(), //The position that is graphed on the GUI
+        drivetrain.getChassisSpeeds().vxMetersPerSecond, // Only shown as you hover over the path
+        drivetrain.getChassisSpeeds().vyMetersPerSecond, // Only shown as you hover over the path
+        drivetrain.getChassisSpeeds().omegaRadiansPerSecond // Only shown as you hover over the path
+      )
+    );
   
   }
 

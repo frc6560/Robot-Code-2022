@@ -54,6 +54,8 @@ public class DriveTrain extends SubsystemBase {
   private final NetworkTableEntry ntV = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv");
   private final NetworkTableEntry ntTurret = NetworkTableInstance.getDefault().getTable("Shooter").getEntry("Actual Turret");
 
+  private volatile SwerveModuleState[] currentSwerveModuleStates;
+
 
   public DriveTrain() {
     
@@ -80,22 +82,30 @@ public class DriveTrain extends SubsystemBase {
       VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));      
   }
 
+  public SwerveDriveKinematics getKinematics() {
+    return this.m_kinematics;
+  }
+
+  public ChassisSpeeds getChassisSpeeds() {
+    return m_kinematics.toChassisSpeeds(currentSwerveModuleStates);
+  }
+
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rotationIsPosition) {
-    SwerveModuleState[] swerveModuleStates =
+    currentSwerveModuleStates =
         m_kinematics.toSwerveModuleStates(
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, gyro.getRotation2d())
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     
-    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, kMaxSpeed);
+    SwerveDriveKinematics.desaturateWheelSpeeds(currentSwerveModuleStates, kMaxSpeed);
 
     if (rotationIsPosition) {
-      for (SwerveModuleState i : swerveModuleStates) {
+      for (SwerveModuleState i : currentSwerveModuleStates) {
         i.angle = new Rotation2d(rot);
       }
     }
 
-    setModuleStates(swerveModuleStates);
+    setModuleStates(currentSwerveModuleStates);
   }
 
   public void drive(ChassisSpeeds chassisSpeeds, boolean fieldRelative, boolean rotationIsPosition) {
