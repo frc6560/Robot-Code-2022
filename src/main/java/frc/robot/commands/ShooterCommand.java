@@ -133,8 +133,9 @@ public class ShooterCommand extends CommandBase {
         TeleOpBaseRPMBuff = ntTeleopBuff.getDouble(0.0);
 
         rpmBuff = isAuto ? AutoBaseRPMBuff : TeleOpBaseRPMBuff;
+        rpmBuff += missBall ? ballMissRPM : 0.0;
 
-        shooter.setShooterRpm( getShooterRpm(dist) + rpmBuff );
+        shooter.setShooterRpm(getShooterRpm(dist) + rpmBuff);
         break;
 
       case AIMING:
@@ -165,18 +166,19 @@ public class ShooterCommand extends CommandBase {
   @Override
   public void execute() {
     
-    // if(!RobotContainer.conveyorSensor.get()){
-    //   ColorMatchResult closestColor = colorMatch.matchClosestColor(RobotContainer.colorSensor.getColor());
-    //   // System.out.println("Ball Color Detected: (" + closestColor.color.red + ", " +closestColor.color.green + ", " + closestColor.color.blue +")");
+    if(!RobotContainer.conveyorSensor.get()){
+      ColorMatchResult closestColor = colorMatch.matchClosestColor(RobotContainer.colorSensor.getColor());
 
-    //   // if(closestColor.color.blue > 0.8){ //&& isRedAlliance){
-    //   //   missBall = true;
-    //   //   System.out.println("ITS A BLUE BALL");
-    //   // } else{
-    //   //   missBall = false;
-    //   //   System.out.println("R: " + closestColor.color.red+ "G: " + closestColor.color.green+ "B: " + closestColor.color.blue);
-    //   // }
-    // }
+      System.out.println("Ball Color Detected: (" + closestColor.color.red + ", " +closestColor.color.green + ", " + closestColor.color.blue +")");
+      
+      if((closestColor.color.blue > 0.8 && isRedAlliance) || (closestColor.color.red > 0.8 && !isRedAlliance)){
+        missBall = true;
+        System.out.println("MISS BALL");
+      } else{
+        missBall = false;
+      }
+      
+    }
 
     limelight.setForceOff(!(controls.getAimShooter() || controls.getConstantAiming()));
 
