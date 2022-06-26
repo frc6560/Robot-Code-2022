@@ -71,18 +71,19 @@ public class DriveCommand extends CommandBase {
   }
 
   public void setTrajectory(Trajectory trajectory) {
-    this.currentTrajectory = trajectory;
-    this.trajectoryStartTime = Timer.getFPGATimestamp();
-
+    currentTrajectory = trajectory;
+    trajectoryStartTime = Timer.getFPGATimestamp();
+    trajectoryFinished = false;
+    currentState = DriveState.AUTO;
   }
 
   public void setAutoRotation(Rotation2d rotation)  {
-    this.currentAutoRotation = rotation;
+    currentAutoRotation = rotation;
   }
 
   public void updateRamsete() {
     Trajectory.State goal = currentTrajectory.sample(Timer.getFPGATimestamp() - trajectoryStartTime);
-    Rotation2d targetHeading = this.currentAutoRotation;
+    Rotation2d targetHeading = currentAutoRotation;
 
     if (autoController == null) resetAuto();
 
@@ -108,8 +109,6 @@ public class DriveCommand extends CommandBase {
   @Override
   public void execute() {
 
-    // TODO: Do something about this:
-    if (DriverStation.isAutonomous()) currentState = DriveState.AUTO;
     if (DriverStation.isTeleop()) currentState = DriveState.TELEOP;
 
     switch (currentState) {
