@@ -27,11 +27,10 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveTrain extends SubsystemBase {
-  /** Creates a new ExampleSubsystem. */
 
-  private final double kMaxSpeed = 3.0; // m/s
+  private final double kMaxSpeed = 3.0; // m/s TODO: update this
 
-
+  // TODO: Update values
   private final Translation2d m_frontLeftLocation = new Translation2d(0.69, 0.69);
   private final Translation2d m_frontRightLocation = new Translation2d(0.69, -0.69);
   private final Translation2d m_backLeftLocation = new Translation2d(-0.69, 0.69);
@@ -57,10 +56,10 @@ public class DriveTrain extends SubsystemBase {
 
   public DriveTrain() {
     
-    m_frontLeft = new SwerveModule(new TalonFX(69), new CANSparkMax(69, MotorType.kBrushless));
-    m_frontRight = new SwerveModule(new TalonFX(69), new CANSparkMax(69, MotorType.kBrushless));
-    m_backLeft = new SwerveModule(new TalonFX(69), new CANSparkMax(69, MotorType.kBrushless));
-    m_backRight = new SwerveModule(new TalonFX(69), new CANSparkMax(69, MotorType.kBrushless));
+    m_frontLeft = new SwerveModule(new TalonFX(8), new CANSparkMax(5, MotorType.kBrushless));
+    m_frontRight = new SwerveModule(new TalonFX(10), new CANSparkMax(13, MotorType.kBrushless));
+    m_backLeft = new SwerveModule(new TalonFX(22), new CANSparkMax(14, MotorType.kBrushless));
+    m_backRight = new SwerveModule(new TalonFX(27), new CANSparkMax(20, MotorType.kBrushless));
 
     gyro = new AHRS(SerialPort.Port.kMXP, SerialDataType.kProcessedData, (byte) 100);
     
