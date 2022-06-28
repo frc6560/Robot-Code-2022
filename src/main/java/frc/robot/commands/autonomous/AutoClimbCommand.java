@@ -11,8 +11,8 @@ import frc.robot.subsystems.Climb;
 public class AutoClimbCommand extends CommandBase {
   /** Creates a new AutoClimbCommand. */
   private final Climb climb;
+  private AutoClimbState state;
 
-  int autoClimbPhase = 0;
   int cycles = 0;
   double pauseTime = -1;
   
@@ -21,7 +21,7 @@ public class AutoClimbCommand extends CommandBase {
   private final double DOWN_WAIT_DURATION = 0.5;
   private final double UP_WAIT_DURATION = 0.25;
 
-  double extensionSpeed = 1;
+  private final double extensionSpeed = 1;
 
   public AutoClimbCommand(Climb climb) {
     addRequirements(climb);
@@ -33,72 +33,84 @@ public class AutoClimbCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    autoClimbPhase = 0;
+    state = AutoClimbState.EXTENSION;
+  }
+
+  public enum AutoClimbState {
+    EXTENSION, FIRST_TIMER, RETRACTION, SECOND_TIMER
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    // Phase 0: pisons out and extension
+    // Phase 1: timer
+    // Phase 2: pistons in and retraction
+    // Phase 3: timer
+
     double leftPos = climb.getLeftPositionInches();
     double rightPos = climb.getRightPositionInches();
+    double curTime = Timer.getFPGATimestamp();
 
-    if(autoClimbPhase == 0){
-      climb.setExtensionMotors(extensionSpeed);
+    switch (state) {
+      case EXTENSION:
+        climb.setExtensionMotors(extensionSpeed);
 
-      if(leftPos > 22){
+        if(leftPos > 22){
+          climb.setRotatorPiston(false);
+        } else if(leftPos > 4){
+          climb.setRotatorPiston(true);
+        }
+
+        if(leftPos > UPPER_HEIGHT - (cycles == 0 ? 4 : 0) || rightPos > UPPER_HEIGHT - (cycles == 0 ? 4 : 0)){
+          state = AutoClimbState.FIRST_TIMER;
+          System.out.println("\n\n\n\n1: Phase: " + state);
+          break;
+        }
+        
+        state = AutoClimbState.FIRST_TIMER;
+        break;
+      case FIRST_TIMER:
+        climb.setExtensionMotors(0);
         climb.setRotatorPiston(false);
-      } else if(leftPos > 4){
-        climb.setRotatorPiston(true);
-      }
 
-      if(leftPos > UPPER_HEIGHT - (cycles == 0 ? 4 : 0) || rightPos > UPPER_HEIGHT - (cycles == 0 ? 4 : 0)){
-        autoClimbPhase ++;
+        if(pauseTime == -1){
+          pauseTime = Timer.getFPGATimestamp();
+        }
         
-        System.out.println("\n\n\n\n1: Phase: " + autoClimbPhase);
-      }
-    } else if(autoClimbPhase == 1){
-      climb.setExtensionMotors(0);
-      climb.setRotatorPiston(false);
 
-      if(pauseTime == -1){
-        pauseTime = Timer.getFPGATimestamp();
-      }
-      double curTime = Timer.getFPGATimestamp();
+        if(curTime - pauseTime > DOWN_WAIT_DURATION){
+          pauseTime = -1;
+          state = AutoClimbState.RETRACTION;
+        }
 
-      if(curTime - pauseTime > DOWN_WAIT_DURATION){
-        pauseTime = -1;
-        autoClimbPhase++;
+        break;
+      case RETRACTION:
+        climb.setRotatorPiston(false);
+        climb.setExtensionMotors(-extensionSpeed);
         
-        System.out.println("\n\n\n\n3: Phase: " + autoClimbPhase);
-      }
-    } else if(autoClimbPhase == 2){
-      climb.setRotatorPiston(false);
-      climb.setExtensionMotors(-extensionSpeed);
-      
-      if(leftPos < LOWER_HEIGHT || rightPos < LOWER_HEIGHT){
-        autoClimbPhase ++;
-        
-        System.out.println("\n\n\n\n2: Phase: " + autoClimbPhase);
-      }
-    } else if(autoClimbPhase == 3){
-      climb.setExtensionMotors(0);
+        if(leftPos < LOWER_HEIGHT || rightPos < LOWER_HEIGHT){
+          state = AutoClimbState.SECOND_TIMER;
+          System.out.println("\n\n\n\n2: Phase: " + state);
+        }
+        break;
+      case SECOND_TIMER:
+        climb.setExtensionMotors(0);
 
-      if(pauseTime == -1){
-        pauseTime = Timer.getFPGATimestamp();
-      }
-      double curTime = Timer.getFPGATimestamp();
+        if(pauseTime == -1){
+          pauseTime = Timer.getFPGATimestamp();
+        }
 
-      if(curTime - pauseTime > UP_WAIT_DURATION){
-        pauseTime = -1;
-        autoClimbPhase++;
-        cycles++;
-        
-        System.out.println("\n\n\n\n3: Phase: " + autoClimbPhase);
-      }
+        if(curTime - pauseTime > UP_WAIT_DURATION){
+          pauseTime = -1;
+          state = AutoClimbState.EXTENSION;
+          cycles++;
+          
+          System.out.println("\n\n\n\n3: Phase: " + state);
+        }
+        break;
     }
-
-    autoClimbPhase %= 4;
-
   }
 
   // Called once the command ends or is interrupted.
