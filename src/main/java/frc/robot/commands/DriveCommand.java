@@ -113,7 +113,7 @@ public class DriveCommand extends CommandBase {
 
     switch (currentState) {
       case TELEOP:
-        drivetrain.drive(controls.driveGetX(), controls.driveGetY(), controls.driveGetRotation(), true, false);
+        drivetrain.drive(controls.driveGetX(), controls.driveGetY(), controls.driveGetRotation(), true);
         break;
       case AUTO:
         updateRamsete();

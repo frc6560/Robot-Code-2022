@@ -90,7 +90,7 @@ public class DriveTrain extends SubsystemBase {
     return m_kinematics.toChassisSpeeds(currentSwerveModuleStates);
   }
 
-  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rotationIsPosition) {
+  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     currentSwerveModuleStates =
         m_kinematics.toSwerveModuleStates(
             fieldRelative
@@ -99,17 +99,11 @@ public class DriveTrain extends SubsystemBase {
     
     SwerveDriveKinematics.desaturateWheelSpeeds(currentSwerveModuleStates, kMaxSpeed);
 
-    if (rotationIsPosition) {
-      for (SwerveModuleState i : currentSwerveModuleStates) {
-        i.angle = new Rotation2d(rot);
-      }
-    }
-
     setModuleStates(currentSwerveModuleStates);
   }
 
   public void drive(ChassisSpeeds chassisSpeeds, boolean fieldRelative, boolean rotationIsPosition) {
-    drive(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond, fieldRelative, rotationIsPosition);
+    drive(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond, fieldRelative);
   }
 
   public void setModuleStates(SwerveModuleState[] states) {
@@ -120,7 +114,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void stop() {
-    drive(0.0, 0.0, 0.0, false, false);
+    drive(0.0, 0.0, 0.0, false);
   }
 
   /** Updates the field relative position of the robot. */
