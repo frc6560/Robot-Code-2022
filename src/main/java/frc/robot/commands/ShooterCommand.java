@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 
@@ -18,13 +17,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utility.ShootCalibrationMap;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 import frc.robot.commands.autonomous.AutonomousController;
 import frc.robot.subsystems.Limelight;
 
 public class ShooterCommand extends CommandBase {
 
-  public static interface Controls {
+  public static interface Controls extends DemoControls {
     double shooterHoodTest();
     double shooterTurretTest();
     boolean getAimShooter();
@@ -35,6 +33,18 @@ public class ShooterCommand extends CommandBase {
     boolean getHotRPMReduction();
 
     boolean getManualMiss();
+  }
+  
+  public interface DemoControls {
+    boolean shootClose();
+    boolean shootMid();
+    boolean shootFar();
+    boolean shootUp();
+
+    boolean shooterPanRight();
+    boolean shooterPanLeft();
+
+    boolean driver1Intake();
   }
 
   private Shooter shooter;
@@ -62,6 +72,9 @@ public class ShooterCommand extends CommandBase {
   private NetworkTableEntry hotRPMReduction;
 
   private NetworkTableEntry ntTeleopBuff;
+
+
+  private NetworkTableEntry ntDemoMode;
 
   private final double IDLE_RPM = 1000;
   private final double AutoBaseRPMBuff = 100;
@@ -106,6 +119,9 @@ public class ShooterCommand extends CommandBase {
 
     ntTeleopBuff = ntTable.getEntry("Teleop RPM Buff");
     ntTeleopBuff.setDouble(0);
+
+    ntDemoMode = ntTable.getEntry("DEMO MODE");
+    ntDemoMode.setBoolean(false);
     
 
     isRedAlliance =  NetworkTableInstance.getDefault().getTable("FMSInfo").getEntry("IsRedAlliance").getBoolean(false);
@@ -146,60 +162,101 @@ public class ShooterCommand extends CommandBase {
     //   // }
     // }
 
-    limelight.setForceOff(!(controls.getAimShooter() || controls.getConstantAiming()));
+    limelight.setForceOff(!(controls.getAimShooter() || controls.getConstantAiming()) || ntDemoMode.getBoolean(false));
 
     double dist = limelight.getDistance();
-    if(controls.getAimShooter() || controls.getConstantAiming()) {
+
+
+    if(ntDemoMode.getBoolean(false)){ // Demo Controls
+      double[] demoTrajectory = new double[2]; // [angle, rpm]
+
+      if(controls.shootClose()){
+        demoTrajectory[0] = 0.66;
+        demoTrajectory[1] = 2000;
+
+      } else if(controls.shootMid()){
+        demoTrajectory[0] = 0;
+        demoTrajectory[1] = 3000;
+
+      } else if(controls.shootFar()){
+        demoTrajectory[0] = -0.75;
+        demoTrajectory[1] = 3500;
+
+      } else if(controls.shootUp()){
+        demoTrajectory[0] = -1;
+        demoTrajectory[1] = 4000;
+
+      }else{
+        demoTrajectory[1] = 0;
+      }
       
-      if (controls.getAimShooter()) {
-        TeleOpBaseRPMBuff = ntTeleopBuff.getDouble(0.0);
+      shooter.setHoodPos(demoTrajectory[0]);
+      shooter.setShooterRpm(demoTrajectory[1]);
 
-        rpmBuff = isAuto ? AutoBaseRPMBuff : TeleOpBaseRPMBuff;
 
-        if(controls.getHotRPMAddition()){
-          rpmBuff += hotRPMAddition.getDouble(0.0);
-        } else if(controls.getHotRPMReduction()) {
-          rpmBuff += -hotRPMAddition.getDouble(0.0);          
+      double turrTarget = controls.shooterPanLeft() ? 5 
+                        : controls.shooterPanRight() ? -5
+                        : 0;
+        
+        if((shooter.getTurretPosDegrees() > 85 && turrTarget > 0) || (shooter.getTurretPosDegrees() < -85 && turrTarget < 0))
+          turrTarget = 0;
+
+        else if (controls.overrideTurretCenter()) shooter.setTurretPos(0); // override controlled turret pos
+        else shooter.setTurretDeltaPos(turrTarget); // limelight controlled turret pos;
+      
+    } else{ // Regular Controls
+
+      if(controls.getAimShooter() || controls.getConstantAiming()) {
+        
+        if (controls.getAimShooter()) {
+          TeleOpBaseRPMBuff = ntTeleopBuff.getDouble(0.0);
+
+          rpmBuff = isAuto ? AutoBaseRPMBuff : TeleOpBaseRPMBuff;
+
+          if(controls.getHotRPMAddition()){
+            rpmBuff += hotRPMAddition.getDouble(0.0);
+          } else if(controls.getHotRPMReduction()) {
+            rpmBuff += -hotRPMAddition.getDouble(0.0);          
+          }
+
+          if(missBall || controls.getManualMiss()) {
+            rpmBuff += ballMissRPM;
+          }
+
+          shooter.setShooterRpm( getShooterRpm(dist) + rpmBuff );
+        }
+        else{
+          shooter.setShooterRpm(IDLE_RPM);
         }
 
-        if(missBall || controls.getManualMiss()) {
-          rpmBuff += ballMissRPM;
+        targetHoodPos = debouncer.calculate(limelight.hasTarget()) ? limelight.getHorizontalAngle() : 0.0;
+        
+        if(targetHoodPos >= -1) {
+          shooter.setHoodPos(targetHoodPos);// - (controls.getHotHoodChange() ? hotHoodAddition.getDouble(0.0) : 0.0) );
         }
 
-        shooter.setShooterRpm( getShooterRpm(dist) + rpmBuff );
+        // shooter.setTurretPos(shooter.getTurretPos() + controls.shooterTurretTest()); // manual control of turret using climb joystick (button board);
+        double turrTarget = limelight.getHorizontalAngle();
+
+        // if(missBall){
+        //   if(turrTarget > 0){
+        //     turrTarget -= ballMissAngle;
+        //   } else{
+        //     turrTarget += ballMissAngle;
+        //   }
+        // }
+        
+        if((shooter.getTurretPosDegrees() > 85 && turrTarget > 0) || (shooter.getTurretPosDegrees() < -85 && turrTarget < 0))
+          turrTarget = 0;
+        
+        else if (controls.overrideTurretCenter()) shooter.setTurretPos(0); // override controlled turret pos
+        else shooter.setTurretDeltaPos(turrTarget); // limelight controlled turret pos;
+
+        // ntTestHood.setDouble(targetHoodPos);
+      }else{
+        // shooter.setTurretPos(0);
+        shooter.setShooterRpm(0);
       }
-      else{
-        shooter.setShooterRpm(IDLE_RPM);
-      }
-
-      targetHoodPos = debouncer.calculate(limelight.hasTarget()) ? limelight.getHorizontalAngle() : 0.0;
-      
-      
-      if(targetHoodPos >= -1) {
-        shooter.setHoodPos(targetHoodPos);// - (controls.getHotHoodChange() ? hotHoodAddition.getDouble(0.0) : 0.0) );
-      }
-
-      // shooter.setTurretPos(shooter.getTurretPos() + controls.shooterTurretTest()); // manual control of turret using climb joystick (button board);
-      double turrTarget = limelight.getHorizontalAngle();
-
-      // if(missBall){
-      //   if(turrTarget > 0){
-      //     turrTarget -= ballMissAngle;
-      //   } else{
-      //     turrTarget += ballMissAngle;
-      //   }
-      // }
-      
-      if((shooter.getTurretPosDegrees() > 85 && turrTarget > 0) || (shooter.getTurretPosDegrees() < -85 && turrTarget < 0))
-        turrTarget = 0;
-      
-      else if (controls.overrideTurretCenter()) shooter.setTurretPos(0); // override controlled turret pos
-      else shooter.setTurretDeltaPos(turrTarget); // limelight controlled turret pos;
-
-      // ntTestHood.setDouble(targetHoodPos);
-    }else{
-      // shooter.setTurretPos(0);
-      shooter.setShooterRpm(0);
     }
 
     if(targetBallCount != -1 && shooter.getBallShotCount() >= targetBallCount) doneShootingFrames++;
@@ -209,13 +266,6 @@ public class ShooterCommand extends CommandBase {
       shooter.setTurretPos(90.0); // turret is at 90 degrees when both climb arms are extended
     }
 
-    // if(!prevCalibButton && ntAddCalibrateButton.getBoolean(false)){
-    //   ShooterCalibrations.NEW_SHOOT_CALIBRATION_MAP.add(dist, new ShootCalibrationMap.Trajectory(ntTestRPM.getDouble(0.0), ntTestHood.getDouble(0.0)));
-    //   saveNewCalibrationMap();
-    //   System.out.println("added a point");
-    //   System.out.println(ShooterCalibrations.NEW_SHOOT_CALIBRATION_MAP.toString());
-    // }
-    // prevCalibButton = ntAddCalibrateButton.getBoolean(false);
   }
 
   public double getShooterRpm(double distance) {
@@ -266,6 +316,7 @@ public class ShooterCommand extends CommandBase {
   public boolean isFinished() {
     return doneShooting();
   }
+
 
   //method that supplies newcalibrationmap to networktables
   // public void saveNewCalibrationMap(){

@@ -100,6 +100,7 @@ public class AutonomousController implements IntakeCommand.Controls, ShooterComm
     }
     
 
+    // DEMO MODE - not used
     @Override
     public double shooterHoodTest() {
       // TODO Auto-generated method stub
@@ -111,6 +112,48 @@ public class AutonomousController implements IntakeCommand.Controls, ShooterComm
     public double shooterTurretTest() {
       // TODO Auto-generated method stub
       return 0;
+    }
+
+    @Override
+    public boolean shootClose() {
+      // TODO Auto-generated method stub
+      return false;
+    }
+
+    @Override
+    public boolean shootMid() {
+      // TODO Auto-generated method stub
+      return false;
+    }
+
+    @Override
+    public boolean shootFar() {
+      // TODO Auto-generated method stub
+      return false;
+    }
+
+    @Override
+    public boolean shootUp() {
+      // TODO Auto-generated method stub
+      return false;
+    }
+
+    @Override
+    public boolean driver1Intake() {
+      // TODO Auto-generated method stub
+      return false;
+    }
+
+    @Override
+    public boolean shooterPanRight() {
+      // TODO Auto-generated method stub
+      return false;
+    }
+
+    @Override
+    public boolean shooterPanLeft() {
+      // TODO Auto-generated method stub
+      return false;
     }
 
 }

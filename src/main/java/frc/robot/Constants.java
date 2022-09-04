@@ -39,6 +39,9 @@ public final class Constants {
         public static final int XBOX_X_BUTTON = 3;
         public static final int XBOX_B_BUTTON = 2;
         public static final int XBOX_A_BUTTON = 1;
+        
+        public static final int XBOX_BACK_BUTTON = 7;
+        public static final int XBOX_START_BUTTON = 8;
 
         public static final int DRIVER_STATION_TOGGLE_1 = 2;
         public static final int DRIVER_STATION_TOGGLE_2 = 5;

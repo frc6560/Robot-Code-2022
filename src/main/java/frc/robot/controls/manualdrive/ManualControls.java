@@ -21,7 +21,7 @@ import static frc.robot.Constants.*;
 
 
 /** Add your docs here. */
-public class ManualControls implements DriveCommand.Controls, IntakeCommand.Controls, ShooterCommand.Controls, Limelight.Controls, ConveyorCommand.Controls, ClimbCommand.Controls {
+public class ManualControls implements DriveCommand.Controls, IntakeCommand.Controls, ShooterCommand.Controls, Limelight.Controls, ConveyorCommand.Controls, ClimbCommand.Controls, ShooterCommand.DemoControls {
 
     private final Joystick xbox;
     private final Joystick controlStation;
@@ -160,5 +160,49 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
     @Override
     public boolean getAutoClimbEnabled(){
         return controlStation.getRawButton(ControllerIds.DRIVER_STATION_TOGGLE_1);
+    }
+    
+
+    // DEMO CONTROLLER
+
+    @Override
+    public boolean shootClose() {
+        return xbox.getRawButton(ControllerIds.XBOX_X_BUTTON);
+    }
+
+
+    @Override
+    public boolean shootMid() {
+        return xbox.getRawButton(ControllerIds.XBOX_A_BUTTON);
+    }
+
+
+    @Override
+    public boolean shootFar() {
+        return xbox.getRawButton(ControllerIds.XBOX_B_BUTTON);
+    }
+
+
+    @Override
+    public boolean shootUp() {
+        return xbox.getRawButton(ControllerIds.XBOX_Y_BUTTON);
+    }
+
+
+    @Override
+    public boolean driver1Intake() {
+        return xbox.getRawButton(ControllerIds.XBOX_R_TRIGGER);
+    }
+
+
+    @Override
+    public boolean shooterPanRight() {
+        return xbox.getRawButton(ControllerIds.XBOX_START_BUTTON);
+    }
+
+
+    @Override
+    public boolean shooterPanLeft() {
+        return xbox.getRawButton(ControllerIds.XBOX_BACK_BUTTON);
     }
 }
