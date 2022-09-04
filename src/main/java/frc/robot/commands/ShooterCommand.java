@@ -43,8 +43,6 @@ public class ShooterCommand extends CommandBase {
 
     boolean shooterPanRight();
     boolean shooterPanLeft();
-
-    boolean driver1Intake();
   }
 
   private Shooter shooter;
@@ -171,16 +169,16 @@ public class ShooterCommand extends CommandBase {
       double[] demoTrajectory = new double[2]; // [angle, rpm]
 
       if(controls.shootClose()){
-        demoTrajectory[0] = 0.66;
+        demoTrajectory[0] = 0.2;
         demoTrajectory[1] = 2000;
 
       } else if(controls.shootMid()){
         demoTrajectory[0] = 0;
-        demoTrajectory[1] = 3000;
+        demoTrajectory[1] = 3100;
 
       } else if(controls.shootFar()){
-        demoTrajectory[0] = -0.75;
-        demoTrajectory[1] = 3500;
+        demoTrajectory[0] = -0.1;
+        demoTrajectory[1] = 5500;
 
       } else if(controls.shootUp()){
         demoTrajectory[0] = -1;
@@ -194,8 +192,8 @@ public class ShooterCommand extends CommandBase {
       shooter.setShooterRpm(demoTrajectory[1]);
 
 
-      double turrTarget = controls.shooterPanLeft() ? 5 
-                        : controls.shooterPanRight() ? -5
+      double turrTarget = controls.shooterPanLeft() ? -10 
+                        : controls.shooterPanRight() ? 10
                         : 0;
         
         if((shooter.getTurretPosDegrees() > 85 && turrTarget > 0) || (shooter.getTurretPosDegrees() < -85 && turrTarget < 0))

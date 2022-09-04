@@ -4,6 +4,9 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.autonomous.AutonomousController;
 import frc.robot.subsystems.Intake;
@@ -13,11 +16,17 @@ public class IntakeCommand extends CommandBase {
   private final Intake intake;
   private final Controls controls;
 
-  public static interface Controls {
+  NetworkTableEntry ntDemoMode;
+
+  public static interface Controls extends DemoControls {
     boolean getIntakeOut();
     boolean getBallChainReverse();
     boolean isIntakeEngaged();
   }
+  public static interface DemoControls {
+    boolean getDemoIntakeOut();
+  }
+  
 
   /** Creates a new IntakeCommand. */
   public IntakeCommand(Intake intake, Controls controls) {
@@ -25,6 +34,8 @@ public class IntakeCommand extends CommandBase {
     addRequirements(intake);
     this.intake = intake;
     this.controls = controls;
+    
+    this.ntDemoMode = NetworkTableInstance.getDefault().getTable("Shooter").getEntry("DEMO MODE");
   }
 
   public IntakeCommand(Intake intake){ // Autonomouse
@@ -40,7 +51,11 @@ public class IntakeCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.intake.setPiston(controls.getIntakeOut());
+    boolean state = controls.getIntakeOut() || (ntDemoMode.getBoolean(false) && controls.getDemoIntakeOut());
+
+    
+    this.intake.setPiston(state);
+
     if(controls.getBallChainReverse()){
       intake.setReversed(true);
     } else {

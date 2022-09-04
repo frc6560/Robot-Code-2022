@@ -13,6 +13,7 @@ import frc.robot.commands.ClimbCommand;
 
 import frc.robot.utility.NumberStepper;
 import frc.robot.utility.PovNumberStepper;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
@@ -79,7 +80,10 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
     @Override
     public boolean isIntakeEngaged(){
-        return getIntakeOut();
+        if( NetworkTableInstance.getDefault().getTable("Shooter").getEntry("DEMO MODE").getBoolean(false)) 
+            return getIntakeOut() || getDemoIntakeOut();
+
+        else return getIntakeOut();
     }
 
     @Override
@@ -190,12 +194,6 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
 
     @Override
-    public boolean driver1Intake() {
-        return xbox.getRawButton(ControllerIds.XBOX_R_TRIGGER);
-    }
-
-
-    @Override
     public boolean shooterPanRight() {
         return xbox.getRawButton(ControllerIds.XBOX_START_BUTTON);
     }
@@ -204,5 +202,11 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
     @Override
     public boolean shooterPanLeft() {
         return xbox.getRawButton(ControllerIds.XBOX_BACK_BUTTON);
+    }
+
+
+    @Override
+    public boolean getDemoIntakeOut() {
+        return xbox.getRawButton(ControllerIds.XBOX_L_BUMPER);
     }
 }

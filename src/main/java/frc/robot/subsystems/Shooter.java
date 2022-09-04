@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.PWM;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.ShooterCommand;
 
 import static frc.robot.Constants.*;
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
@@ -199,6 +200,11 @@ public class Shooter extends SubsystemBase {
   public boolean isShooterReady(){
     // System.out.println("1:  " + (Math.abs(getShooterRpm()) > 200) + "    2:  " + (Math.abs(getShooterRpm() - targetRPM/3.454545457) < RPMAcceptableDiff) + "   3:   " + (Math.abs(targetTurretPos) < turretAcceptableDiff) + "   4:  " + (Math.abs(getHoodPos() - targetHoodPos) < hoodAcceptableDiff));
     return
+      ntTable.getEntry("DEMO MODE").getBoolean(false) &&
+      Math.abs(getShooterRpm()) > 1500
+
+        ||
+
       ntTableLimelight.getEntry("Has Target").getBoolean(false) &&
       Math.abs(getShooterRpm()) > 2000 &&
       Math.abs(getShooterRpm() - targetRPM) < RPMAcceptableDiff &&

@@ -139,12 +139,6 @@ public class AutonomousController implements IntakeCommand.Controls, ShooterComm
     }
 
     @Override
-    public boolean driver1Intake() {
-      // TODO Auto-generated method stub
-      return false;
-    }
-
-    @Override
     public boolean shooterPanRight() {
       // TODO Auto-generated method stub
       return false;
@@ -152,6 +146,12 @@ public class AutonomousController implements IntakeCommand.Controls, ShooterComm
 
     @Override
     public boolean shooterPanLeft() {
+      // TODO Auto-generated method stub
+      return false;
+    }
+
+    @Override
+    public boolean getDemoIntakeOut() {
       // TODO Auto-generated method stub
       return false;
     }
