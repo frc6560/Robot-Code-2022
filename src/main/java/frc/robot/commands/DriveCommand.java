@@ -60,9 +60,9 @@ public class DriveCommand extends CommandBase {
 
   public void resetAuto() {
     autoController = new HolonomicDriveController(
-      new PIDController(1, 0, 0),
-      new PIDController(1, 0, 0),
-      new ProfiledPIDController(1, 0, 0,
+      new PIDController(0.001, 0, 0),
+      new PIDController(0.001, 0, 0),
+      new ProfiledPIDController(0.001, 0, 0,
         new TrapezoidProfile.Constraints(2*Math.PI, Math.PI)
       )
     );
