@@ -13,6 +13,7 @@ import frc.robot.commands.ClimbCommand;
 
 import frc.robot.utility.NumberStepper;
 import frc.robot.utility.PovNumberStepper;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 
 import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
@@ -156,5 +157,10 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
     @Override
     public double driveGetRotation() {
         return xbox.getRawAxis(ControllerIds.XBOX_R_JOY_X);
+    }
+
+    @Override
+    public Rotation2d driveGetRotationPosition() {
+        return new Rotation2d(xbox.getRawAxis(ControllerIds.XBOX_R_JOY_X), xbox.getRawAxis(ControllerIds.XBOX_R_JOY_Y));
     }
 }

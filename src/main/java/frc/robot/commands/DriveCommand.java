@@ -5,9 +5,13 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.SwerveModule;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.dacubeking.AutoBuilder.robot.sender.pathpreview.RobotPositionSender;
 import com.dacubeking.AutoBuilder.robot.sender.pathpreview.RobotState;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -16,8 +20,11 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -29,6 +36,7 @@ public class DriveCommand extends CommandBase {
     double driveGetX();
     double driveGetY();
     double driveGetRotation();
+    Rotation2d driveGetRotationPosition();
   }
 
   private final DriveTrain drivetrain;
@@ -42,6 +50,12 @@ public class DriveCommand extends CommandBase {
   private @NotNull double trajectoryStartTime;
   private @NotNull Rotation2d currentAutoRotation;
   private boolean trajectoryFinished;
+
+  private final NetworkTableEntry isTestingModule = NetworkTableInstance.getDefault().getTable("Drivetrain").getEntry("isTestingModule");
+  private final NetworkTableEntry turnMotorTestId = NetworkTableInstance.getDefault().getTable("Drivetrain").getEntry("turnMotorTestId");
+  private final NetworkTableEntry driveMotorTestId = NetworkTableInstance.getDefault().getTable("Drivetrain").getEntry("driveMotorTestId");
+  private final NetworkTableEntry resetRotation = NetworkTableInstance.getDefault().getTable("Drivetrain").getEntry("resetRotation");
+
 
   public enum DriveState {
     TELEOP, AUTO, DONE
@@ -113,12 +127,26 @@ public class DriveCommand extends CommandBase {
 
     switch (currentState) {
       case TELEOP:
+        if (isTestingModule.getBoolean(false)) {
+          int turn_id = (int) turnMotorTestId.getDouble(0.0);
+          int drive_id = (int) driveMotorTestId.getDouble(0.0);
+          SwerveModule module = new SwerveModule(new TalonFX(drive_id), new CANSparkMax(turn_id, MotorType.kBrushless));
+          module.setDesiredState(new SwerveModuleState(controls.driveGetY(), controls.driveGetRotationPosition()));
+          if (resetRotation.getBoolean(false)) {
+            module.resetRotation();
+          }
+        }
+        else {
         drivetrain.drive(controls.driveGetX(), controls.driveGetY(), controls.driveGetRotation(), true);
+        }
         break;
       case AUTO:
         updateRamsete();
+        break;
       case DONE:
         trajectoryFinished = true;
+        stopMovement();
+        break;
     }
 
     RobotPositionSender.addRobotPosition(
