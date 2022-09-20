@@ -137,7 +137,7 @@ public class DriveCommand extends CommandBase {
           }
         }
         else {
-        drivetrain.drive(controls.driveGetX(), controls.driveGetY(), controls.driveGetRotation(), true);
+          drivetrain.drive(controls.driveGetX(), controls.driveGetY(), controls.driveGetRotation(), true);
         }
         break;
       case AUTO:
