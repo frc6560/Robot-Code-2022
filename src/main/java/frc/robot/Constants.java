@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import frc.robot.utility.ShootCalibrationMap;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 
@@ -144,50 +143,6 @@ public final class Constants {
         public static final double FEET_TO_METER = 0.3048;
         public static final double METERS_TO_FEET = 1.0/FEET_TO_METER;
     }
-
-    public static final class ShooterCalibrations {
-        
-    public static ShootCalibrationMap SHOOT_CALIBRATION_MAP = new ShootCalibrationMap();
-    public static ShootCalibrationMap NEW_SHOOT_CALIBRATION_MAP = new ShootCalibrationMap();
-        
-        static {
-            SHOOT_CALIBRATION_MAP.add(100.0, new ShootCalibrationMap.Trajectory(3000.0, -1));      //Degrees   Distance
-                    
-            SHOOT_CALIBRATION_MAP.add(4.968, new ShootCalibrationMap.Trajectory(3200.0, -0.35));   // 4.968      9.2
-            SHOOT_CALIBRATION_MAP.add(2.5746, new ShootCalibrationMap.Trajectory(3200.0, -0.2));   // 2.5746    10.1
-            SHOOT_CALIBRATION_MAP.add(0.1811, new ShootCalibrationMap.Trajectory(3280.0, -0.15));  // 0.1811     11
-            SHOOT_CALIBRATION_MAP.add(-2.478, new ShootCalibrationMap.Trajectory(3320.0, -0.1));   // -2.478     12
-            SHOOT_CALIBRATION_MAP.add(-5.138, new ShootCalibrationMap.Trajectory(3400.0, -0.1));   // -5.138     13
-            SHOOT_CALIBRATION_MAP.add(-7.531, new ShootCalibrationMap.Trajectory(3570.0, 0.0));    // -7.531    13.9
-            SHOOT_CALIBRATION_MAP.add(-10.456, new ShootCalibrationMap.Trajectory(3600.0, 0.15));  // -10.456   15.0
-
-            SHOOT_CALIBRATION_MAP.add(-100, new ShootCalibrationMap.Trajectory(4700.0, 1));
-        }
-    }
-    /*
-            // CODE ORANGE CALIB POINTS
-                    
-            // SHOOT_CALIBRATION_MAP.add(4.968, new ShootCalibrationMap.Trajectory(3200.0, -0.35));   // 4.968      9.2
-            // SHOOT_CALIBRATION_MAP.add(2.5746, new ShootCalibrationMap.Trajectory(3200.0, -0.2));   // 2.5746    10.1
-            // SHOOT_CALIBRATION_MAP.add(0.1811, new ShootCalibrationMap.Trajectory(3280.0, -0.15));  // 0.1811     11
-            // SHOOT_CALIBRATION_MAP.add(-2.478, new ShootCalibrationMap.Trajectory(3320.0, -0.1));   // -2.478     12
-            // SHOOT_CALIBRATION_MAP.add(-5.138, new ShootCalibrationMap.Trajectory(3400.0, -0.1));   // -5.138     13
-            // SHOOT_CALIBRATION_MAP.add(-7.531, new ShootCalibrationMap.Trajectory(3570.0, 0.0));    // -7.531    13.9
-            // SHOOT_CALIBRATION_MAP.add(-10.456, new ShootCalibrationMap.Trajectory(3600.0, 0.15));  // -10.456   15.0
-
-    */
-    /*
-            // CALIFORNIA SAN DIEGO COMP CALIBRATIONS
- 
-            SHOOT_CALIBRATION_MAP.add(4.968, new ShootCalibrationMap.Trajectory(3258.0, -0.35));   // 4.968      9.2
-            SHOOT_CALIBRATION_MAP.add(2.5746, new ShootCalibrationMap.Trajectory(3258.0, -0.2));   // 2.5746    10.1
-            SHOOT_CALIBRATION_MAP.add(0.1811, new ShootCalibrationMap.Trajectory(3329.0, -0.15));  // 0.1811     11
-            SHOOT_CALIBRATION_MAP.add(-2.478, new ShootCalibrationMap.Trajectory(3370.0, -0.1));   // -2.478     12
-            SHOOT_CALIBRATION_MAP.add(-5.138, new ShootCalibrationMap.Trajectory(3461.0, -0.1));   // -5.138     13
-            SHOOT_CALIBRATION_MAP.add(-7.531, new ShootCalibrationMap.Trajectory(3653.0, 0.0));    // -7.531    13.9
-            SHOOT_CALIBRATION_MAP.add(-10.456, new ShootCalibrationMap.Trajectory(3683.0, 0.15));  // -10.456   15.0
-
-    */
 
     
 }

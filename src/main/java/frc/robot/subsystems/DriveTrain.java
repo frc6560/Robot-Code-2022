@@ -59,10 +59,10 @@ public class DriveTrain extends SubsystemBase {
 
   public DriveTrain() {
     
-    m_frontLeft = new SwerveModule(new TalonFX(8), new CANSparkMax(5, MotorType.kBrushless));
-    m_frontRight = new SwerveModule(new TalonFX(10), new CANSparkMax(13, MotorType.kBrushless));
-    m_backLeft = new SwerveModule(new TalonFX(22), new CANSparkMax(14, MotorType.kBrushless));
-    m_backRight = new SwerveModule(new TalonFX(27), new CANSparkMax(20, MotorType.kBrushless));
+    m_frontLeft = new SwerveModule(new TalonFX(1), new CANSparkMax(10, MotorType.kBrushless));
+    m_frontRight = new SwerveModule(new TalonFX(2), new CANSparkMax(11, MotorType.kBrushless));
+    m_backLeft = new SwerveModule(new TalonFX(3), new CANSparkMax(12, MotorType.kBrushless));
+    m_backRight = new SwerveModule(new TalonFX(4), new CANSparkMax(13, MotorType.kBrushless));
 
     gyro = new AHRS(SerialPort.Port.kMXP, SerialDataType.kProcessedData, (byte) 100);
     
@@ -102,9 +102,9 @@ public class DriveTrain extends SubsystemBase {
     setModuleStates(currentSwerveModuleStates);
   }
 
-  public void drive(ChassisSpeeds chassisSpeeds, boolean fieldRelative, boolean rotationIsPosition) {
-    drive(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond, fieldRelative);
-  }
+  // public void drive(ChassisSpeeds chassisSpeeds, boolean fieldRelative, boolean rotationIsPosition) {
+  //   drive(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond, chassisSpeeds.omegaRadiansPerSecond, fieldRelative);
+  // }
 
   public void setModuleStates(SwerveModuleState[] states) {
     m_frontLeft.setDesiredState(states[0]);

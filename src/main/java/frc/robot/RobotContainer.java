@@ -13,21 +13,9 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.RobotIds;
-import frc.robot.commands.ClimbCommand;
-import frc.robot.commands.ConveyorCommand;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.ShooterCommand;
-import frc.robot.commands.autonomous.AutoClimbCommand;
 import frc.robot.controls.manualdrive.ManualControls;
-import frc.robot.subsystems.Climb;
-import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.RGBLighting;
-import frc.robot.subsystems.Shooter;
-
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -38,12 +26,7 @@ import frc.robot.subsystems.Shooter;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  
-  public static final I2C.Port colorSensorPort = I2C.Port.kOnboard;
-  public static final ColorSensorV3 colorSensor = new ColorSensorV3(colorSensorPort);
-  
-  public static final DigitalInput conveyorSensor = new DigitalInput(RobotIds.CONVEYOR_SENSOR);
+  // The robot's subsystems and commands are defined here...  
 
 
   private final DriveTrain driveTrain = new DriveTrain();
@@ -51,27 +34,7 @@ public class RobotContainer {
   @AutoBuilderAccessible
   private final DriveCommand manualDrive;
 
-  private final Limelight limelight;
-
-  private final Shooter shooter = new Shooter();
-
-  @AutoBuilderAccessible
-  private final ShooterCommand manualShooter;
-
-  private final Intake intake = new Intake();
-
-  @AutoBuilderAccessible
-  private final IntakeCommand manualIntake;
-
-  private final Conveyor conveyor = new Conveyor();
-
-  @AutoBuilderAccessible
-  private final ConveyorCommand manualConveyor;
-
-  private final Climb climb = new Climb();
-
-  @AutoBuilderAccessible
-  private final ClimbCommand manualClimb;
+  
 
   private final Joystick xbox = new Joystick(0);
   private final Joystick controlStation = new Joystick(1);
@@ -80,10 +43,7 @@ public class RobotContainer {
   private ManualControls controls;
   // private AutonomousController autonomousController;
 
-  private final AutoClimbCommand autoClimb = new AutoClimbCommand(climb);
-
-
-  private final RGBLighting rgbLighting;
+ 
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -96,21 +56,6 @@ public class RobotContainer {
     manualDrive = new DriveCommand(driveTrain, controls);
     driveTrain.setDefaultCommand(manualDrive);
 
-    limelight = new Limelight(controls);
-
-    manualShooter = new ShooterCommand(shooter, controls, limelight);
-    shooter.setDefaultCommand(manualShooter);
-
-    manualIntake = new IntakeCommand(intake, controls);
-    intake.setDefaultCommand(manualIntake);
-
-    manualConveyor = new ConveyorCommand(conveyor, controls, shooter);
-    conveyor.setDefaultCommand(manualConveyor);
-
-    manualClimb = new ClimbCommand(climb, controls, autoClimb);
-    climb.setDefaultCommand(manualClimb);
-
-    rgbLighting = new RGBLighting();
 
   }
 

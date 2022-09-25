@@ -56,6 +56,10 @@ public class DriveCommand extends CommandBase {
   private final NetworkTableEntry driveMotorTestId = NetworkTableInstance.getDefault().getTable("Drivetrain").getEntry("driveMotorTestId");
   private final NetworkTableEntry resetRotation = NetworkTableInstance.getDefault().getTable("Drivetrain").getEntry("resetRotation");
 
+  private int drive_id = 8;
+  private int turn_id = 5;
+  private SwerveModule module = new SwerveModule(new TalonFX(drive_id), new CANSparkMax(turn_id, MotorType.kBrushless));
+
 
   public enum DriveState {
     TELEOP, AUTO, DONE
@@ -67,6 +71,11 @@ public class DriveCommand extends CommandBase {
 
     this.drivetrain = drivetrain;
     this.controls = controls;
+
+    isTestingModule.setBoolean(true);
+    turnMotorTestId.setDouble(5);
+    driveMotorTestId.setDouble(8);
+    resetRotation.setBoolean(false);
 
     resetAuto();
 
@@ -128,17 +137,21 @@ public class DriveCommand extends CommandBase {
     switch (currentState) {
       case TELEOP:
         if (isTestingModule.getBoolean(false)) {
-          int turn_id = (int) turnMotorTestId.getDouble(0.0);
-          int drive_id = (int) driveMotorTestId.getDouble(0.0);
-          SwerveModule module = new SwerveModule(new TalonFX(drive_id), new CANSparkMax(turn_id, MotorType.kBrushless));
+          int turn_id_new = (int) turnMotorTestId.getDouble(0.0);
+          int drive_id_new = (int) driveMotorTestId.getDouble(0.0);
+          if (turn_id_new != turn_id || drive_id_new != drive_id) {
+            turn_id = turn_id_new;
+            drive_id = drive_id_new;
+            module = new SwerveModule(new TalonFX(drive_id), new CANSparkMax(turn_id, MotorType.kBrushless));
+          }
           module.setDesiredState(new SwerveModuleState(controls.driveGetY(), controls.driveGetRotationPosition()));
           if (resetRotation.getBoolean(false)) {
             module.resetRotation();
           }
         }
-        else {
-          drivetrain.drive(controls.driveGetX(), controls.driveGetY(), controls.driveGetRotation(), true);
-        }
+        // else {
+          // drivetrain.drive(controls.driveGetX(), controls.driveGetY(), controls.driveGetRotation(), true);
+        // }
         break;
       case AUTO:
         updateRamsete();
@@ -149,14 +162,14 @@ public class DriveCommand extends CommandBase {
         break;
     }
 
-    RobotPositionSender.addRobotPosition(
-      new RobotState(
-        drivetrain.getPose(), //The position that is graphed on the GUI
-        drivetrain.getChassisSpeeds().vxMetersPerSecond, // Only shown as you hover over the path
-        drivetrain.getChassisSpeeds().vyMetersPerSecond, // Only shown as you hover over the path
-        drivetrain.getChassisSpeeds().omegaRadiansPerSecond // Only shown as you hover over the path
-      )
-    );
+    // RobotPositionSender.addRobotPosition(
+    //   new RobotState(
+    //     drivetrain.getPose(), //The position that is graphed on the GUI
+    //     drivetrain.getChassisSpeeds().vxMetersPerSecond, // Only shown as you hover over the path
+    //     drivetrain.getChassisSpeeds().vyMetersPerSecond, // Only shown as you hover over the path
+    //     drivetrain.getChassisSpeeds().omegaRadiansPerSecond // Only shown as you hover over the path
+    //   )
+    // );
   
   }
 
