@@ -34,6 +34,7 @@ public class SwerveModule extends SubsystemBase {
 
     // TODO: Change values!!
     // driveMotor.configOpenloopRamp(1);
+    this.driveMotor.configFactoryDefault();
     this.driveMotor.config_kF(0, 0.05);
 
     this.driveMotor.config_kP(0, 0.1);
@@ -41,15 +42,15 @@ public class SwerveModule extends SubsystemBase {
     this.driveMotor.config_kD(0, 0.00001);
     this.driveMotor.setNeutralMode(NeutralMode.Brake);
 
+    this.turnMotor.restoreFactoryDefaults();
     this.turnMotor.setIdleMode(IdleMode.kBrake);
-
     this.turnMotor.getPIDController().setFF(0);
     this.turnMotor.getPIDController().setP(5);
     this.turnMotor.getPIDController().setI(0.0001);
     this.turnMotor.getPIDController().setD(1.5);
 
     this.turnMotor.getPIDController().setOutputRange(-1, 1);
-    // this.turnMotor.getEncoder().setPositionConversionFactor(2 * Math.PI / 134.6);
+    this.turnMotor.getEncoder().setPositionConversionFactor(2 * Math.PI / 134.6);
 
 
     // this.turnMotor.getPIDController().setOutputRange(-Math.PI, Math.PI);
