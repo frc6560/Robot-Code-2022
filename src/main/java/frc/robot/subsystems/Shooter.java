@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.music.Orchestra;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -49,11 +48,6 @@ public class Shooter extends SubsystemBase {
   private NetworkTableEntry ntShooterReady;
 
   private int ballShotCount = 0;
-
-  private Orchestra orchestra;
-
-  private String[] orchestraTrack = new String[] {"Cantina-Band.chrp"};
-  private int songIndex = 0;
 
   /** Creates a new Shooter. */
   public Shooter() {
@@ -105,13 +99,6 @@ public class Shooter extends SubsystemBase {
     ntTableLimelight = NetworkTableInstance.getDefault().getTable("Limelight");
     ntShooterReady = ntTable.getEntry("Shooter Ready");
     ntShooterReady.setBoolean(false);
-
-    orchestra = new Orchestra();
-    orchestra.addInstrument(shooterMotorL);
-    orchestra.addInstrument(shooterMotorR);
-
-    selectMusic(songIndex); // load first song
-
 
     ntDispTab("Shooter")
       .add("Actual RPM", this::getShooterRpm)
@@ -180,38 +167,6 @@ public class Shooter extends SubsystemBase {
   public void setShooterRpm(double rpm) {
     targetRPM = rpm;
   }
-
-  public String startMusic() {
-    orchestra.play();
-
-    return orchestraTrack[songIndex];
-  }
-
-  public void stopMusic() {
-    orchestra.pause();
-  }
-
-  public String selectMusic(String path){
-    orchestra.loadMusic(path);
-
-    return path;
-  }
-  public String selectMusic(int index){
-    String path = orchestraTrack[index % orchestraTrack.length];
-
-    orchestra.loadMusic(path);
-
-    return path;
-  }
-
-  public String skipMusic(){
-    return selectMusic(orchestraTrack[++songIndex % orchestraTrack.length]);
-  }
-
-  public String prevMusic(){
-    return selectMusic(orchestraTrack[--songIndex % orchestraTrack.length]);
-  }
-  
 
   public void increaseBallCount(){
     System.out.println("Shot a ball");

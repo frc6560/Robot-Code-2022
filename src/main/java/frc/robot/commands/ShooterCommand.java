@@ -73,7 +73,6 @@ public class ShooterCommand extends CommandBase {
 
 
   private NetworkTableEntry ntDemoMode;
-  private NetworkTableEntry ntMusicMode;
 
   private final double IDLE_RPM = 1000;
   private final double AutoBaseRPMBuff = 100;
@@ -121,9 +120,6 @@ public class ShooterCommand extends CommandBase {
 
     ntDemoMode = ntTable.getEntry("DEMO MODE");
     ntDemoMode.setBoolean(false);
-
-    ntMusicMode = ntTable.getEntry("MUSIC MODE");
-    ntMusicMode.setBoolean(false);
     
 
     isRedAlliance =  NetworkTableInstance.getDefault().getTable("FMSInfo").getEntry("IsRedAlliance").getBoolean(false);
@@ -170,13 +166,6 @@ public class ShooterCommand extends CommandBase {
 
 
     if(ntDemoMode.getBoolean(false)){ // Demo Controls
-
-      if(ntMusicMode.getBoolean(false)){
-        shooter.startMusic();
-      }else{
-        shooter.stopMusic();
-      }
-
       double[] demoTrajectory = new double[2]; // [angle, rpm]
 
       if(controls.shootClose()){
@@ -193,7 +182,7 @@ public class ShooterCommand extends CommandBase {
 
       } else if(controls.shootUp()){
         demoTrajectory[0] = -1;
-        demoTrajectory[1] =  4000; 
+        demoTrajectory[1] = 4000;
 
       }else{
         demoTrajectory[1] = 0;
