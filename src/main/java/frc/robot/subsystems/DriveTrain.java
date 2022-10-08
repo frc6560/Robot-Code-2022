@@ -111,6 +111,10 @@ public class DriveTrain extends SubsystemBase {
     m_frontRight.setDesiredState(states[1]);
     m_backLeft.setDesiredState(states[2]);
     m_backRight.setDesiredState(states[3]);
+
+    for (SwerveModuleState i : states) {
+      System.out.println(i);
+    }
   }
 
   public void stop() {

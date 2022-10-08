@@ -50,20 +50,24 @@ public class ManualControls implements DriveCommand.Controls {
     public double driveGetX() {
         double val = xbox.getRawAxis(ControllerIds.XBOX_L_JOY_X);
         return Math.copySign(Math.pow(val,2), val);
+        // return val;
     }
 
 
     @Override
     public double driveGetY() {
         double val = xbox.getRawAxis(ControllerIds.XBOX_L_JOY_Y);
-        return Math.copySign(Math.pow(val,1), val);    
+        if (Math.abs(val) < 0.1) return 0.0;
+        return Math.copySign(Math.pow(val,1), val);
+        // return val;
     }
 
 
     @Override
     public double driveGetRotation() {
         double val = xbox.getRawAxis(ControllerIds.XBOX_R_JOY_X);
-        return Math.copySign(Math.pow(val,2), val);    
+        return Math.copySign(Math.pow(val,2), val);
+        // return val;
     }
 
     @Override

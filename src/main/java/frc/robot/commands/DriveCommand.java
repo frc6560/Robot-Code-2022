@@ -73,8 +73,8 @@ public class DriveCommand extends CommandBase {
     this.controls = controls;
 
     isTestingModule.setBoolean(true);
-    turnMotorTestId.setDouble(5);
-    driveMotorTestId.setDouble(8);
+    turnMotorTestId.setDouble(5); //21
+    driveMotorTestId.setDouble(8); //20
     resetRotation.setBoolean(false);
 
     resetAuto();
@@ -144,14 +144,14 @@ public class DriveCommand extends CommandBase {
             drive_id = drive_id_new;
             module = new SwerveModule(new TalonFX(drive_id), new CANSparkMax(turn_id, MotorType.kBrushless));
           }
-          module.setDesiredState(new SwerveModuleState(controls.driveGetY(), controls.driveGetRotationPosition()));
+          module.setDesiredState(new SwerveModuleState(controls.driveGetY()*10, controls.driveGetRotationPosition()));
           if (resetRotation.getBoolean(false)) {
             module.resetRotation();
           }
         }
-        // else {
-          // drivetrain.drive(controls.driveGetX(), controls.driveGetY(), controls.driveGetRotation(), true);
-        // }
+        else {
+          drivetrain.drive(controls.driveGetX()*10, controls.driveGetY()*10, controls.driveGetRotation(), false);
+        }
         break;
       case AUTO:
         updateRamsete();
