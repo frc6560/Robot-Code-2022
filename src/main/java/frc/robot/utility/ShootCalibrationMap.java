@@ -56,8 +56,8 @@ public class ShootCalibrationMap {
 
     public Trajectory get(double x) throws OutOfBoundsException {
         
-        double hoodPos = -0.00002*Math.pow(x,4) - 0.0006*Math.pow(x,3) - 0.0028*x*x - 0.0128*x - 0.1396;
-        double shooterRpm = 0.1678*Math.pow(x,3) + 2.4261*x*x - 27.021*x + 3256.3;
+        double hoodPos = 5E-5*Math.pow(x,3) + 0.001 *x*x - 0.0342*x - 0.5629;
+        double shooterRpm = -0.0777*Math.pow(x,3) + 0.0503*x*x - 9.2503*x + 3378.9;
         System.out.println(shooterRpm +":"+hoodPos);
         return new Trajectory(shooterRpm, hoodPos);
     }

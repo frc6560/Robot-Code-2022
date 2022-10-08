@@ -238,7 +238,7 @@ public class ShooterCommand extends CommandBase {
           shooter.setShooterRpm(IDLE_RPM);
         }
 
-        targetHoodPos = debouncer.calculate(limelight.hasTarget()) ? limelight.getHorizontalAngle() : 0.0;
+        targetHoodPos = debouncer.calculate(limelight.hasTarget()) ? limelight.getVertAngle() : 0.0;
         
         if(targetHoodPos >= -1) {
           shooter.setHoodPos(targetHoodPos);// - (controls.getHotHoodChange() ? hotHoodAddition.getDouble(0.0) : 0.0) );
