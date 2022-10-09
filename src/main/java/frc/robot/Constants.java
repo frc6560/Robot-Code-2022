@@ -151,17 +151,38 @@ public final class Constants {
     public static ShootCalibrationMap NEW_SHOOT_CALIBRATION_MAP = new ShootCalibrationMap();
         
         static {
-            SHOOT_CALIBRATION_MAP.add(100.0, new ShootCalibrationMap.Trajectory(3000.0, -1));      //Degrees   Distance
-                    
-            SHOOT_CALIBRATION_MAP.add(4.968, new ShootCalibrationMap.Trajectory(3200.0, -0.35));   // 4.968      9.2
-            SHOOT_CALIBRATION_MAP.add(2.5746, new ShootCalibrationMap.Trajectory(3200.0, -0.2));   // 2.5746    10.1
-            SHOOT_CALIBRATION_MAP.add(0.1811, new ShootCalibrationMap.Trajectory(3280.0, -0.15));  // 0.1811     11
-            SHOOT_CALIBRATION_MAP.add(-2.478, new ShootCalibrationMap.Trajectory(3320.0, -0.1));   // -2.478     12
-            SHOOT_CALIBRATION_MAP.add(-5.138, new ShootCalibrationMap.Trajectory(3400.0, -0.1));   // -5.138     13
-            SHOOT_CALIBRATION_MAP.add(-7.531, new ShootCalibrationMap.Trajectory(3570.0, 0.0));    // -7.531    13.9
-            SHOOT_CALIBRATION_MAP.add(-10.456, new ShootCalibrationMap.Trajectory(3600.0, 0.15));  // -10.456   15.0
 
-            SHOOT_CALIBRATION_MAP.add(-100, new ShootCalibrationMap.Trajectory(4700.0, 1));
+            SHOOT_CALIBRATION_MAP.add(50, new ShootCalibrationMap.Trajectory(3200.0, -1));      //Degrees   Distance
+
+            SHOOT_CALIBRATION_MAP.add(4.16, new ShootCalibrationMap.Trajectory(3350, -0.8));
+            SHOOT_CALIBRATION_MAP.add(1.94, new ShootCalibrationMap.Trajectory(3350, -0.7));
+            SHOOT_CALIBRATION_MAP.add(-0.052, new ShootCalibrationMap.Trajectory(3360, -0.6));
+            SHOOT_CALIBRATION_MAP.add(-2.1, new ShootCalibrationMap.Trajectory(3380, -0.5));
+            SHOOT_CALIBRATION_MAP.add(-4.3, new ShootCalibrationMap.Trajectory(3485, -0.4));
+            SHOOT_CALIBRATION_MAP.add(-6.585, new ShootCalibrationMap.Trajectory(3540, -0.25));
+            SHOOT_CALIBRATION_MAP.add(-10.78, new ShootCalibrationMap.Trajectory(3600, -0.1));
+            SHOOT_CALIBRATION_MAP.add(-12.97, new ShootCalibrationMap.Trajectory(3680, -0.1));
+            SHOOT_CALIBRATION_MAP.add(-14.53, new ShootCalibrationMap.Trajectory(3775, 0));
+            SHOOT_CALIBRATION_MAP.add(-17.4, new ShootCalibrationMap.Trajectory(3900, 0.1));
+            SHOOT_CALIBRATION_MAP.add(-18.7, new ShootCalibrationMap.Trajectory(4100, 0.1));
+            SHOOT_CALIBRATION_MAP.add(-20.2, new ShootCalibrationMap.Trajectory(4200, 0.15));
+            SHOOT_CALIBRATION_MAP.add(-21.3, new ShootCalibrationMap.Trajectory(4450, 0.2));
+            SHOOT_CALIBRATION_MAP.add(-23.7, new ShootCalibrationMap.Trajectory(4650, 0.225));
+            
+            SHOOT_CALIBRATION_MAP.add(-100, new ShootCalibrationMap.Trajectory(5000.0, 0.3));
+
+
+            // SHOOT_CALIBRATION_MAP.add(100.0, new ShootCalibrationMap.Trajectory(3000.0, -1));      //Degrees   Distance
+                    
+            // SHOOT_CALIBRATION_MAP.add(4.968, new ShootCalibrationMap.Trajectory(3200.0, -0.35));   // 4.968      9.2
+            // SHOOT_CALIBRATION_MAP.add(2.5746, new ShootCalibrationMap.Trajectory(3200.0, -0.2));   // 2.5746    10.1
+            // SHOOT_CALIBRATION_MAP.add(0.1811, new ShootCalibrationMap.Trajectory(3280.0, -0.15));  // 0.1811     11
+            // SHOOT_CALIBRATION_MAP.add(-2.478, new ShootCalibrationMap.Trajectory(3320.0, -0.1));   // -2.478     12
+            // SHOOT_CALIBRATION_MAP.add(-5.138, new ShootCalibrationMap.Trajectory(3400.0, -0.1));   // -5.138     13
+            // SHOOT_CALIBRATION_MAP.add(-7.531, new ShootCalibrationMap.Trajectory(3570.0, 0.0));    // -7.531    13.9
+            // SHOOT_CALIBRATION_MAP.add(-10.456, new ShootCalibrationMap.Trajectory(3600.0, 0.15));  // -10.456   15.0
+
+            // SHOOT_CALIBRATION_MAP.add(-100, new ShootCalibrationMap.Trajectory(4700.0, 1));
         }
     }
     /*

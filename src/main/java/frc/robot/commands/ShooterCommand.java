@@ -60,8 +60,8 @@ public class ShooterCommand extends CommandBase {
   private NetworkTableEntry ntTeleopBuff;
 
   private final double IDLE_RPM = 1000;
-  private final double AutoBaseRPMBuff = 0;
-  private double TeleOpBaseRPMBuff = 0;
+  private final double AutoBaseRPMBuff = 50;
+  private double TeleOpBaseRPMBuff = 50;
 
   private double targetHoodPos = 0.0;
   
@@ -71,7 +71,7 @@ public class ShooterCommand extends CommandBase {
   private Debouncer debouncer = new Debouncer(2, DebounceType.kFalling);
 
   private double rpmBuff;
-  private final double rpmBuffZeta = 10;
+  private final double rpmBuffZeta = 17;
 
   public ShooterCommand(Shooter shooter, Controls controls, Limelight limelight) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -158,8 +158,8 @@ public class ShooterCommand extends CommandBase {
         shooter.setShooterRpm(IDLE_RPM);
       }
 
-      targetHoodPos = debouncer.calculate(limelight.hasTarget()) ? limelight.getHorizontalAngle() : 0.0;
-      
+      // targetHoodPos = debouncer.calculate(limelight.hasTarget()) ? limelight.getHorizontalAngle() : 0.0;
+      targetHoodPos = getShooterHoodAngle(dist);
       
       if(targetHoodPos >= -1) {
         shooter.setHoodPos(targetHoodPos);// - (controls.getHotHoodChange() ? hotHoodAddition.getDouble(0.0) : 0.0) );

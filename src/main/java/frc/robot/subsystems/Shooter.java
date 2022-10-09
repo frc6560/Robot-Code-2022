@@ -22,9 +22,8 @@ import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
 
 public class Shooter extends SubsystemBase {
-  private final double RPMAcceptableDiff = 75;
+  private final double RPMAcceptableDiff = 100;
   private final double turretAcceptableDiff = 3;
-  private final double hoodAcceptableDiff = 10;
 
   private final double turretTurnSpeed = 0.35;
 
@@ -202,7 +201,6 @@ public class Shooter extends SubsystemBase {
       ntTableLimelight.getEntry("Has Target").getBoolean(false) &&
       Math.abs(getShooterRpm()) > 2000 &&
       Math.abs(getShooterRpm() - targetRPM) < RPMAcceptableDiff &&
-      Math.abs(getTurretPosDegrees() - targetTurretPos) < turretAcceptableDiff &&
-      Math.abs(getHoodPos() - targetHoodPos) < hoodAcceptableDiff;
+      Math.abs(getTurretPosDegrees() - targetTurretPos) < turretAcceptableDiff;
   }
 }
