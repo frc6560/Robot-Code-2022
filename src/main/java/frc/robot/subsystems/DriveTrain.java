@@ -62,7 +62,7 @@ public class DriveTrain extends SubsystemBase {
     m_frontLeft = new SwerveModule(new TalonFX(1), new CANSparkMax(10, MotorType.kBrushless));
     m_frontRight = new SwerveModule(new TalonFX(2), new CANSparkMax(11, MotorType.kBrushless));
     m_backLeft = new SwerveModule(new TalonFX(3), new CANSparkMax(12, MotorType.kBrushless));
-    m_backRight = new SwerveModule(new TalonFX(4), new CANSparkMax(13, MotorType.kBrushless));
+    m_backRight = new SwerveModule(new TalonFX(8), new CANSparkMax(14, MotorType.kBrushless));
 
     gyro = new AHRS(SerialPort.Port.kMXP, SerialDataType.kProcessedData, (byte) 100);
     

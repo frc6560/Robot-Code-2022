@@ -57,8 +57,8 @@ public class DriveCommand extends CommandBase {
   private final NetworkTableEntry resetRotation = NetworkTableInstance.getDefault().getTable("Drivetrain").getEntry("resetRotation");
 
   private int drive_id = 8;
-  private int turn_id = 5;
-  private SwerveModule module = new SwerveModule(new TalonFX(drive_id), new CANSparkMax(turn_id, MotorType.kBrushless));
+  private int turn_id = 14;
+  private SwerveModule module;
 
 
   public enum DriveState {
@@ -72,8 +72,8 @@ public class DriveCommand extends CommandBase {
     this.drivetrain = drivetrain;
     this.controls = controls;
 
-    isTestingModule.setBoolean(true);
-    turnMotorTestId.setDouble(5); //21
+    isTestingModule.setBoolean(false);
+    turnMotorTestId.setDouble(14); //21
     driveMotorTestId.setDouble(8); //20
     resetRotation.setBoolean(false);
 
@@ -150,7 +150,7 @@ public class DriveCommand extends CommandBase {
           }
         }
         else {
-          drivetrain.drive(controls.driveGetX()*10, controls.driveGetY()*10, controls.driveGetRotation(), false);
+          drivetrain.drive(controls.driveGetX()*10, controls.driveGetY()*10, controls.driveGetRotation(), true);
         }
         break;
       case AUTO:
