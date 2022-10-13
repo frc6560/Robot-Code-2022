@@ -88,7 +88,7 @@ public class ShootCalibrationMap {
         return new Trajectory(shooterRpm, hoodPos);
     }
 
-    public Trajectory getWithRpmAdjustment(double distance, double delta, double zeta) throws OutOfBoundsException {
+    public Trajectory get(double distance, double delta, double zeta) throws OutOfBoundsException {
         Trajectory original = get(distance);
         
         
@@ -116,51 +116,51 @@ public class ShootCalibrationMap {
     //method that converts key and returns array of maps based off following schema:
     //distance=0,shooterRpm=100,hoodPos=1;distance=2,shooterRpm=0,hoodPos=-1
     //for each instance, add to array
-    public static ArrayList<Map<String,Double>> convertKey(String key) {
-        ArrayList<Map<String,Double>> maps = new ArrayList<>();
-        String[] split = key.split(";");
-        for(String s : split) {
-            String[] split2 = s.split(",");
-            Map<String,Double> map = new java.util.HashMap<>();
-            for(String s2 : split2) {
-                String[] split3 = s2.split("=");
-                map.put(split3[0], Double.parseDouble(split3[1]));
-            }
-            maps.add(map);
-        }
-        return maps;        
-    }
+    // public static ArrayList<Map<String,Double>> convertKey(String key) {
+    //     ArrayList<Map<String,Double>> maps = new ArrayList<>();
+    //     String[] split = key.split(";");
+    //     for(String s : split) {
+    //         String[] split2 = s.split(",");
+    //         Map<String,Double> map = new java.util.HashMap<>();
+    //         for(String s2 : split2) {
+    //             String[] split3 = s2.split("=");
+    //             map.put(split3[0], Double.parseDouble(split3[1]));
+    //         }
+    //         maps.add(map);
+    //     }
+    //     return maps;        
+    // }
 
-    public void updateMap() {
-        String key = "distance=1.986525535583496,shooterRpm=3500,hoodPos=0.7";
-        ArrayList<Map<String,Double>> maps = convertKey(key);
-        double avgDistance = 0;
-        double avgShooterRpm = 0;
-        double avgHoodPos = 0;
-        int total = 0;
-        for(Map<String,Double> map : maps) {
-            avgDistance += map.get("distance");
-            avgShooterRpm += map.get("shooterRpm");
-            avgHoodPos += map.get("hoodPos");
-            total++;
-        }
-        avgDistance /= total;
-        avgShooterRpm /= total;
-        avgHoodPos /= total;
+    // public void updateMap() {
+    //     String key = "distance=1.986525535583496,shooterRpm=3500,hoodPos=0.7";
+    //     ArrayList<Map<String,Double>> maps = convertKey(key);
+    //     double avgDistance = 0;
+    //     double avgShooterRpm = 0;
+    //     double avgHoodPos = 0;
+    //     int total = 0;
+    //     for(Map<String,Double> map : maps) {
+    //         avgDistance += map.get("distance");
+    //         avgShooterRpm += map.get("shooterRpm");
+    //         avgHoodPos += map.get("hoodPos");
+    //         total++;
+    //     }
+    //     avgDistance /= total;
+    //     avgShooterRpm /= total;
+    //     avgHoodPos /= total;
 
-        try {
-            Trajectory t = get(avgDistance);
-            double deltaHoodPos = avgHoodPos / t.hoodPos;
-            double deltaShooterRpm = avgShooterRpm / t.shooterRpm;
+    //     try {
+    //         Trajectory t = get(avgDistance);
+    //         double deltaHoodPos = avgHoodPos / t.hoodPos;
+    //         double deltaShooterRpm = avgShooterRpm / t.shooterRpm;
             
-            points.replaceAll( i -> {
-                double newShooterRpm = i.trajectory.shooterRpm * deltaShooterRpm;
-                double newHoodPos = i.trajectory.hoodPos * deltaHoodPos;
-                return new Point(i.distance, new Trajectory(Math.copySign(Math.min(Math.abs(newShooterRpm), 5000), newShooterRpm), Math.copySign(Math.min(Math.abs(newHoodPos), 1.0), newHoodPos)));
-            });
-        } catch (OutOfBoundsException e) {
-            e.printStackTrace();
-        }
+    //         points.replaceAll( i -> {
+    //             double newShooterRpm = i.trajectory.shooterRpm * deltaShooterRpm;
+    //             double newHoodPos = i.trajectory.hoodPos * deltaHoodPos;
+    //             return new Point(i.distance, new Trajectory(Math.copySign(Math.min(Math.abs(newShooterRpm), 5000), newShooterRpm), Math.copySign(Math.min(Math.abs(newHoodPos), 1.0), newHoodPos)));
+    //         });
+    //     } catch (OutOfBoundsException e) {
+    //         e.printStackTrace();
+    //     }
         
-    }
+    // }
 }

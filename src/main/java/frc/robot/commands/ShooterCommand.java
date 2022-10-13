@@ -209,7 +209,7 @@ public class ShooterCommand extends CommandBase {
       ShootCalibrationMap.Trajectory traj;
       try {
         // traj = Constants.ShooterCalibrations.SHOOT_CALIBRATION_MAP.get(distance);
-        traj = Constants.ShooterCalibrations.SHOOT_CALIBRATION_MAP.getWithRpmAdjustment(distance, rpmBuff, rpmBuffZeta);
+        traj = Constants.ShooterCalibrations.SHOOT_CALIBRATION_MAP.get(distance, rpmBuff, rpmBuffZeta);
         
       } catch (ShootCalibrationMap.OutOfBoundsException e) {
         return 0.0;
