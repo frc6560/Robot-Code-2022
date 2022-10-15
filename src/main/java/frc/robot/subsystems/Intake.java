@@ -30,7 +30,7 @@ public class Intake extends SubsystemBase {
   public Intake() {
     intakeMotor.restoreFactoryDefaults();
     intakeMotor.setOpenLoopRampRate(0.1);
-    intakeMotor.setInverted(false);
+    intakeMotor.setInverted(true);
     
     NtValueDisplay.ntDispTab("Intake")
       .add("Intake Output", this::getIntakeSpeed)
