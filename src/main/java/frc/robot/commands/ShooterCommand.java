@@ -7,8 +7,8 @@ package frc.robot.commands;
 
 import com.revrobotics.ColorMatch;
 
-import edu.wpi.first.math.filter.Debouncer;
-import edu.wpi.first.math.filter.Debouncer.DebounceType;
+// import edu.wpi.first.math.filter.Debouncer;
+// import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -44,8 +44,8 @@ public class ShooterCommand extends CommandBase {
   private final boolean isRedAlliance;
   private boolean isAuto = false;
 
-  private boolean missBall = false;
-  private final double ballMissRPM = 300;
+  // private boolean missBall = false;
+  // private final double ballMissRPM = 300;
 
   private NetworkTable ntTable;
   private NetworkTable ntTableClimb;
@@ -55,7 +55,7 @@ public class ShooterCommand extends CommandBase {
   private NetworkTableEntry ntUseCalibrationMap;
 
   private NetworkTableEntry hotRPMAddition;
-  private NetworkTableEntry hotRPMReduction;
+  // private NetworkTableEntry hotRPMReduction;
 
   private NetworkTableEntry ntTeleopBuff;
 
@@ -68,7 +68,7 @@ public class ShooterCommand extends CommandBase {
   private int targetBallCount = -1;
   private double doneShootingFrames = 0;
 
-  private Debouncer debouncer = new Debouncer(2, DebounceType.kFalling);
+  // private Debouncer debouncer = new Debouncer(2, DebounceType.kFalling);
 
   private double rpmBuff;
   private final double rpmBuffZeta = 17;
