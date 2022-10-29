@@ -31,10 +31,10 @@ public class DriveTrain extends SubsystemBase {
   private final double kMaxSpeed = 3.0; // m/s TODO: update this
 
   // TODO: Update values
-  private final Translation2d m_frontLeftLocation = new Translation2d(0.69, 0.69);
-  private final Translation2d m_frontRightLocation = new Translation2d(0.69, -0.69);
-  private final Translation2d m_backLeftLocation = new Translation2d(-0.69, 0.69);
-  private final Translation2d m_backRightLocation = new Translation2d(-0.69, -0.69);
+  private final Translation2d m_frontLeftLocation = new Translation2d(0.29, 0.29);
+  private final Translation2d m_frontRightLocation = new Translation2d(0.29, -0.29);
+  private final Translation2d m_backLeftLocation = new Translation2d(-0.29, 0.29);
+  private final Translation2d m_backRightLocation = new Translation2d(-0.29, -0.29);
 
   private SwerveModule m_frontLeft;
   private SwerveModule m_frontRight;
@@ -59,8 +59,8 @@ public class DriveTrain extends SubsystemBase {
 
   public DriveTrain() {
     
-    m_frontLeft = new SwerveModule(new TalonFX(1), new CANSparkMax(10, MotorType.kBrushless));
-    m_frontRight = new SwerveModule(new TalonFX(2), new CANSparkMax(11, MotorType.kBrushless));
+    m_frontLeft = new SwerveModule(new TalonFX(22), new CANSparkMax(13, MotorType.kBrushless));
+    m_frontRight = new SwerveModule(new TalonFX(8), new CANSparkMax(5, MotorType.kBrushless));
     m_backLeft = new SwerveModule(new TalonFX(3), new CANSparkMax(12, MotorType.kBrushless));
     m_backRight = new SwerveModule(new TalonFX(8), new CANSparkMax(14, MotorType.kBrushless));
 
