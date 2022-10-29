@@ -180,7 +180,7 @@ public class ShooterCommand extends CommandBase {
         turrTarget = 0;
       
       else if (controls.overrideTurretCenter()) shooter.setTurretPos(0); // override controlled turret pos
-      else shooter.setTurretDeltaPos(turrTarget); // limelight controlled turret pos;
+      else if (limelight.hasTarget()) shooter.setTurretDeltaPos(turrTarget); // limelight controlled turret pos;
 
       // ntTestHood.setDouble(targetHoodPos);
     }else{

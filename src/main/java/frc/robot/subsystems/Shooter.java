@@ -73,11 +73,11 @@ public class Shooter extends SubsystemBase {
     turretMotor.getEncoder().setPosition(0.0);
     turrPidController = turretMotor.getPIDController();
 
-    turrPidController.setP(0.225);
-    turrPidController.setI(0.00001);
-    turrPidController.setD(0.0);
-    turrPidController.setIZone(0.0);
-    turrPidController.setFF(0);
+    turrPidController.setP(0.075);
+    turrPidController.setI(0.00005);
+    turrPidController.setD(0.1);
+    turrPidController.setIZone(0.2);
+    turrPidController.setFF(0.01);
     turrPidController.setOutputRange(-1.0, 1.0);
 
     turrPidController.setFeedbackDevice(turretMotor.getEncoder());
@@ -172,7 +172,9 @@ public class Shooter extends SubsystemBase {
     return turretMotor.getEncoder().getVelocity();
   }
 
+  // private static final double acceptableBullshit = 5.0;
   public void setTurretDeltaPos(double delta){
+    // if (Math.abs(delta) > acceptableBullshit)
     setTurretPos(this.getTurretPosDegrees() + delta);
   }
 
