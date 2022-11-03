@@ -29,7 +29,7 @@ import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
 public class Shooter extends SubsystemBase {
   private final double RPMAcceptableDiff = 100;
-  private final double turretAcceptableDiff = 3;
+  private final double turretAcceptableDiff = 3.3; //+-degs
 
   // private final double turretTurnSpeed = 0.35;
 
@@ -129,6 +129,7 @@ public class Shooter extends SubsystemBase {
       .add("Actual Hood", this::getHoodPos)
 
       .add("Num Balls Shot", this::getBallShotCount)
+      .add("turretOffsetPos", () -> (getTurretPos() - ((targetTurretPos - startAngle) * 0.8888 / 45 / (5.33333 * 1.028571428571429) * 360 / 2)))
     ;
 
 
@@ -156,7 +157,7 @@ public class Shooter extends SubsystemBase {
 
     if (targetTurretPos < -90) targetTurretPos = -90;
     if (targetTurretPos > 90) targetTurretPos = 90;
-    turrPidController.setReference((targetTurretPos - startAngle) * 0.8888 / 45 / (5.33333 * 1.028571428571429) * 360 / 2, ControlType.kPosition);
+    turrPidController.setReference((targetTurretPos - startAngle) * 0.8888 * 0.8888 / 45 / (5.33333 * 1.028571428571429) * 360 / 2, ControlType.kPosition);
 
   }
 
@@ -217,6 +218,6 @@ public class Shooter extends SubsystemBase {
       ntTableLimelight.getEntry("Has Target").getBoolean(false) &&
       Math.abs(getShooterRpm()) > 2000 &&
       Math.abs(getShooterRpm() - targetRPM) < RPMAcceptableDiff &&
-      Math.abs(getTurretPosDegrees() - targetTurretPos) < turretAcceptableDiff;
+      Math.abs(getTurretPos() - ((targetTurretPos - startAngle) * 0.8888 / 45 / (5.33333 * 1.028571428571429) * 360 / 2)) < turretAcceptableDiff;
   }
 }
