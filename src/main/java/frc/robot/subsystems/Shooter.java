@@ -29,7 +29,7 @@ import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
 public class Shooter extends SubsystemBase {
   private final double RPMAcceptableDiff = 100;
-  private final double turretAcceptableDiff = 3.3; //+-degs
+  private final double turretAcceptableDiff = 3.0; //+-degs
 
   // private final double turretTurnSpeed = 0.35;
 
@@ -76,7 +76,7 @@ public class Shooter extends SubsystemBase {
     turrPidController.setP(0.075);
     turrPidController.setI(0.00005);
     turrPidController.setD(0.1);
-    turrPidController.setIZone(0.2);
+    turrPidController.setIZone(0.25);
     turrPidController.setFF(0.01);
     turrPidController.setOutputRange(-1.0, 1.0);
 
@@ -155,7 +155,7 @@ public class Shooter extends SubsystemBase {
       targetTurretPos = ntTestTurrestPos.getDouble(0.0);
     }
 
-    if (targetTurretPos < -90) targetTurretPos = -90;
+    if (targetTurretPos < -70) targetTurretPos = -70;
     if (targetTurretPos > 90) targetTurretPos = 90;
     turrPidController.setReference((targetTurretPos - startAngle) * 0.8888 * 0.8888 / 45 / (5.33333 * 1.028571428571429) * 360 / 2, ControlType.kPosition);
 
