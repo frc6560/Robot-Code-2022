@@ -51,6 +51,8 @@ public class ShooterCommand extends CommandBase {
   private NetworkTable ntTableClimb;
   private NetworkTableEntry ntTestRPM;
   private NetworkTableEntry ntTestHood;
+  
+  private NetworkTableEntry ntConstantAiming;
 
   private NetworkTableEntry ntUseCalibrationMap;
 
@@ -102,6 +104,9 @@ public class ShooterCommand extends CommandBase {
 
     ntTeleopBuff = ntTable.getEntry("Teleop RPM Buff");
     ntTeleopBuff.setDouble(0);
+
+    ntConstantAiming = ntTable.getEntry("Constant Aiming Override");
+    ntConstantAiming.setBoolean(true);
     
 
     isRedAlliance =  NetworkTableInstance.getDefault().getTable("FMSInfo").getEntry("IsRedAlliance").getBoolean(false);
@@ -136,10 +141,13 @@ public class ShooterCommand extends CommandBase {
     //     missBall = false;
     // }
 
-    limelight.setForceOff(!(controls.getAimShooter() || controls.getConstantAiming()));
+    boolean constantAiming = ntConstantAiming.getBoolean(true);
+    // if (!constantAiming) constantAiming = controls.getConstantAiming();
+
+    limelight.setForceOff(!(controls.getAimShooter() || constantAiming));
 
     double dist = limelight.getDistance();
-    if(controls.getAimShooter() || controls.getConstantAiming()) {
+    if(controls.getAimShooter() || constantAiming) {
       
       if (controls.getAimShooter()) {
         TeleOpBaseRPMBuff = ntTeleopBuff.getDouble(0.0);

@@ -217,7 +217,7 @@ public class Shooter extends SubsystemBase {
     return
       ntTableLimelight.getEntry("Has Target").getBoolean(false) &&
       Math.abs(getShooterRpm()) > 2000 &&
-      Math.abs(getShooterRpm() - targetRPM) < RPMAcceptableDiff;
-      // Math.abs(getTurretPos() - ((targetTurretPos - startAngle) * 0.8888 / 45 / (5.33333 * 1.028571428571429) * 360 / 2)) < turretAcceptableDiff;
+      Math.abs(getShooterRpm() - targetRPM) < RPMAcceptableDiff &&
+      Math.abs(getTurretPos() - ((targetTurretPos - startAngle) * 0.8888 / 45 / (5.33333 * 1.028571428571429) * 360 / 2)) < turretAcceptableDiff;
   }
 }

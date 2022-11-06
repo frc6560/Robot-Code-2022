@@ -64,7 +64,7 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
 
     @Override
     public double getSpeed() {
-        return speed.get();
+        return speed.get() * (xbox.getRawButton(ControllerIds.XBOX_R_BUMPER) ? 1.25 : 1) * (xbox.getRawButton(ControllerIds.XBOX_L_BUMPER) ? 0.75 : 1);
     }
 
     @Override
