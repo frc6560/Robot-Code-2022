@@ -7,8 +7,8 @@ package frc.robot.commands;
 
 import com.revrobotics.ColorMatch;
 
-import edu.wpi.first.math.filter.Debouncer;
-import edu.wpi.first.math.filter.Debouncer.DebounceType;
+// import edu.wpi.first.math.filter.Debouncer;
+// import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -44,18 +44,20 @@ public class ShooterCommand extends CommandBase {
   private final boolean isRedAlliance;
   private boolean isAuto = false;
 
-  private boolean missBall = false;
-  private final double ballMissRPM = 300;
+  // private boolean missBall = false;
+  // private final double ballMissRPM = 300;
 
   private NetworkTable ntTable;
   private NetworkTable ntTableClimb;
   private NetworkTableEntry ntTestRPM;
   private NetworkTableEntry ntTestHood;
+  
+  private NetworkTableEntry ntConstantAiming;
 
   private NetworkTableEntry ntUseCalibrationMap;
 
   private NetworkTableEntry hotRPMAddition;
-  private NetworkTableEntry hotRPMReduction;
+  // private NetworkTableEntry hotRPMReduction;
 
   private NetworkTableEntry ntTeleopBuff;
 
@@ -68,7 +70,7 @@ public class ShooterCommand extends CommandBase {
   private int targetBallCount = -1;
   private double doneShootingFrames = 0;
 
-  private Debouncer debouncer = new Debouncer(2, DebounceType.kFalling);
+  // private Debouncer debouncer = new Debouncer(2, DebounceType.kFalling);
 
   private double rpmBuff;
   private final double rpmBuffZeta = 17;
@@ -101,7 +103,10 @@ public class ShooterCommand extends CommandBase {
     hotRPMAddition.setDouble(35.0);
 
     ntTeleopBuff = ntTable.getEntry("Teleop RPM Buff");
-    ntTeleopBuff.setDouble(0);
+    ntTeleopBuff.setDouble(60.0);
+
+    ntConstantAiming = ntTable.getEntry("Constant Aiming Override");
+    ntConstantAiming.setBoolean(true);
     
 
     isRedAlliance =  NetworkTableInstance.getDefault().getTable("FMSInfo").getEntry("IsRedAlliance").getBoolean(false);
@@ -136,10 +141,13 @@ public class ShooterCommand extends CommandBase {
     //     missBall = false;
     // }
 
-    limelight.setForceOff(!(controls.getAimShooter() || controls.getConstantAiming()));
+    boolean constantAiming = ntConstantAiming.getBoolean(true);
+    // if (!constantAiming) constantAiming = controls.getConstantAiming();
+
+    limelight.setForceOff(!(controls.getAimShooter() || constantAiming));
 
     double dist = limelight.getDistance();
-    if(controls.getAimShooter() || controls.getConstantAiming()) {
+    if(controls.getAimShooter() || constantAiming) {
       
       if (controls.getAimShooter()) {
         TeleOpBaseRPMBuff = ntTeleopBuff.getDouble(0.0);
@@ -180,7 +188,7 @@ public class ShooterCommand extends CommandBase {
         turrTarget = 0;
       
       else if (controls.overrideTurretCenter()) shooter.setTurretPos(0); // override controlled turret pos
-      else shooter.setTurretDeltaPos(turrTarget); // limelight controlled turret pos;
+      else if (limelight.hasTarget()) shooter.setTurretDeltaPos(turrTarget); // limelight controlled turret pos;
 
       // ntTestHood.setDouble(targetHoodPos);
     }else{

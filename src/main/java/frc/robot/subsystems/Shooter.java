@@ -7,7 +7,13 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
+// import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
+
+// import edu.wpi.first.math.controller.PIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+// import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -23,9 +29,9 @@ import static frc.robot.utility.NetworkTable.NtValueDisplay.ntDispTab;
 
 public class Shooter extends SubsystemBase {
   private final double RPMAcceptableDiff = 100;
-  private final double turretAcceptableDiff = 3;
+  private final double turretAcceptableDiff = 3.0; //+-degs
 
-  private final double turretTurnSpeed = 0.35;
+  // private final double turretTurnSpeed = 0.35;
 
   private final TalonFX shooterMotorL;
   private final TalonFX shooterMotorR;
@@ -45,7 +51,12 @@ public class Shooter extends SubsystemBase {
   private NetworkTable ntTableLimelight;
   private NetworkTableEntry ntShooterReady;
 
+  private SparkMaxPIDController turrPidController;
+
   private int ballShotCount = 0;
+
+  private NetworkTableEntry ntIsTestingTurret;
+  private NetworkTableEntry ntTestTurrestPos;
 
   /** Creates a new Shooter. */
   public Shooter() {
@@ -60,7 +71,16 @@ public class Shooter extends SubsystemBase {
 
     turretMotor = new CANSparkMax(RobotIds.SHOOTER_TURRET_MOTOR, MotorType.kBrushless);
     turretMotor.getEncoder().setPosition(0.0);
+    turrPidController = turretMotor.getPIDController();
 
+    turrPidController.setP(0.075);
+    turrPidController.setI(0.00005);
+    turrPidController.setD(0.1);
+    turrPidController.setIZone(0.25);
+    turrPidController.setFF(0.01);
+    turrPidController.setOutputRange(-1.0, 1.0);
+
+    turrPidController.setFeedbackDevice(turretMotor.getEncoder());
 
     shooterMotorL.configFactoryDefault();
     shooterMotorR.configFactoryDefault();
@@ -109,7 +129,15 @@ public class Shooter extends SubsystemBase {
       .add("Actual Hood", this::getHoodPos)
 
       .add("Num Balls Shot", this::getBallShotCount)
+      .add("turretOffsetPos", () -> (getTurretPos() - ((targetTurretPos - startAngle) * 0.8888 / 45 / (5.33333 * 1.028571428571429) * 360 / 2)))
     ;
+
+
+    ntIsTestingTurret = ntTable.getEntry("isTestingTurret");
+    ntIsTestingTurret.setBoolean(false);
+    ntTestTurrestPos = ntTable.getEntry("ntTestTurrestPos");
+    ntTestTurrestPos.setDouble(0.0);
+
   }
 
   @Override
@@ -122,27 +150,14 @@ public class Shooter extends SubsystemBase {
 
     shooterMotorL.set(ControlMode.Velocity, targetRPM / Constants.PhysicalConstants.RPM_PER_FALCON_UNIT);
     shooterMotorR.set(ControlMode.Velocity, targetRPM / Constants.PhysicalConstants.RPM_PER_FALCON_UNIT);
-    // shooterMotorL.set(ControlMode.PercentOutput, 0.5);
-
-    double turretPosDiff = targetTurretPos - this.getTurretPosDegrees();
-    
-    if(Math.abs(turretPosDiff) < turretAcceptableDiff){
-      turretMotor.set(0.0);
-    }else{
-      double speed = Math.abs(turretPosDiff) > turretAcceptableDiff * 3  ?
-                    turretTurnSpeed :
-                      Math.abs(turretPosDiff) > turretAcceptableDiff * 2 ?
-                    turretTurnSpeed / (3 * (3 * turretAcceptableDiff - Math.abs(turretPosDiff)) / (turretAcceptableDiff)): // basically a gradient down from 1 to 1/3
-                    turretTurnSpeed / 3
-      ;
-
-      speed /= 1.333;
-      speed *= Math.copySign(1, turretPosDiff);
-
-      //changed
-      turretMotor.set(speed);
-      // turretMotor.set(0.0);
+    // shooterMotorL.set(ControlMode.PercentOutput, 0.5);    
+    if (ntIsTestingTurret.getBoolean(false)) {
+      targetTurretPos = ntTestTurrestPos.getDouble(0.0);
     }
+
+    if (targetTurretPos < -70) targetTurretPos = -70;
+    if (targetTurretPos > 90) targetTurretPos = 90;
+    turrPidController.setReference((targetTurretPos - startAngle) * 0.8888 * 0.8888 / 45 / (5.33333 * 1.028571428571429) * 360 / 2, ControlType.kPosition);
 
   }
 
@@ -158,7 +173,9 @@ public class Shooter extends SubsystemBase {
     return turretMotor.getEncoder().getVelocity();
   }
 
+  // private static final double acceptableBullshit = 5.0;
   public void setTurretDeltaPos(double delta){
+    // if (Math.abs(delta) > acceptableBullshit)
     setTurretPos(this.getTurretPosDegrees() + delta);
   }
 
@@ -201,6 +218,6 @@ public class Shooter extends SubsystemBase {
       ntTableLimelight.getEntry("Has Target").getBoolean(false) &&
       Math.abs(getShooterRpm()) > 2000 &&
       Math.abs(getShooterRpm() - targetRPM) < RPMAcceptableDiff &&
-      Math.abs(getTurretPosDegrees() - targetTurretPos) < turretAcceptableDiff;
+      Math.abs(getTurretPos() - ((targetTurretPos - startAngle) * 0.8888 / 45 / (5.33333 * 1.028571428571429) * 360 / 2)) < turretAcceptableDiff;
   }
 }

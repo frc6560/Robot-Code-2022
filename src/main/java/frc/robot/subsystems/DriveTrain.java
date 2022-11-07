@@ -77,7 +77,7 @@ public class DriveTrain extends SubsystemBase {
   private double kP, kI, kD, kFF;
 
   private NetworkTable ntTable;
-  private NetworkTableEntry ntPosition, ntspeed, ntP, ntI, ntD, ntFF, ntifTestingVelocity, ntifTestingRotation;
+  private NetworkTableEntry ntPosition, ntspeed, ntP, ntI, ntD, ntFF, ntifTestingVelocity, ntifTestingRotation, ntLeftSideBuff;
 
   private DifferentialDrivePoseEstimator estimator = new DifferentialDrivePoseEstimator(new Rotation2d(), new Pose2d(),
         new MatBuilder<>(Nat.N5(), Nat.N1()).fill(0.02, 0.02, 0.01, 0.02, 0.02), // State measurement standard deviations. X, Y, theta.
@@ -129,6 +129,9 @@ public class DriveTrain extends SubsystemBase {
 
     ntifTestingRotation = ntTable.getEntry("If testing Rotation");
     ntifTestingRotation.setBoolean(false);
+
+    // ntLeftSideBuff = ntTable.getEntry("Left Side Buff");
+    // ntLeftSideBuff.setDouble(1.0);
 
     NtValueDisplay.ntDispTab("Drivetrain").add("L Actual Speed", this::getLVelocity).add("R Actual Speed", this::getRVelocity);
     NtValueDisplay.ntDispTab("Drivetrain")
