@@ -35,13 +35,13 @@ public class ManualControls implements DriveCommand.Controls, IntakeCommand.Cont
         this.controlStation = controlStation;
 
         this.speed = new PovNumberStepper(
-            new NumberStepper(0.5, 0.2, PhysicalConstants.MAX_SPEED, 0.1),
+            new NumberStepper(0.8, 0.2, PhysicalConstants.MAX_SPEED, 0.1),
             xbox,
             PovNumberStepper.PovDirection.VERTICAL
         );
 
         this.turnSpeed = new PovNumberStepper(
-            new NumberStepper(0.5, 0.2, PhysicalConstants.MAX_TURN_SPEED, 0.05),
+            new NumberStepper(0.55, 0.2, PhysicalConstants.MAX_TURN_SPEED, 0.05),
             xbox,
             PovNumberStepper.PovDirection.HORIZONTAL
         );

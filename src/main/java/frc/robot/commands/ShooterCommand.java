@@ -103,7 +103,7 @@ public class ShooterCommand extends CommandBase {
     hotRPMAddition.setDouble(35.0);
 
     ntTeleopBuff = ntTable.getEntry("Teleop RPM Buff");
-    ntTeleopBuff.setDouble(0);
+    ntTeleopBuff.setDouble(60.0);
 
     ntConstantAiming = ntTable.getEntry("Constant Aiming Override");
     ntConstantAiming.setBoolean(true);
